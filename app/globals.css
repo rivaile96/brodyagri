@@ -1,7 +1,86 @@
 @import "tailwindcss";
 
-:root {
+/* THEME PRESETS VIA CSS VARIABLES */
+
+:root,
+[data-theme="pearl"] {
+  color-scheme: light;
+  --bg-main: #f6f8f7;
+  --bg-card: #ffffff;
+  --bg-card-subtle: #edf3f0;
+  --bg-card-hover: #e3ede8;
+  --border-card: #d8e6df;
+  --border-card-subtle: #e8f0ec;
+  --text-main: #0c1a14;
+  --text-muted: #4b6357;
+  --text-dim: #7a9488;
+  --accent-primary: #10b981;
+  --accent-secondary: #059669;
+  --nav-bg: rgba(255, 255, 255, 0.92);
+  --nav-border: #d8e6df;
+  --badge-bg: #e6f4ed;
+  --badge-text: #047857;
+  --shadow-color: rgba(12, 26, 20, 0.06);
+}
+
+[data-theme="forest"] {
   color-scheme: dark;
+  --bg-main: #0c1410;
+  --bg-card: #14231b;
+  --bg-card-subtle: #0f1c15;
+  --bg-card-hover: #192d23;
+  --border-card: rgba(16, 185, 129, 0.2);
+  --border-card-subtle: rgba(16, 185, 129, 0.1);
+  --text-main: #f0fdf4;
+  --text-muted: rgba(167, 243, 208, 0.8);
+  --text-dim: rgba(167, 243, 208, 0.5);
+  --accent-primary: #10b981;
+  --accent-secondary: #34d399;
+  --nav-bg: rgba(20, 35, 27, 0.95);
+  --nav-border: rgba(16, 185, 129, 0.25);
+  --badge-bg: rgba(16, 185, 129, 0.15);
+  --badge-text: #6ee7b7;
+  --shadow-color: rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="midnight"] {
+  color-scheme: dark;
+  --bg-main: #090a0a;
+  --bg-card: #131517;
+  --bg-card-subtle: #191c1f;
+  --bg-card-hover: #202428;
+  --border-card: #262b30;
+  --border-card-subtle: #1c2126;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --accent-primary: #22c55e;
+  --accent-secondary: #4ade80;
+  --nav-bg: rgba(19, 21, 23, 0.95);
+  --nav-border: #262b30;
+  --badge-bg: rgba(34, 197, 94, 0.12);
+  --badge-text: #4ade80;
+  --shadow-color: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="terracotta"] {
+  color-scheme: light;
+  --bg-main: #f7f3ee;
+  --bg-card: #ffffff;
+  --bg-card-subtle: #efe9df;
+  --bg-card-hover: #e7dfd2;
+  --border-card: #e3d9cb;
+  --border-card-subtle: #ede5da;
+  --text-main: #2a2118;
+  --text-muted: #6e5c4d;
+  --text-dim: #9c8978;
+  --accent-primary: #ea580c;
+  --accent-secondary: #c2410c;
+  --nav-bg: rgba(255, 255, 255, 0.95);
+  --nav-border: #e3d9cb;
+  --badge-bg: #feede5;
+  --badge-text: #c2410c;
+  --shadow-color: rgba(42, 33, 24, 0.06);
 }
 
 * {
@@ -10,11 +89,12 @@
 }
 
 body {
-  background-color: #0c1410;
-  color: #f0fdf4;
+  background-color: var(--bg-main);
+  color: var(--text-main);
   min-height: 100dvh;
   overscroll-behavior: none;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 html {
@@ -27,4 +107,27 @@ html {
 .scrollbar-hidden {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Utilities for Theme Dynamic Components */
+.theme-bg-main {
+  background-color: var(--bg-main);
+}
+.theme-bg-card {
+  background-color: var(--bg-card);
+}
+.theme-bg-card-subtle {
+  background-color: var(--bg-card-subtle);
+}
+.theme-border {
+  border-color: var(--border-card);
+}
+.theme-text-main {
+  color: var(--text-main);
+}
+.theme-text-muted {
+  color: var(--text-muted);
+}
+.theme-text-dim {
+  color: var(--text-dim);
 }

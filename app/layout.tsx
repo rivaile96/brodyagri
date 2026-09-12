@@ -6,12 +6,12 @@ const geist = Geist({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'BrodyAgri',
-  description: 'Aplikasi berkebun untuk pemula',
+  description: 'Asisten cerdas berkebun dan urban farming rumahan',
   manifest: '/manifest.json',
 };
 
 export const viewport: Viewport = {
-  themeColor: '#09090b',
+  themeColor: '#10b981',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -20,8 +20,23 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className="dark">
-      <body className={`${geist.className} bg-zinc-950 text-white antialiased`}>
+    <html lang="id" data-theme="pearl" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var saved = localStorage.getItem('brodyagri-theme');
+                  var theme = saved || 'pearl';
+                  document.documentElement.setAttribute('data-theme', theme);
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className={`${geist.className} antialiased min-h-screen transition-colors duration-200`}>
         {children}
       </body>
     </html>

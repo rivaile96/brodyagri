@@ -20,7 +20,13 @@ export default function BottomNav() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none pb-safe px-2 pb-3">
-      <nav className="pointer-events-auto max-w-lg mx-auto bg-[#14231b]/95 backdrop-blur-2xl border border-emerald-800/40 shadow-[0_15px_35px_rgba(0,0,0,0.6)] rounded-full px-2 py-1.5 flex items-center justify-around gap-1">
+      <nav 
+        className="pointer-events-auto max-w-lg mx-auto backdrop-blur-2xl border shadow-[0_15px_35px_rgba(0,0,0,0.15)] rounded-full px-2 py-1.5 flex items-center justify-around gap-1 transition-all duration-200"
+        style={{
+          backgroundColor: 'var(--nav-bg)',
+          borderColor: 'var(--nav-border)'
+        }}
+      >
         {navItems.map(({ href, label, icon: Icon, special }) => {
           const isActive = pathname === href || pathname.startsWith(href + '/');
 
@@ -35,7 +41,7 @@ export default function BottomNav() {
                   whileTap={{ scale: 0.92 }}
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                  className="w-11 h-11 rounded-full bg-gradient-to-tr from-emerald-500 via-green-500 to-amber-400 text-zinc-950 flex items-center justify-center shadow-lg shadow-emerald-950/50 ring-2 ring-emerald-300/30"
+                  className="w-11 h-11 rounded-full bg-gradient-to-tr from-emerald-500 via-green-500 to-amber-400 text-zinc-950 flex items-center justify-center shadow-lg shadow-emerald-600/30 ring-2 ring-emerald-300/30"
                 >
                   <Icon className="w-5 h-5 stroke-[2.8]" />
                 </motion.div>
@@ -52,14 +58,20 @@ export default function BottomNav() {
               <motion.div
                 whileTap={{ scale: 0.9 }}
                 className={cn(
-                  'w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 relative',
-                  isActive ? 'text-emerald-300 font-bold' : 'text-emerald-100/50 hover:text-emerald-100'
+                  'w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 relative'
                 )}
+                style={{
+                  color: isActive ? 'var(--accent-primary)' : 'var(--text-dim)'
+                }}
               >
                 {isActive && (
                   <motion.div
                     layoutId="activeNavIndicator"
-                    className="absolute inset-0 bg-emerald-500/20 rounded-full border border-emerald-400/30 shadow-inner"
+                    className="absolute inset-0 rounded-full border shadow-inner"
+                    style={{
+                      backgroundColor: 'var(--badge-bg)',
+                      borderColor: 'var(--border-card)'
+                    }}
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -67,9 +79,11 @@ export default function BottomNav() {
               </motion.div>
               <span
                 className={cn(
-                  'text-[8.5px] tracking-tight mt-0.5 transition-colors leading-none font-medium truncate max-w-[52px]',
-                  isActive ? 'text-emerald-300 font-bold' : 'text-emerald-100/50 group-hover:text-emerald-200'
+                  'text-[8.5px] tracking-tight mt-0.5 transition-colors leading-none font-bold truncate max-w-[52px]'
                 )}
+                style={{
+                  color: isActive ? 'var(--accent-primary)' : 'var(--text-dim)'
+                }}
               >
                 {label}
               </span>
