@@ -7,21 +7,21 @@
   color-scheme: light;
   --bg-main: #f4f6f5;
   --bg-card: #ffffff;
-  --bg-card-subtle: #ebf1ee;
-  --bg-card-hover: #e2ede8;
-  --border-card: #d2e2da;
-  --border-card-subtle: #e2ece7;
-  --text-main: #0f241a;
+  --bg-card-subtle: #ebf2ee;
+  --bg-card-hover: #e1ede7;
+  --border-card: #cfded6;
+  --border-card-subtle: #dfeae4;
+  --text-main: #0c1f16;
   --text-muted: #2d4a3e;
-  --text-dim: #527566;
+  --text-dim: #547466;
   --accent-primary: #059669;
   --accent-secondary: #10b981;
   --nav-bg: rgba(255, 255, 255, 0.95);
-  --nav-border: #d2e2da;
+  --nav-border: #cfded6;
   --badge-bg: #e1f3eb;
   --badge-text: #065f46;
-  --badge-border: #bbf7d0;
-  --shadow-color: rgba(15, 36, 26, 0.08);
+  --badge-border: #a7f3d0;
+  --shadow-color: rgba(12, 31, 22, 0.06);
 }
 
 [data-theme="forest"] {
@@ -111,4 +111,82 @@ html {
 .scrollbar-hidden {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* ==========================================================================
+   GLOBAL CSS OVERRIDES FOR CLEAN WHITE THEME & CONTRAST
+   Mengubah warna tanpa merubah kode / logika komponen sama sekali!
+   ========================================================================== */
+
+[data-theme="pearl"],
+[data-theme="terracotta"] {
+  /* Override text-white menjadi warna teks utama yang sangat tajam dan kontras */
+  .text-white {
+    color: var(--text-main) !important;
+  }
+
+  /* Override background kartu dark [#14231b] menjadi kartu putih bersih dengan border elegan */
+  [class*="bg-[#14231b]"] {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-card) !important;
+    box-shadow: 0 4px 20px -2px var(--shadow-color) !important;
+  }
+
+  /* Override background sub-panel / inner container [#0c1410] menjadi panel abu-hijau lembut */
+  [class*="bg-[#0c1410]"] {
+    background-color: var(--bg-card-subtle) !important;
+    border-color: var(--border-card-subtle) !important;
+  }
+
+  /* Override container gelap gradient */
+  [class*="from-[#183124]"],
+  [class*="from-[#1b3628]"],
+  [class*="from-[#2a2215]"] {
+    background-image: none !important;
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-card) !important;
+  }
+
+  /* Override input forms agar putih bersih dengan placeholder abu terbaca */
+  input, textarea, select {
+    background-color: var(--bg-card-subtle) !important;
+    border-color: var(--border-card) !important;
+    color: var(--text-main) !important;
+  }
+  input::placeholder, textarea::placeholder {
+    color: var(--text-dim) !important;
+  }
+
+  /* Override teks emerald yang terlalu redup di mode terang */
+  .text-emerald-100,
+  .text-emerald-200,
+  [class*="text-emerald-100"],
+  [class*="text-emerald-200"] {
+    color: var(--text-muted) !important;
+  }
+
+  .text-emerald-300,
+  [class*="text-emerald-300"] {
+    color: var(--text-dim) !important;
+  }
+
+  /* Badge styling */
+  .bg-emerald-900\/60,
+  [class*="bg-emerald-900"] {
+    background-color: var(--badge-bg) !important;
+    border-color: var(--badge-border) !important;
+    color: var(--badge-text) !important;
+  }
+  [class*="bg-emerald-950"] {
+    background-color: var(--badge-bg) !important;
+    border-color: var(--badge-border) !important;
+    color: var(--badge-text) !important;
+  }
+
+  /* Border emerald agar abu-hijau halus rapi */
+  [class*="border-emerald-800"],
+  [class*="border-emerald-900"],
+  [class*="border-emerald-700"] {
+    border-color: var(--border-card) !important;
+  }
 }
