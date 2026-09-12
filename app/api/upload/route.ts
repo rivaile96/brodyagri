@@ -10,8 +10,8 @@ export async function POST(req: NextRequest) {
 
   const formData = await req.formData();
   const file = formData.get('file') as File;
-  const plant_id = formData.get('plant_id') as string;
-  const week_number = formData.get('week_number') as string;
+  const plant_id = (formData.get('plant_id') as string) || 'plant';
+  const week_number = (formData.get('week_number') as string) || '1';
 
   if (!file) return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
 
@@ -28,9 +28,9 @@ export async function POST(req: NextRequest) {
   const photo_url = `/uploads/${filename}`;
 
   // Update cover photo profil tanaman ke foto terbaru ini langsung
-  if (plant_id) {
+  if (plant_id && plant_id !== 'plant') {
     db.prepare('UPDATE plants SET cover_photo_url = ? WHERE id = ?').run(photo_url, plant_id);
   }
 
-  return NextResponse.json({ photo_url });
+  return NextResponse.json({ photo_url, url: photo_url });
 }

@@ -5,6 +5,19 @@ import { randomUUID } from 'crypto';
 import fs from 'fs';
 import path from 'path';
 
+function extractJson(text: string) {
+  try {
+    const clean = text.replace(/```json/gi, '').replace(/```/g, '').trim();
+    return JSON.parse(clean);
+  } catch {
+    try {
+      const match = text.match(/\{[\s\S]*\}/);
+      if (match) return JSON.parse(match[0]);
+    } catch {}
+  }
+  return null;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const session = await getSession();
@@ -97,7 +110,7 @@ ${currentTasksText}
 Foto kondisi aktual terlampir. Periksa perubahan fisik tanaman dibanding minggu sebelumnya, evaluasi kesehatan daun/batang, dan berikan tugas tindakan lanjutan untuk minggu ke-${Number(week_number) + 1}.`;
 
     let parsed: any = {
-      summary: 'Tanaman menunjukkan perkembangan yang stabil. Daun dan batang merespons perawatan dengan baik.',
+      summary: 'Tanaman menunjukkan perkembangan yang stabil. Daun dan perakaran merespons perawatan dengan baik.',
       health_status: 'Tumbuh Normal',
       growth_milestone: 'Adaptasi & Pembentukan Daun Baru',
       tasks_for_next_week: [
@@ -154,8 +167,11 @@ Foto kondisi aktual terlampir. Periksa perubahan fisik tanaman dibanding minggu 
           const gData = await gRes.json();
           const textOut = gData.candidates?.[0]?.content?.parts?.[0]?.text;
           if (textOut) {
-            parsed = JSON.parse(textOut.replace(/```json/g, '').replace(/```/g, '').trim());
-            parsedSuccess = true;
+            const resObj = extractJson(textOut);
+            if (resObj) {
+              parsed = resObj;
+              parsedSuccess = true;
+            }
           }
         }
       } catch (gemErr) {
@@ -196,8 +212,11 @@ Foto kondisi aktual terlampir. Periksa perubahan fisik tanaman dibanding minggu 
         if (aiRes.ok) {
           const aiData = await aiRes.json();
           const rawContent = aiData.choices?.[0]?.message?.content || '{}';
-          const cleanJson = rawContent.replace(/```json/g, '').replace(/```/g, '').trim();
-          parsed = JSON.parse(cleanJson);
+          const resObj = extractJson(rawContent);
+          if (resObj) {
+            parsed = resObj;
+            parsedSuccess = true;
+          }
         }
       } catch (err) {
         console.error('AI call fallback:', err);
