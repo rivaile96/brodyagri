@@ -9,7 +9,7 @@ import fs from 'fs';
  * Evaluate custom variety name by:
  * 1. First try local heuristic (keyword matching)
  * 2. If AI settings available, call AI for richer analysis
- * Returns SuitabilityResult-compatible object
+ * Returns SuitabilityResult-compatible object with full card metadata
  */
 export async function POST(req: NextRequest) {
   const user = await getSession();
@@ -38,6 +38,24 @@ export async function POST(req: NextRequest) {
 
   // ── Coba enrichment via AI jika user punya AI settings atau fallback ke sistem ──
   let aiNote: string | null = null;
+  let customDesc = meta.description;
+  let advantages = [
+    `Adaptif terhadap ketinggian ${climate.elevation_m} mdpl`,
+    `Toleran pada suhu ${climate.avg_temp_c}°C di area ${placement}`
+  ];
+  let challenges: string[] = [];
+  let mediaRecommendation = '2 Bagian Sekam Bakar : 1 Kompos : 1 Tanah Humus Gembur';
+
+  if (commodity.toLowerCase().includes('anggur')) {
+    mediaRecommendation = '2 Sekam Bakar : 1 Sekam Mentah : 1 Tanah : 1/2 Pasir Malang (Super Poros)';
+    challenges.push('Wajib drainase sangat lancar untuk mencegah busuk akar');
+  } else if (commodity.toLowerCase().includes('mangga')) {
+    mediaRecommendation = '2 Tanah Hitam : 1 Kompos Matang : 1 Arang Sekam';
+  } else if (commodity.toLowerCase().includes('cabai')) {
+    mediaRecommendation = '1 Tanah Subur : 1 Kompos Organik : 1 Arang Sekam';
+    challenges.push('Waspadai serangan kutu daun / thrips saat cuaca lembab');
+  }
+
   try {
     const aiSettings = db.prepare('SELECT * FROM ai_settings WHERE user_id = ?').get(user.userId) as any;
     
@@ -64,9 +82,26 @@ export async function POST(req: NextRequest) {
     console.error('AI Variety Enrichment error:', err);
   }
 
+  // Level & badge styling
+  let level = 'Sangat Direkomendasikan';
+  let badge = 'emerald';
+  if (result.score < 65) {
+    level = 'Cukup Menantang';
+    badge = 'rose';
+  } else if (result.score < 80) {
+    level = 'Direkomendasikan Bersyarat';
+    badge = 'amber';
+  }
+
   return NextResponse.json({
     ...result,
     name,
+    description: aiNote || customDesc,
+    advantages,
+    challenges,
+    media: mediaRecommendation,
+    level,
+    badge,
     ai_note: aiNote,
     is_custom: true,
   });
@@ -115,7 +150,7 @@ function inferVarietyMeta(name: string, commodity: string, category: string) {
 
   return {
     name,
-    description: `${name} — varietas ${commodity} yang diinput manual.`,
+    description: `${name} adalah varietas ${commodity} yang adaptif terhadap iklim lokal dan cocok dibudidayakan di lingkungan rumah.`,
     category,
     ...base,
   };
@@ -133,10 +168,8 @@ async function callAIForVarietyInfo(
 - Elevasi: ${climate.elevation_m} mdpl
 - Lokasi tanam: ${placement}
 
-Berikan analisis singkat (2-3 kalimat) dalam Bahasa Indonesia:
-1. Apakah varietas ini cocok di kondisi tersebut?
-2. Satu tips praktis paling penting untuk kondisi ini.
-Jawab langsung tanpa intro.`;
+Berikan deskripsi karakteristik varietas dan analisis singkat kesesuaiannya (2-3 kalimat) dalam Bahasa Indonesia:
+Jelaskan keunggulan varietas ini dan tips praktis perawatannya di kondisi tersebut. Jawab langsung tanpa intro.`;
 
   if (aiConfig.provider === 'anthropic') {
     const res = await fetch('https://api.anthropic.com/v1/messages', {

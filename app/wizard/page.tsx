@@ -26,6 +26,7 @@ import {
   Calendar,
   TreePine,
   CheckCircle2,
+  AlertCircle,
   Info,
   Building2,
   Home,
@@ -757,19 +758,97 @@ export default function WizardPage() {
                       )}
 
                       {customResult && (
-                        <div className="p-3.5 rounded-2xl bg-[#0c1410] border border-emerald-600/40 space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-bold text-white">{customVarietyName}</span>
-                            <span className="text-xs font-mono font-bold text-emerald-400">{customResult.score}% Kecocokan</span>
+                        <div 
+                          className="p-4 rounded-3xl border space-y-3 shadow-sm transition-all"
+                          style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-card)' }}
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs font-mono font-bold text-emerald-500">★ Custom</span>
+                                <p className="text-sm font-black tracking-tight" style={{ color: 'var(--text-main)' }}>
+                                  {customResult.name || customVarietyName}
+                                </p>
+                              </div>
+                              <span className={cn(
+                                'text-[9px] font-bold uppercase tracking-wider mt-0.5 inline-block',
+                                customResult.badge === 'emerald' ? 'text-emerald-500' : customResult.badge === 'amber' ? 'text-amber-500' : 'text-rose-500'
+                              )}>
+                                {customResult.level || 'Hasil Evaluasi AI'}
+                              </span>
+                            </div>
+
+                            <div className="text-right shrink-0">
+                              <span className={cn(
+                                'text-xl font-black font-mono',
+                                customResult.badge === 'emerald' ? 'text-emerald-500' : customResult.badge === 'amber' ? 'text-amber-500' : 'text-rose-500'
+                              )}>
+                                {customResult.score}%
+                              </span>
+                              <span className="text-[8px] font-mono uppercase tracking-wider block" style={{ color: 'var(--text-dim)' }}>
+                                Kesesuaian
+                              </span>
+                            </div>
                           </div>
-                          {customResult.ai_note && (
-                            <p className="text-xs text-emerald-200/80 leading-relaxed">{customResult.ai_note}</p>
+
+                          {/* Progress Bar Kesesuaian */}
+                          <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--bg-card-subtle)' }}>
+                            <div
+                              className={cn(
+                                'h-full rounded-full transition-all',
+                                customResult.badge === 'emerald' ? 'bg-gradient-to-r from-emerald-500 to-green-500' : customResult.badge === 'amber' ? 'bg-amber-400' : 'bg-rose-400'
+                              )}
+                              style={{ width: `${customResult.score}%` }}
+                            />
+                          </div>
+
+                          {/* Deskripsi Lengkap Varietas Custom */}
+                          <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+                            {customResult.description || customResult.ai_note}
+                          </p>
+
+                          {/* Advantages & Challenges */}
+                          {customResult.advantages && customResult.advantages.length > 0 && (
+                            <div className="space-y-1 pt-1">
+                              {customResult.advantages.map((adv: string, j: number) => (
+                                <div key={j} className="flex items-center gap-1.5 text-[11px] font-medium" style={{ color: 'var(--accent-primary)' }}>
+                                  <Check className="w-3.5 h-3.5 shrink-0" />
+                                  <span>{adv}</span>
+                                </div>
+                              ))}
+                              {customResult.challenges && customResult.challenges.map((chl: string, j: number) => (
+                                <div key={j} className="flex items-center gap-1.5 text-[11px] font-medium text-amber-500">
+                                  <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                                  <span>{chl}</span>
+                                </div>
+                              ))}
+                            </div>
                           )}
+
+                          {/* Rekomendasi Media Tanam */}
+                          {customResult.media && (
+                            <div 
+                              className="p-3 rounded-2xl border text-[11px] leading-relaxed"
+                              style={{ 
+                                backgroundColor: 'var(--badge-bg)', 
+                                borderColor: 'var(--badge-border)', 
+                                color: 'var(--badge-text)' 
+                              }}
+                            >
+                              <strong className="block mb-0.5 font-bold">Rekomendasi Racikan Media:</strong>
+                              <span>{customResult.media}</span>
+                            </div>
+                          )}
+
+                          {/* Tombol Pilih Varietas Custom */}
                           <button
-                            onClick={() => update('variety', customVarietyName.trim())}
-                            className="w-full py-2.5 bg-gradient-to-r from-emerald-500 to-green-500 text-zinc-950 text-xs font-bold rounded-xl transition-all"
+                            onClick={() => {
+                              update('variety', customVarietyName.trim());
+                            }}
+                            className="w-full py-3 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-zinc-950 text-xs font-black rounded-2xl transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-1.5"
                           >
-                            Gunakan Varietas Ini
+                            <Check className="w-4 h-4 stroke-[3]" />
+                            <span>Gunakan Varietas Ini ({customVarietyName.trim()})</span>
                           </button>
                         </div>
                       )}
