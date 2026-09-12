@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Mail,
   Lock,
@@ -17,9 +18,9 @@ import {
   Stethoscope,
   BookOpen,
   Zap,
-  CheckCircle2,
+  Sparkles,
   ShieldCheck,
-  Leaf
+  Heart
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -74,146 +75,163 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-dvh w-full relative flex items-center justify-center lg:justify-between px-4 py-8 lg:px-16 overflow-hidden bg-[#0a1810] font-sans selection:bg-emerald-500/30 selection:text-emerald-200">
-      {/* Background Natural Plantation Ambience with Sunlight Glow & Foliage Overlays */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Sunbeam & Forest Mist Gradients */}
-        <div className="absolute -top-40 left-1/3 w-[800px] h-[500px] bg-gradient-to-br from-emerald-500/25 via-amber-500/15 to-transparent blur-[140px] rounded-full" />
-        <div className="absolute top-1/2 -left-40 w-[600px] h-[600px] bg-emerald-700/20 blur-[160px] rounded-full" />
-        <div className="absolute bottom-0 right-0 w-[700px] h-[500px] bg-emerald-900/30 blur-[150px] rounded-full" />
-
-        {/* Ambient Leaves Decoration Pattern */}
-        <div className="absolute top-6 left-8 opacity-20 text-emerald-400">
-          <Leaf className="w-32 h-32 -rotate-45" />
-        </div>
-        <div className="absolute bottom-10 left-1/4 opacity-15 text-emerald-300">
-          <Leaf className="w-40 h-40 rotate-12" />
-        </div>
-        <div className="absolute top-12 right-12 opacity-15 text-amber-400">
-          <Leaf className="w-36 h-36 rotate-45" />
-        </div>
+    <div 
+      className="min-h-dvh w-full relative flex items-center justify-center p-4 sm:p-6 lg:p-10 font-sans transition-colors duration-250 selection:bg-emerald-500/30 selection:text-emerald-900 overflow-x-hidden"
+      style={{ backgroundColor: 'var(--bg-main)', color: 'var(--text-main)' }}
+    >
+      {/* Background Soft Natural Amber/Green Ambient Glow */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-40">
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[550px] h-[350px] bg-emerald-500/15 blur-[130px] rounded-full" />
+        <div className="absolute top-1/2 -right-24 w-[350px] h-[350px] bg-amber-500/10 blur-[140px] rounded-full" />
+        <div className="absolute bottom-10 -left-20 w-[350px] h-[350px] bg-emerald-500/10 blur-[150px] rounded-full" />
       </div>
 
-      {/* Quick Theme Toggle Button in Header */}
-      <div className="absolute top-5 right-5 z-30">
+      {/* Floating Theme Toggle Top Right */}
+      <div className="fixed top-4 right-4 z-40">
         <button
           onClick={toggleTheme}
           title="Ganti Tema Cepat"
-          className="w-10 h-10 rounded-2xl flex items-center justify-center border transition-all duration-200 shadow-lg bg-emerald-950/80 border-emerald-700/50 text-emerald-300 hover:text-white hover:scale-105 backdrop-blur-md"
+          className="w-10 h-10 rounded-2xl flex items-center justify-center border transition-all duration-200 shadow-sm hover:scale-105 backdrop-blur-md"
+          style={{
+            backgroundColor: 'var(--bg-card)',
+            borderColor: 'var(--border-card)',
+            color: 'var(--accent-primary)'
+          }}
         >
           {currentTheme === 'pearl' ? (
-            <Sun className="w-4 h-4 text-amber-400" />
+            <Moon className="w-4 h-4 text-emerald-800" />
           ) : (
-            <Moon className="w-4 h-4 text-emerald-300" />
+            <Sun className="w-4 h-4 text-amber-400" />
           )}
         </button>
       </div>
 
-      {/* LEFT COLUMN: Brand Identity & Value Proposition (Visible on Desktop / Large Screens) */}
-      <div className="hidden lg:flex flex-col justify-between max-w-xl z-20 space-y-12 pr-8 text-white">
-        <div className="space-y-8">
-          {/* Logo & Name */}
-          <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 via-green-500 to-amber-400 text-zinc-950 flex items-center justify-center shadow-lg shadow-emerald-500/30 ring-2 ring-emerald-300/40">
-              <Sprout className="w-7 h-7 stroke-[2.6]" />
-            </div>
-            <div>
-              <span className="text-3xl font-black tracking-tight text-white block">
-                BrodyAgri
-              </span>
-              <span className="text-xs text-emerald-300/80 font-mono tracking-wider font-semibold">
-                URBAN FARMING AI ASSISTANT
-              </span>
-            </div>
-          </div>
-
-          {/* Main Tagline */}
-          <div className="space-y-3">
-            <h2 className="text-3xl lg:text-4xl font-extrabold text-white leading-tight tracking-tight">
-              Solusi Cerdas Pertumbuhan &amp; Produktivitas Kebun Anda
-            </h2>
-            <p className="text-sm text-emerald-100/70 leading-relaxed max-w-lg font-medium">
-              Gabungan telemetri iklim historis 3 tahun, pemantauan visi AI dari minggu ke minggu, dan formulasi organik rumahan untuk hasil panen melimpah.
-            </p>
-          </div>
-
-          {/* 3 Inline Feature Pills with Dividers */}
-          <div className="flex items-center gap-3 text-xs font-semibold text-emerald-200/90 pt-2 border-t border-emerald-800/60">
-            <div className="flex items-center gap-1.5 bg-emerald-950/60 border border-emerald-700/40 px-3.5 py-1.5 rounded-full backdrop-blur-md">
-              <Sprout className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Pantau Kebun</span>
-            </div>
-            <span className="text-emerald-700 font-bold">|</span>
-            <div className="flex items-center gap-1.5 bg-emerald-950/60 border border-emerald-700/40 px-3.5 py-1.5 rounded-full backdrop-blur-md">
-              <CloudSun className="w-3.5 h-3.5 text-amber-400" />
-              <span>Iklim 3 Tahun</span>
-            </div>
-            <span className="text-emerald-700 font-bold">|</span>
-            <div className="flex items-center gap-1.5 bg-emerald-950/60 border border-emerald-700/40 px-3.5 py-1.5 rounded-full backdrop-blur-md">
-              <Stethoscope className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Dokter Visi AI</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Tagline Script Accent */}
-        <div className="pt-8 opacity-80">
-          <p className="font-serif italic text-emerald-300 text-sm tracking-wide">
-            "Dari Lahan Rumahan untuk Masa Depan yang Lebih Hijau &amp; Mandiri"
-          </p>
-        </div>
-      </div>
-
-      {/* RIGHT COLUMN: Clean White Floating Auth Card (Eksklusif seperti di Gambar) */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
+      {/* Main Unified Bento Container */}
+      <motion.div 
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45 }}
-        className="w-full max-w-md z-20"
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-5xl rounded-[2.5rem] border shadow-2xl overflow-hidden backdrop-blur-xl relative z-10 grid grid-cols-1 lg:grid-cols-12 transition-all duration-200"
+        style={{ 
+          backgroundColor: 'var(--bg-card)', 
+          borderColor: 'var(--border-card)' 
+        }}
       >
-        <div className="bg-white rounded-[2rem] shadow-2xl p-7 sm:p-9 text-zinc-900 border border-emerald-950/10 space-y-6 relative overflow-hidden backdrop-blur-md">
-          {/* Card Top Header & Mini Brand Icon */}
-          <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-2xl bg-[#184334]/10 text-[#184334] flex items-center justify-center mx-auto mb-1">
-              <Sprout className="w-7 h-7 stroke-[2.4]" />
+        {/* LEFT COLUMN: Aesthetic Photographic Story & Mission (5 or 6 cols on desktop) */}
+        <div className="lg:col-span-6 xl:col-span-7 relative flex flex-col justify-between p-7 sm:p-10 lg:p-12 overflow-hidden min-h-[340px] lg:min-h-[620px]">
+          {/* Background Image: Community Hands & Seedlings */}
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="/images/community-seedling.jpg" 
+              alt="Community Growing Plants"
+              className="w-full h-full object-cover object-center transform scale-105 filter brightness-[0.82] contrast-[1.08]"
+            />
+            {/* Dark & Emerald Atmospheric Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30" />
+            <div className="absolute inset-0 bg-emerald-950/20 mix-blend-multiply" />
+          </div>
+
+          {/* Top Brand Header over photo */}
+          <div className="relative z-10 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-400 via-green-500 to-amber-400 text-zinc-950 flex items-center justify-center shadow-lg shadow-emerald-500/30 ring-2 ring-emerald-300/30">
+                <Sprout className="w-6 h-6 stroke-[2.6]" />
+              </div>
+              <div>
+                <span className="text-2xl font-black tracking-tight text-white leading-none block">
+                  BrodyAgri
+                </span>
+                <span className="text-[10px] font-mono tracking-widest text-emerald-300 font-bold uppercase mt-0.5 block">
+                  Sahabat Tani Pemula
+                </span>
+              </div>
             </div>
-            <h3 className="text-2xl font-black tracking-tight text-[#112920]">
+
+            <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-white/15 text-white border border-white/20 backdrop-blur-md">
+              <Sparkles className="w-3 h-3 text-amber-300" />
+              <span>AI Engine v2.5</span>
+            </span>
+          </div>
+
+          {/* Bottom Emotional Story Quote over photo */}
+          <div className="relative z-10 mt-auto pt-16 space-y-4 text-white">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/25 border border-emerald-400/40 text-emerald-300 text-xs font-semibold backdrop-blur-md">
+              <Heart className="w-3.5 h-3.5 fill-emerald-400 text-emerald-400" />
+              <span>Bertumbuh Bersama Dari Rumah</span>
+            </div>
+
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
+              Rawat Benih Harapan, Panen Kebahagiaan
+            </h2>
+
+            <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed max-w-md font-medium">
+              Dari balkon sempit, rooftop, hingga pot teras rumah—setiap daun yang tumbuh adalah dedikasi kecil untuk masa depan yang lebih hijau.
+            </p>
+
+            {/* 3 Quick Aesthetic Feature Tags */}
+            <div className="flex items-center gap-2 pt-1 flex-wrap text-[11px] font-medium text-emerald-200">
+              <span className="px-2.5 py-1 rounded-xl bg-black/40 border border-white/15 backdrop-blur-md">
+                🌱 Panduan Mingguan
+              </span>
+              <span className="px-2.5 py-1 rounded-xl bg-black/40 border border-white/15 backdrop-blur-md">
+                🩺 Dokter Tanaman AI
+              </span>
+              <span className="px-2.5 py-1 rounded-xl bg-black/40 border border-white/15 backdrop-blur-md">
+                🧪 Pupuk Organik Dapur
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT COLUMN: The Clean, Modern & High-Contrast Form (7 or 5 cols) */}
+        <div className="lg:col-span-6 xl:col-span-5 p-7 sm:p-10 flex flex-col justify-center space-y-6">
+          <div className="space-y-1.5">
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider font-mono" style={{ color: 'var(--accent-primary)' }}>
+              <span>Otentikasi Akun</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight" style={{ color: 'var(--text-main)' }}>
               Selamat Datang
-            </h3>
-            <p className="text-xs text-zinc-500 font-medium leading-relaxed">
-              Masuk untuk mengelola stasiun perawatan kebun &amp; telemetri tanaman Anda.
+            </h1>
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-dim)' }}>
+              Masuk untuk memantau siklus pertumbuhan dan checklist perawatan tanamanmu pekan ini.
             </p>
           </div>
 
-          {/* Form Login */}
           <form onSubmit={handleLogin} className="space-y-4">
-            {/* Field Email / Username */}
-            <div className="space-y-1">
-              <label className="block text-[11px] font-mono uppercase font-bold text-zinc-500">
-                Email atau Username
+            {/* Field Email */}
+            <div className="space-y-1.5">
+              <label className="block text-[11px] font-mono uppercase font-bold" style={{ color: 'var(--text-dim)' }}>
+                Email Akun
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none" style={{ color: 'var(--text-dim)' }}>
                   <Mail className="w-4 h-4" />
                 </div>
                 <input
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="email@domain.com"
+                  placeholder="email@kamu.com"
                   required
-                  className="w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#184334]/30 focus:border-[#184334] transition-all font-medium"
+                  className="w-full pl-10 pr-4 py-3 border rounded-2xl text-xs font-medium placeholder-zinc-400 focus:outline-none focus:border-emerald-500 transition-all shadow-sm"
+                  style={{
+                    backgroundColor: 'var(--bg-card-subtle)',
+                    borderColor: 'var(--border-card)',
+                    color: 'var(--text-main)'
+                  }}
                 />
               </div>
             </div>
 
             {/* Field Password */}
-            <div className="space-y-1">
-              <label className="block text-[11px] font-mono uppercase font-bold text-zinc-500">
-                Password
-              </label>
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="block text-[11px] font-mono uppercase font-bold" style={{ color: 'var(--text-dim)' }}>
+                  Kata Sandi
+                </label>
+              </div>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none" style={{ color: 'var(--text-dim)' }}>
                   <Lock className="w-4 h-4" />
                 </div>
                 <input
@@ -222,12 +240,18 @@ export default function LoginPage() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  className="w-full pl-10 pr-10 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#184334]/30 focus:border-[#184334] transition-all font-medium"
+                  className="w-full pl-10 pr-10 py-3 border rounded-2xl text-xs font-medium placeholder-zinc-400 focus:outline-none focus:border-emerald-500 transition-all shadow-sm"
+                  style={{
+                    backgroundColor: 'var(--bg-card-subtle)',
+                    borderColor: 'var(--border-card)',
+                    color: 'var(--text-main)'
+                  }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-zinc-400 hover:text-zinc-600 transition-colors"
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center hover:opacity-80 transition-opacity"
+                  style={{ color: 'var(--text-dim)' }}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -235,76 +259,75 @@ export default function LoginPage() {
             </div>
 
             {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between text-xs pt-1">
-              <label className="flex items-center gap-2 text-zinc-600 cursor-pointer select-none">
+            <div className="flex items-center justify-between text-xs pt-0.5">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={rememberMe}
                   onChange={e => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded text-[#184334] focus:ring-[#184334] border-zinc-300 cursor-pointer"
+                  className="w-4 h-4 rounded border cursor-pointer accent-emerald-600"
                 />
-                <span className="font-semibold text-zinc-600">Ingat saya</span>
+                <span className="font-semibold" style={{ color: 'var(--text-muted)' }}>Ingat saya</span>
               </label>
 
               <button
                 type="button"
                 onClick={fillDemoAccount}
-                className="text-[#184334] font-bold hover:underline"
+                className="font-bold hover:underline"
+                style={{ color: 'var(--accent-primary)' }}
               >
-                Lupa password?
+                Isi otomatis?
               </button>
             </div>
 
             {error && (
-              <div className="bg-rose-50 border border-rose-200 rounded-xl p-3 text-xs text-rose-600 font-medium">
+              <div className="p-3 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-xs text-rose-600 font-medium">
                 ⚠️ {error}
               </div>
             )}
 
-            {/* Main Submit CTA Button (Solid Forest Green) */}
+            {/* Main Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 px-4 bg-[#184334] hover:bg-[#123327] active:scale-[0.99] text-white font-black rounded-xl flex items-center justify-center gap-2 transition-all shadow-md shadow-[#184334]/25 disabled:opacity-50 text-xs"
+              className="w-full py-3.5 px-4 bg-gradient-to-r from-emerald-500 via-green-500 to-amber-400 text-zinc-950 font-black rounded-2xl flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-500/20 active:scale-[0.98] disabled:opacity-50 text-xs mt-1"
             >
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Memverifikasi...</span>
+                  <span>Memverifikasi Sesi...</span>
                 </>
               ) : (
                 <>
-                  <span>Masuk</span>
-                  <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                  <span>Masuk ke Kebunku</span>
+                  <ArrowRight className="w-4 h-4 stroke-[2.6]" />
                 </>
               )}
             </button>
           </form>
 
-          {/* Divider "atau" */}
-          <div className="relative flex items-center justify-center my-3">
-            <div className="border-t border-zinc-200 w-full" />
-            <span className="bg-white px-3 text-[10px] font-mono text-zinc-400 font-bold uppercase shrink-0">
-              atau
-            </span>
-            <div className="border-t border-zinc-200 w-full" />
+          {/* Quick Demo Fill Shortcut */}
+          <div className="pt-2 border-t" style={{ borderColor: 'var(--border-card-subtle)' }}>
+            <button
+              type="button"
+              onClick={fillDemoAccount}
+              className="w-full py-2.5 px-3 rounded-2xl border text-[11px] font-bold flex items-center justify-center gap-1.5 transition-all hover:scale-[1.01] shadow-sm"
+              style={{
+                backgroundColor: 'var(--badge-bg)',
+                borderColor: 'var(--badge-border)',
+                color: 'var(--badge-text)'
+              }}
+            >
+              <Zap className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
+              <span>Gunakan Akun Operator Demo (1-Tap Fill)</span>
+            </button>
           </div>
 
-          {/* 1-Tap Demo Operator Login Button */}
-          <button
-            type="button"
-            onClick={fillDemoAccount}
-            className="w-full py-3 px-4 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 rounded-xl flex items-center justify-center gap-2 text-xs font-black text-[#184334] transition-all"
-          >
-            <Zap className="w-4 h-4 text-amber-500 fill-amber-400" />
-            <span>Gunakan Akun Demo Operator (1-Tap Fill)</span>
-          </button>
-
-          {/* Card Footer Register Link */}
-          <p className="text-center text-xs text-zinc-500 font-medium pt-1">
+          {/* Footer Link */}
+          <p className="text-center text-xs font-medium" style={{ color: 'var(--text-dim)' }}>
             Belum punya akun?{' '}
-            <Link href="/auth/register" className="text-[#184334] font-bold hover:underline">
-              Daftar di sini
+            <Link href="/auth/register" className="font-bold underline hover:opacity-80 transition-opacity" style={{ color: 'var(--accent-primary)' }}>
+              Daftar akun baru di sini ➔
             </Link>
           </p>
         </div>
