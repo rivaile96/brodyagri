@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import BottomNav from './BottomNav';
 import { motion } from 'framer-motion';
-import { Sprout, Palette, Sun, Moon } from 'lucide-react';
+import { Sprout, Sun, Moon, Settings as SettingsIcon } from 'lucide-react';
 import Link from 'next/link';
 
 interface AppShellProps {
@@ -30,7 +30,10 @@ export default function AppShell({ title, rightSlot, children, hideNav = false }
   };
 
   return (
-    <div className="min-h-[100dvh] flex flex-col relative overflow-x-hidden font-sans transition-colors duration-250 selection:bg-emerald-500/30 selection:text-emerald-900" style={{ backgroundColor: 'var(--bg-main)', color: 'var(--text-main)' }}>
+    <div 
+      className="min-h-[100dvh] flex flex-col relative overflow-x-hidden font-sans transition-colors duration-250 selection:bg-emerald-500/30 selection:text-emerald-900" 
+      style={{ backgroundColor: 'var(--bg-main)', color: 'var(--text-main)' }}
+    >
       {/* Background Subtle Ambient Glow */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-40">
         <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-emerald-500/10 blur-[120px] rounded-full" />
@@ -77,11 +80,26 @@ export default function AppShell({ title, rightSlot, children, hideNav = false }
               }}
             >
               {currentTheme === 'pearl' ? (
-                <Moon className="w-4 h-4 text-emerald-700" />
+                <Moon className="w-4 h-4 text-emerald-800" />
               ) : (
                 <Sun className="w-4 h-4 text-amber-400" />
               )}
             </button>
+
+            {/* Settings Link Button */}
+            <Link
+              href="/settings"
+              title="Pengaturan"
+              className="w-9 h-9 rounded-2xl flex items-center justify-center border transition-all duration-200 shadow-sm hover:scale-105"
+              style={{
+                backgroundColor: 'var(--bg-card)',
+                borderColor: 'var(--border-card)',
+                color: 'var(--text-main)'
+              }}
+            >
+              <SettingsIcon className="w-4 h-4" />
+            </Link>
+
             {rightSlot}
           </div>
         </div>

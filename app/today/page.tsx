@@ -25,7 +25,9 @@ import {
   Camera,
   ArrowRight,
   ShieldAlert,
-  Leaf
+  Leaf,
+  FlaskConical,
+  Settings as SettingsIcon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -131,101 +133,153 @@ export default function TodayDashboardPage() {
         {/* Welcome Header */}
         <div className="flex items-start justify-between">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-900/60 border border-emerald-700/40 text-emerald-300 text-xs font-semibold">
-              <Sun className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+            <div 
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border"
+              style={{ 
+                backgroundColor: 'var(--badge-bg)', 
+                borderColor: 'var(--badge-border)', 
+                color: 'var(--badge-text)' 
+              }}
+            >
+              <Sun className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
               <span>{getGreeting()}, Baginda</span>
             </div>
-            <h1 className="text-2xl font-black text-white tracking-tight">
+            <h1 className="text-2xl font-black tracking-tight" style={{ color: 'var(--text-main)' }}>
               Stasiun Kendali Kebun
             </h1>
-            <p className="text-xs text-emerald-200/70">
+            <p className="text-xs" style={{ color: 'var(--text-dim)' }}>
               {loading ? 'Menghubungkan telemetri...' : `${plants.length} tanaman aktif dalam siklus perawatan`}
             </p>
           </div>
 
-          <Link
-            href="/wizard"
-            className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 text-zinc-950 flex items-center justify-center shadow-lg shadow-emerald-950/40 hover:scale-105 active:scale-95 transition-all"
-            title="Tanam Baru"
-          >
-            <Plus className="w-5 h-5 stroke-[2.8]" />
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/wizard"
+              className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 text-zinc-950 flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all"
+              title="Tanam Baru"
+            >
+              <Plus className="w-5 h-5 stroke-[2.8]" />
+            </Link>
+          </div>
         </div>
 
         {/* 1. 🌤️ WIDGET TELEMETRI CUACA REAL-TIME & ALERT */}
-        <div className="rounded-3xl bg-[#14231b]/90 border border-emerald-800/40 p-5 space-y-3.5 shadow-md backdrop-blur-md">
-          <div className="flex items-center justify-between border-b border-emerald-900/80 pb-3">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+        <div 
+          className="rounded-3xl border p-5 space-y-3.5 shadow-sm backdrop-blur-md transition-colors"
+          style={{ 
+            backgroundColor: 'var(--bg-card)', 
+            borderColor: 'var(--border-card)' 
+          }}
+        >
+          <div className="flex items-center justify-between border-b pb-3" style={{ borderColor: 'var(--border-card-subtle)' }}>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center">
                 <Sun className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-[10px] font-mono text-emerald-400 uppercase font-bold block">
+                <span className="text-[10px] font-mono uppercase font-bold block" style={{ color: 'var(--accent-primary)' }}>
                   Telemetri Cuaca • {weather.location}
                 </span>
-                <span className="text-xs font-black text-white">{weather.condition}</span>
+                <span className="text-xs font-black" style={{ color: 'var(--text-main)' }}>{weather.condition}</span>
               </div>
             </div>
 
             <div className="text-right">
-              <span className="text-xl font-black text-white font-mono">{weather.temp_c}°C</span>
+              <span className="text-xl font-black font-mono" style={{ color: 'var(--text-main)' }}>{weather.temp_c}°C</span>
             </div>
           </div>
 
           {/* Grid Sensor Mikro */}
           <div className="grid grid-cols-3 gap-2 text-center text-xs">
-            <div className="bg-[#0c1410]/70 p-2.5 rounded-2xl border border-emerald-900/60">
-              <span className="text-[9px] text-emerald-300/70 font-semibold block flex items-center justify-center gap-1">
-                <Thermometer className="w-3 h-3 text-amber-400" /> Suhu
+            <div 
+              className="p-2.5 rounded-2xl border"
+              style={{ 
+                backgroundColor: 'var(--bg-card-subtle)', 
+                borderColor: 'var(--border-card-subtle)' 
+              }}
+            >
+              <span className="text-[9px] font-semibold flex items-center justify-center gap-1" style={{ color: 'var(--text-dim)' }}>
+                <Thermometer className="w-3 h-3 text-amber-500" /> Suhu
               </span>
-              <strong className="text-white font-mono block text-sm mt-0.5">{weather.temp_c}°C</strong>
+              <strong className="font-mono block text-sm mt-0.5" style={{ color: 'var(--text-main)' }}>{weather.temp_c}°C</strong>
             </div>
 
-            <div className="bg-[#0c1410]/70 p-2.5 rounded-2xl border border-emerald-900/60">
-              <span className="text-[9px] text-emerald-300/70 font-semibold block flex items-center justify-center gap-1">
-                <Droplets className="w-3 h-3 text-cyan-400" /> Kelembaban
+            <div 
+              className="p-2.5 rounded-2xl border"
+              style={{ 
+                backgroundColor: 'var(--bg-card-subtle)', 
+                borderColor: 'var(--border-card-subtle)' 
+              }}
+            >
+              <span className="text-[9px] font-semibold flex items-center justify-center gap-1" style={{ color: 'var(--text-dim)' }}>
+                <Droplets className="w-3 h-3 text-cyan-500" /> Kelembaban
               </span>
-              <strong className="text-white font-mono block text-sm mt-0.5">{weather.humidity_pct}%</strong>
+              <strong className="font-mono block text-sm mt-0.5" style={{ color: 'var(--text-main)' }}>{weather.humidity_pct}%</strong>
             </div>
 
-            <div className="bg-[#0c1410]/70 p-2.5 rounded-2xl border border-emerald-900/60">
-              <span className="text-[9px] text-emerald-300/70 font-semibold block flex items-center justify-center gap-1">
-                <Wind className="w-3 h-3 text-emerald-400" /> Angin
+            <div 
+              className="p-2.5 rounded-2xl border"
+              style={{ 
+                backgroundColor: 'var(--bg-card-subtle)', 
+                borderColor: 'var(--border-card-subtle)' 
+              }}
+            >
+              <span className="text-[9px] font-semibold flex items-center justify-center gap-1" style={{ color: 'var(--text-dim)' }}>
+                <Wind className="w-3 h-3 text-emerald-500" /> Angin
               </span>
-              <strong className="text-white font-mono block text-sm mt-0.5">{weather.wind_kmh} km/h</strong>
+              <strong className="font-mono block text-sm mt-0.5" style={{ color: 'var(--text-main)' }}>{weather.wind_kmh} km/h</strong>
             </div>
           </div>
 
           {/* Indeks Peringatan Penyiraman */}
-          <div className="p-3 rounded-2xl bg-gradient-to-br from-[#1b3628] to-[#14281e] border border-emerald-600/40 text-xs text-emerald-100/90 leading-relaxed flex items-start gap-2.5">
-            <Sparkles className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+          <div 
+            className="p-3.5 rounded-2xl border text-xs leading-relaxed flex items-start gap-2.5"
+            style={{ 
+              backgroundColor: 'var(--badge-bg)', 
+              borderColor: 'var(--badge-border)', 
+              color: 'var(--badge-text)' 
+            }}
+          >
+            <Sparkles className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
             <div>
-              <strong className="text-emerald-300 block font-bold mb-0.5">Rekomendasi Aksi Cuaca AI:</strong>
-              {weather.alert}
+              <strong className="block font-bold mb-0.5">Rekomendasi Aksi Cuaca AI:</strong>
+              <p className="opacity-90 leading-normal">{weather.alert}</p>
             </div>
           </div>
         </div>
 
         {/* 2. 📊 GARDEN ANALYTICS & HEALTH INDEX */}
         <div className="grid grid-cols-2 gap-2.5">
-          <div className="p-4 rounded-3xl bg-[#14231b]/90 border border-emerald-800/40 space-y-2 backdrop-blur-md shadow-md">
+          <div 
+            className="p-4 rounded-3xl border space-y-2 backdrop-blur-md shadow-sm"
+            style={{ 
+              backgroundColor: 'var(--bg-card)', 
+              borderColor: 'var(--border-card)' 
+            }}
+          >
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase">Indeks Kesehatan AI</span>
-              <Activity className="w-4 h-4 text-emerald-400" />
+              <span className="text-[10px] font-mono font-bold uppercase" style={{ color: 'var(--accent-primary)' }}>Indeks Kesehatan AI</span>
+              <Activity className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} />
             </div>
-            <p className="text-2xl font-black text-white font-mono">{stats.health_index}%</p>
-            <span className="text-[10px] text-emerald-300/70 block">
+            <p className="text-2xl font-black font-mono" style={{ color: 'var(--text-main)' }}>{stats.health_index}%</p>
+            <span className="text-[10px] block" style={{ color: 'var(--text-dim)' }}>
               {stats.health_index >= 90 ? 'Kebun Sangat Prima' : 'Perlu Pemantauan'}
             </span>
           </div>
 
-          <div className="p-4 rounded-3xl bg-[#14231b]/90 border border-emerald-800/40 space-y-2 backdrop-blur-md shadow-md">
+          <div 
+            className="p-4 rounded-3xl border space-y-2 backdrop-blur-md shadow-sm"
+            style={{ 
+              backgroundColor: 'var(--bg-card)', 
+              borderColor: 'var(--border-card)' 
+            }}
+          >
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase">Kedisiplinan Rawat</span>
-              <TrendingUp className="w-4 h-4 text-amber-400" />
+              <span className="text-[10px] font-mono font-bold uppercase" style={{ color: 'var(--accent-primary)' }}>Kedisiplinan Rawat</span>
+              <TrendingUp className="w-4 h-4 text-amber-500" />
             </div>
-            <p className="text-2xl font-black text-white font-mono">{progressPercent}%</p>
-            <span className="text-[10px] text-emerald-300/70 block">
+            <p className="text-2xl font-black font-mono" style={{ color: 'var(--text-main)' }}>{progressPercent}%</p>
+            <span className="text-[10px] block" style={{ color: 'var(--text-dim)' }}>
               {doneTasks}/{totalTasks} Tugas Selesai
             </span>
           </div>
@@ -233,12 +287,18 @@ export default function TodayDashboardPage() {
 
         {/* 3. 🚨 SPOTLIGHT / TANAMAN BUTUH PERHATIAN (Photo Upload Due) */}
         {needActionPlants.length > 0 && (
-          <div className="p-4 rounded-3xl bg-gradient-to-br from-[#2a2215] to-[#1c1810] border border-amber-600/40 space-y-3 shadow-md">
-            <div className="flex items-center gap-2 text-amber-300 font-bold text-xs">
-              <Camera className="w-4 h-4 text-amber-400" />
+          <div 
+            className="p-4 rounded-3xl border space-y-3 shadow-sm"
+            style={{ 
+              backgroundColor: 'var(--bg-card)', 
+              borderColor: '#f59e0b' 
+            }}
+          >
+            <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-xs">
+              <Camera className="w-4 h-4 text-amber-500" />
               <span>Waktunya Upload Foto Mingguan!</span>
             </div>
-            <p className="text-xs text-amber-100/80 leading-relaxed">
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
               Tanaman berikut telah memasuki pekan baru dan membutuhkan foto terbaru agar AI bisa memberikan rekomendasi tugas lanjutan.
             </p>
             <div className="space-y-2">
@@ -246,59 +306,84 @@ export default function TodayDashboardPage() {
                 <Link
                   key={p.id}
                   href={`/plants/${p.id}`}
-                  className="p-3 rounded-2xl bg-[#0c1410]/80 border border-amber-500/30 flex items-center justify-between hover:border-amber-400 transition-all"
+                  className="p-3 rounded-2xl border flex items-center justify-between transition-all"
+                  style={{ 
+                    backgroundColor: 'var(--bg-card-subtle)', 
+                    borderColor: 'var(--border-card)' 
+                  }}
                 >
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+                    <div className="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center shrink-0">
                       <Sprout className="w-4 h-4" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-white line-clamp-1">{p.name}</p>
-                      <span className="text-[10px] text-amber-300/70">Minggu Ke-{p.current_week}</span>
+                      <p className="text-xs font-bold line-clamp-1" style={{ color: 'var(--text-main)' }}>{p.name}</p>
+                      <span className="text-[10px] text-amber-600 dark:text-amber-400 font-semibold">Minggu Ke-{p.current_week}</span>
                     </div>
                   </div>
-                  <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-amber-500 text-zinc-950 flex items-center gap-1">
-                    Foto Sekarang <ArrowRight className="w-3 h-3" />
-                  </span>
+                  <div className="flex items-center gap-1 text-[11px] font-bold text-amber-600 dark:text-amber-400">
+                    <span>Audit Foto</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </div>
                 </Link>
               ))}
             </div>
           </div>
         )}
 
-        {/* 4. 📅 DATE STRIP KALENDER MINGGUAN INTERAKTIF */}
-        <div className="space-y-3">
+        {/* 4. 📅 KALENDER PEKAN INI (7-DAY STRIP) */}
+        <div 
+          className="p-4 rounded-3xl border space-y-3 backdrop-blur-md shadow-sm"
+          style={{ 
+            backgroundColor: 'var(--bg-card)', 
+            borderColor: 'var(--border-card)' 
+          }}
+        >
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <CalendarIcon className="w-4 h-4 text-emerald-400" />
-              <h2 className="text-xs font-bold uppercase tracking-wider text-emerald-300">
-                Jadwal Kalender Pekan Ini
-              </h2>
+            <div className="flex items-center gap-1.5">
+              <CalendarIcon className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} />
+              <span className="text-xs font-black uppercase tracking-wider" style={{ color: 'var(--text-main)' }}>
+                Jadwal Rawat Sepekan
+              </span>
             </div>
-            <span className="text-[10px] font-mono text-emerald-400 font-semibold">
-              {weekDates.find(w => w.dayIndex === selectedDate)?.dayName}, {weekDates.find(w => w.dayIndex === selectedDate)?.dateNum}
+            <span className="text-[10px] font-mono font-bold" style={{ color: 'var(--accent-primary)' }}>
+              {doneTasks}/{totalTasks} Selesai
             </span>
           </div>
 
-          <div className="flex justify-between items-center gap-1.5 p-2 rounded-3xl bg-[#14231b]/80 border border-emerald-800/40 backdrop-blur-md">
-            {weekDates.map(w => {
-              const isSelected = selectedDate === w.dayIndex;
+          <div className="grid grid-cols-7 gap-1.5">
+            {weekDates.map(item => {
+              const isSelected = selectedDate === item.dayIndex;
               return (
                 <button
-                  key={w.dayIndex}
-                  onClick={() => setSelectedDate(w.dayIndex)}
-                  className={`flex-1 py-2 rounded-2xl flex flex-col items-center justify-center transition-all ${
-                    isSelected
-                      ? 'bg-gradient-to-b from-emerald-500 to-green-600 text-zinc-950 font-black shadow-md scale-105'
-                      : w.isToday
-                      ? 'bg-emerald-950 border border-emerald-600/50 text-emerald-300 font-bold'
-                      : 'text-emerald-200/60 hover:text-white'
-                  }`}
+                  key={item.dayIndex}
+                  onClick={() => setSelectedDate(item.dayIndex)}
+                  className="py-2.5 px-1 rounded-2xl flex flex-col items-center justify-center transition-all border"
+                  style={{
+                    backgroundColor: isSelected 
+                      ? 'var(--accent-primary)' 
+                      : item.isToday 
+                        ? 'var(--badge-bg)' 
+                        : 'var(--bg-card-subtle)',
+                    borderColor: isSelected 
+                      ? 'var(--accent-primary)' 
+                      : item.isToday 
+                        ? 'var(--badge-border)' 
+                        : 'var(--border-card-subtle)',
+                    color: isSelected 
+                      ? '#ffffff' 
+                      : item.isToday 
+                        ? 'var(--accent-primary)' 
+                        : 'var(--text-dim)',
+                  }}
                 >
-                  <span className="text-[9px] uppercase font-mono">{w.dayName}</span>
-                  <span className="text-sm font-black mt-0.5">{w.dateNum}</span>
-                  {w.isToday && !isSelected && (
-                    <span className="w-1 h-1 rounded-full bg-emerald-400 mt-1" />
+                  <span className="text-[9px] font-bold uppercase">{item.dayName}</span>
+                  <span className="text-xs font-black mt-0.5">{item.dateNum}</span>
+                  {item.isToday && (
+                    <span 
+                      className="w-1 h-1 rounded-full mt-1" 
+                      style={{ backgroundColor: isSelected ? '#ffffff' : 'var(--accent-primary)' }} 
+                    />
                   )}
                 </button>
               );
@@ -306,89 +391,120 @@ export default function TodayDashboardPage() {
           </div>
         </div>
 
-        {/* 5. ⚡ PINTASAN CEPAT (QUICK ACTIONS) */}
-        <div className="grid grid-cols-2 gap-2.5">
-          <Link
-            href="/doctor"
-            className="p-3.5 rounded-2xl bg-gradient-to-br from-[#183124] to-[#13281d] border border-emerald-700/40 hover:border-emerald-500/60 transition-all flex items-center gap-3 group shadow-sm"
-          >
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-              <HeartPulse className="w-5 h-5" />
-            </div>
+        {/* 5. ✅ CHECKLIST TUGAS HARIAN KEBUN */}
+        <div 
+          className="rounded-3xl border p-5 space-y-4 backdrop-blur-md shadow-sm"
+          style={{ 
+            backgroundColor: 'var(--bg-card)', 
+            borderColor: 'var(--border-card)' 
+          }}
+        >
+          <div className="flex items-center justify-between border-b pb-3" style={{ borderColor: 'var(--border-card-subtle)' }}>
             <div>
-              <span className="text-xs font-bold text-white block">Dokter AI Tanaman</span>
-              <span className="text-[10px] text-emerald-200/60">Diagnosa Penyakit</span>
+              <h2 className="text-sm font-black" style={{ color: 'var(--text-main)' }}>
+                Tugas Perawatan Pekan Ini
+              </h2>
+              <p className="text-[11px]" style={{ color: 'var(--text-dim)' }}>
+                Berdasarkan hasil analisis AI &amp; fase pertumbuhan
+              </p>
             </div>
-          </Link>
-
-          <Link
-            href="/recipes"
-            className="p-3.5 rounded-2xl bg-gradient-to-br from-[#272a1c] to-[#1c2016] border border-amber-700/40 hover:border-amber-500/60 transition-all flex items-center gap-3 group shadow-sm"
-          >
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-              <BookOpen className="w-5 h-5" />
-            </div>
-            <div>
-              <span className="text-xs font-bold text-white block">Formulasi Pupuk</span>
-              <span className="text-[10px] text-amber-200/60">Resep &amp; Dosis Pot</span>
-            </div>
-          </Link>
-        </div>
-
-        {/* 6. 📝 CHECKLIST TUGAS HARIAN */}
-        <section className="space-y-3">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-emerald-300">
-              Instruksi Rawat Harian
-            </h2>
-            <span className="text-xs font-bold text-emerald-400">
-              {doneTasks}/{totalTasks} Selesai
+            <span 
+              className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full border"
+              style={{ 
+                backgroundColor: 'var(--badge-bg)', 
+                borderColor: 'var(--badge-border)', 
+                color: 'var(--badge-text)' 
+              }}
+            >
+              {progressPercent}%
             </span>
           </div>
 
-          {tasks.length > 0 ? (
-            <div className="space-y-2">
-              {tasks.map(task => {
-                const plant = plants.find(p => p.id === task.plant_id);
-                return (
-                  <button
-                    key={task.id}
-                    onClick={() => toggleTask(task.id, task.is_done)}
-                    className={`w-full text-left p-3.5 rounded-2xl border transition-all flex items-start gap-3 active:scale-[0.98] ${
-                      task.is_done
-                        ? 'bg-[#14231b]/30 border-emerald-950 text-emerald-300/40'
-                        : 'bg-[#14231b]/90 border-emerald-800/40 hover:border-emerald-500/50 text-white shadow-sm'
-                    }`}
-                  >
-                    {task.is_done ? (
-                      <CheckCircle2 className="w-5 h-5 text-emerald-400 fill-emerald-950/40 shrink-0 mt-0.5" />
-                    ) : (
-                      <Circle className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5 stroke-[1.8]" />
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <p className={`text-xs font-medium leading-relaxed ${task.is_done ? 'line-through text-emerald-300/40' : 'text-emerald-50'}`}>
-                        {task.task}
-                      </p>
-                      {plant && (
-                        <p className="text-[10px] text-emerald-400/80 mt-1 font-semibold flex items-center gap-1">
-                          <Sprout className="w-3 h-3" />
-                          <span>{plant.name} · Minggu {task.week_number}</span>
-                        </p>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
+          {loading ? (
+            <div className="space-y-2 animate-pulse">
+              {[1, 2, 3].map(i => <div key={i} className="h-12 rounded-2xl" style={{ backgroundColor: 'var(--bg-card-subtle)' }} />)}
+            </div>
+          ) : tasks.length === 0 ? (
+            <div className="text-center py-6 space-y-2">
+              <Sprout className="w-8 h-8 mx-auto" style={{ color: 'var(--accent-primary)' }} />
+              <p className="text-xs font-bold" style={{ color: 'var(--text-main)' }}>Semua Tugas Beres!</p>
+              <p className="text-[11px]" style={{ color: 'var(--text-dim)' }}>
+                Belum ada tugas perawatan tertunda untuk tanaman Anda saat ini.
+              </p>
             </div>
           ) : (
-            <div className="rounded-3xl bg-[#14231b]/60 border border-emerald-800/40 p-6 text-center space-y-3">
-              <p className="text-xs text-emerald-200/70">Belum ada tugas perawatan untuk hari ini.</p>
-              <Link href="/wizard" className="inline-flex items-center gap-1 text-xs font-bold text-emerald-400 hover:underline">
-                <Plus className="w-4 h-4" /> Tanam Spesies Baru
-              </Link>
+            <div className="space-y-2">
+              {tasks.map(task => (
+                <div
+                  key={task.id}
+                  onClick={() => toggleTask(task.id, task.is_done)}
+                  className="p-3.5 rounded-2xl border flex items-start gap-3 cursor-pointer transition-all hover:scale-[1.01]"
+                  style={{
+                    backgroundColor: task.is_done ? 'var(--bg-card-subtle)' : 'var(--bg-card)',
+                    borderColor: 'var(--border-card-subtle)',
+                    opacity: task.is_done ? 0.65 : 1
+                  }}
+                >
+                  <button className="mt-0.5 shrink-0">
+                    {task.is_done ? (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 fill-emerald-500/20" />
+                    ) : (
+                      <Circle className="w-4 h-4" style={{ color: 'var(--text-dim)' }} />
+                    )}
+                  </button>
+                  <div className="flex-1">
+                    <p 
+                      className={`text-xs font-semibold leading-snug ${task.is_done ? 'line-through' : ''}`}
+                      style={{ color: task.is_done ? 'var(--text-dim)' : 'var(--text-main)' }}
+                    >
+                      {task.task}
+                    </p>
+                    <span className="text-[9px] font-mono block mt-1" style={{ color: 'var(--accent-primary)' }}>
+                      Minggu Ke-{task.week_number}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
-        </section>
+        </div>
+
+        {/* 6. 🚀 SHORTCUTS CEPAT */}
+        <div className="grid grid-cols-2 gap-2.5">
+          <Link
+            href="/recipes"
+            className="p-4 rounded-3xl border flex items-center gap-3 transition-all hover:scale-[1.02] shadow-sm"
+            style={{ 
+              backgroundColor: 'var(--bg-card)', 
+              borderColor: 'var(--border-card)' 
+            }}
+          >
+            <div className="w-9 h-9 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center shrink-0">
+              <FlaskConical className="w-4 h-4" />
+            </div>
+            <div>
+              <p className="text-xs font-black" style={{ color: 'var(--text-main)' }}>Formulasi Pupuk</p>
+              <span className="text-[10px]" style={{ color: 'var(--text-dim)' }}>Resep Organik &amp; Dosis</span>
+            </div>
+          </Link>
+
+          <Link
+            href="/doctor"
+            className="p-4 rounded-3xl border flex items-center gap-3 transition-all hover:scale-[1.02] shadow-sm"
+            style={{ 
+              backgroundColor: 'var(--bg-card)', 
+              borderColor: 'var(--border-card)' 
+            }}
+          >
+            <div className="w-9 h-9 rounded-2xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center shrink-0">
+              <HeartPulse className="w-4 h-4" />
+            </div>
+            <div>
+              <p className="text-xs font-black" style={{ color: 'var(--text-main)' }}>Klinik Dokter AI</p>
+              <span className="text-[10px]" style={{ color: 'var(--text-dim)' }}>Diagnosa Foto Hama</span>
+            </div>
+          </Link>
+        </div>
       </div>
     </AppShell>
   );
