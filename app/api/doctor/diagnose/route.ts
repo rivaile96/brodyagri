@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import db from '@/lib/db';
+import fs from 'fs';
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,19 +11,24 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { symptoms, plant_name, crop_name, photo_base64 } = body;
 
-    // Ambil settingan AI user jika ada, fallback ke model openagentic
+    // Ambil settingan AI user jika ada
     const aiSettings = db.prepare('SELECT * FROM ai_settings WHERE user_id = ?').get(user.userId) as any;
 
+    let provider = aiSettings?.provider || 'gemini';
     let apiKey = aiSettings?.api_key_encrypted;
-    let baseUrl = aiSettings?.custom_endpoint || 'https://openagentic.id/api/v1';
-    let model = aiSettings?.model || 'gemini-3.8-flash-high';
+    let baseUrl = aiSettings?.custom_endpoint;
+    let model = aiSettings?.model || 'gemini-2.5-flash';
 
     // Fallback ambil master API key dari openclaw config jika user belum setting sendiri
+    let isMasterFallback = false;
     if (!apiKey) {
       try {
-        const fs = await import('fs');
         const cfg = JSON.parse(fs.readFileSync('/home/brody/.openclaw/openclaw.json', 'utf-8'));
         apiKey = cfg.models?.providers?.['custom-openagentic-id']?.apiKey;
+        baseUrl = cfg.models?.providers?.['custom-openagentic-id']?.baseUrl || 'https://openagentic.id/api/v1';
+        model = 'gemini-3.8-flash-high';
+        provider = 'custom';
+        isMasterFallback = true;
       } catch (e) {}
     }
 
@@ -30,7 +36,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(generateHeuristicDiagnosis(symptoms, crop_name));
     }
 
-    // Bangun Prompt untuk AI
     const systemPrompt = `Kamu adalah Ahli Patologi Tanaman & Dokter Agrikultur Ramah Pemula.
 Tugasmu adalah menganalisis masalah tanaman dari gejala atau foto yang dikirimkan.
 Berikan diagnosa dalam format JSON murni:
@@ -52,138 +57,144 @@ Berikan diagnosa dalam format JSON murni:
   "preventions": ["Tips agar tidak terulang 1", "Tips 2"]
 }`;
 
-    const userMessageContent: any[] = [
-      {
-        type: 'text',
-        text: `Tanaman: ${plant_name || crop_name || 'Tanaman Holtikultura'}
+    const promptText = `Tanaman: ${plant_name || crop_name || 'Tanaman Holtikultura'}
 Jenis/Komoditas: ${crop_name || 'Tidak spesifik'}
-Gejala yang terlihat: ${symptoms || 'Lihat gambar terlampir'}`
-      }
-    ];
+Gejala yang terlihat: ${symptoms || 'Lihat gambar terlampir'}`;
 
-    if (photo_base64) {
-      userMessageContent.push({
-        type: 'image_url',
-        image_url: {
-          url: photo_base64.startsWith('data:') ? photo_base64 : `data:image/jpeg;base64,${photo_base64}`
+    let parsedResult: any = null;
+
+    // ── 1. NATIVE GOOGLE GEMINI DIRECT API (AI Studio Key: AIzaSy...) ──
+    if (provider === 'gemini' && apiKey.startsWith('AIzaSy') && !baseUrl) {
+      try {
+        const geminiModel = model || 'gemini-2.5-flash';
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`;
+
+        const parts: any[] = [{ text: `${systemPrompt}\n\n${promptText}` }];
+
+        if (photo_base64) {
+          const cleanBase64 = photo_base64.replace(/^data:image\/\w+;base64,/, '');
+          parts.push({
+            inline_data: {
+              mime_type: 'image/jpeg',
+              data: cleanBase64
+            }
+          });
         }
+
+        const geminiRes = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts }],
+            generationConfig: {
+              temperature: 0.2,
+              response_mime_type: 'application/json'
+            }
+          })
+        });
+
+        if (geminiRes.ok) {
+          const gData = await geminiRes.json();
+          const textOut = gData.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (textOut) {
+            parsedResult = JSON.parse(textOut.replace(/```json/g, '').replace(/```/g, '').trim());
+          }
+        }
+      } catch (gemErr) {
+        console.error('Gemini Direct Call Error:', gemErr);
+      }
+    }
+
+    // ── 2. OPENAI / ANTHROPIC / CUSTOM OPENAI-COMPATIBLE API ──
+    if (!parsedResult) {
+      const userMessageContent: any[] = [{ type: 'text', text: promptText }];
+      if (photo_base64) {
+        userMessageContent.push({
+          type: 'image_url',
+          image_url: {
+            url: photo_base64.startsWith('data:') ? photo_base64 : `data:image/jpeg;base64,${photo_base64}`
+          }
+        });
+      }
+
+      const activeBaseUrl = baseUrl || (provider === 'openai' ? 'https://api.openai.com/v1' : 'https://openagentic.id/api/v1');
+      const targetEndpoint = activeBaseUrl.endsWith('/chat/completions') ? activeBaseUrl : `${activeBaseUrl}/chat/completions`;
+
+      const aiRes = await fetch(targetEndpoint, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: model || 'gemini-3.8-flash-high',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userMessageContent }
+          ],
+          temperature: 0.2
+        })
       });
+
+      if (aiRes.ok) {
+        const data = await aiRes.json();
+        const raw = data.choices?.[0]?.message?.content;
+        if (raw) {
+          parsedResult = JSON.parse(raw.replace(/```json/g, '').replace(/```/g, '').trim());
+        }
+      }
     }
 
-    const aiRes = await fetch(`${baseUrl}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: model.includes('gemini') || model.includes('claude') ? model : 'gemini-3.8-flash-high',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userMessageContent }
-        ],
-        temperature: 0.2,
-      })
-    });
-
-    if (!aiRes.ok) {
-      return NextResponse.json(generateHeuristicDiagnosis(symptoms, crop_name));
+    if (parsedResult) {
+      return NextResponse.json(parsedResult);
     }
 
-    const aiData = await aiRes.json();
-    const rawContent = aiData.choices?.[0]?.message?.content || '{}';
-    
-    // Parse JSON
-    const cleanJson = rawContent.replace(/```json/g, '').replace(/```/g, '').trim();
-    try {
-      const parsed = JSON.parse(cleanJson);
-      return NextResponse.json(parsed);
-    } catch (err) {
-      return NextResponse.json(generateHeuristicDiagnosis(symptoms, crop_name));
-    }
-
+    return NextResponse.json(generateHeuristicDiagnosis(symptoms, crop_name));
   } catch (error: any) {
-    console.error('Doctor API error:', error);
-    return NextResponse.json({ error: error.message || 'Gagal memproses diagnosa' }, { status: 500 });
+    console.error('Doctor diagnosis error:', error);
+    return NextResponse.json({ error: error.message || 'Gagal menganalisis keluhan tanaman' }, { status: 500 });
   }
 }
 
-function generateHeuristicDiagnosis(symptoms: string = '', cropName: string = '') {
-  const sym = symptoms.toLowerCase();
-  
-  if (sym.includes('kuning') || sym.includes('daun bawah')) {
-    return {
-      diagnosis: 'Defisiensi Nitrogen (Kekurangan Nutrisi) / Overwatering',
-      severity: 'Sedang',
-      confidence: 80,
-      causes: [
-        'Penyiraman terlalu sering sehingga akar kekurangan oksigen',
-        'Unsur hara Nitrogen dalam media tanam sudah habis terkuras'
-      ],
-      home_remedy: {
-        title: 'Kocor Air Cucian Beras & Kurangi Siram',
-        recipe: 'Air bilasan pertama beras + biarkan 1 hari di wadah terbuka',
-        instructions: 'Siramkan 1 gelas (200ml) per pot seminggu sekali. Cek tanah: siram hanya jika 2cm tanah atas kering.'
-      },
-      chemical_remedy: {
-        title: 'Pupuk NPK Seimbang',
-        product: 'NPK 16-16-16 (Mutiara / Pak Tani)',
-        instructions: '1/2 sendok teh dilarutkan ke 1 liter air, siramkan tipis-tipis tiap 2 minggu.'
-      },
-      preventions: [
-        'Pastikan pot memiliki lubang drainase yang lancar',
-        'Jangan biarkan air menggenang di tatakan pot'
-      ]
-    };
-  }
+function generateHeuristicDiagnosis(symptoms?: string, crop_name?: string) {
+  const sym = (symptoms || '').toLowerCase();
+  const crop = (crop_name || 'Tanaman').toLowerCase();
 
-  if (sym.includes('putih') || sym.includes('kutu') || sym.includes('semut')) {
+  if (sym.includes('kuning') || sym.includes('bercak')) {
     return {
-      diagnosis: 'Serangan Kutu Putih (Mealybugs) & Kutu Kebul',
+      diagnosis: 'Defisiensi Nitrogen & Klorosis Daun',
       severity: 'Sedang',
-      confidence: 88,
-      causes: [
-        'Hama kutu putih mengisap cairan daun dan menghasilkan embun jelaga',
-        'Adanya simbiosis dengan semut yang memindahkan kutu ke tunas muda'
-      ],
+      confidence: 82,
+      causes: ['Kurang unsur hara makro N', 'Media tanam terlalu padat/menggenang', 'pH tanah terlalu asam'],
       home_remedy: {
-        title: 'Semprotan Sabun Cuci Piring & Bawang Putih',
-        recipe: '1 siung bawang putih dihaluskan + 1 liter air + 3 tetes sabun cuci piring (Sunlight/Mama Lemon)',
-        instructions: 'Kocok rata, saring, lalu semprotkan ke bawah permukaan daun yang ada kutunya pada sore hari (hindari matahari terik).'
+        title: 'Kocoran Air Cucian Beras Fermentasi + Ampas Kopi',
+        recipe: '1 Liter air cucian beras dicampur 1 sendok teh ampas kopi, endapkan 12 jam.',
+        instructions: 'Siramkan 200ml ke sekeliling akar tanaman 3 hari sekali di pagi hari.'
       },
       chemical_remedy: {
-        title: 'Insektisida Kontak Nabati / Kimia',
-        product: 'Neem Oil (Minyak Mimba) atau Decis 25EC',
-        instructions: '1ml per liter air, semprot 3 hari sekali sampai tuntas.'
+        title: 'Pupuk NPK 16-16-16 / Urea Cair',
+        product: 'NPK Seimbang 16-16-16',
+        instructions: '1 sendok teh dilarutkan dalam 2 liter air, siram 1x seminggu.'
       },
-      preventions: [
-        'Rutin bersihkan gulma dan sarang semut di sekitar pot',
-        'Pangkas daun yang terinfeksi parah lalu musnahkan'
-      ]
+      preventions: ['Gunakan media dengan drainase poros', 'Hindari penyiraman berlebih di malam hari']
     };
   }
 
   return {
-    diagnosis: 'Stres Adaptasi Lingkungan / Kelembaban',
+    diagnosis: 'Serangan Hama Kutu Putih / Thrips Ringan',
     severity: 'Rendah',
-    confidence: 75,
-    causes: [
-      'Fluktuasi panas matahari yang terlalu terik mendadak',
-      'Media tanam memadat atau drainase kurang maksimal'
-    ],
+    confidence: 78,
+    causes: ['Sirkulasi udara kurang lancar', 'Kondisi lembab di balik daun'],
     home_remedy: {
-      title: 'Pemberian Naungan & Sirkulasi Udara',
-      recipe: 'Letakkan tanaman di tempat teduh terang (bawah teras/paranet)',
-      instructions: 'Gemburkan permukaan tanah perlahan menggunakan garpu kecil dan siram di pagi hari.'
+      title: 'Semprotan White Oil Minyak Goreng & Sabun',
+      recipe: '1 sdt sabun cuci piring + 1 sdt minyak goreng + 1 liter air hangat.',
+      instructions: 'Semprotkan merata ke bagian bawah daun di sore hari saat matahari teduh.'
     },
     chemical_remedy: {
-      title: 'Vitamin B1 Tanaman (Anti Stres)',
-      product: 'Liquinox Start Vitamin B1',
-      instructions: '1 tutup botol untuk 2 liter air, siramkan ke pangkal tanaman.'
+      title: 'Insektisida Nabati / Abamektin',
+      product: 'Insektisida Bahan Aktif Abamektin',
+      instructions: '0.5ml per liter air, semprot 5 hari sekali.'
     },
-    preventions: [
-      'Hindari memindahkan tanaman secara tiba-tiba ke bawah terik matahari langsung',
-      'Gunakan mulsa (sekam bakar/sabut kelapa) di atas pot untuk menjaga kelembaban'
-    ]
+    preventions: ['Rutin pangkas daun tua', 'Jaga jarak antar pot minimal 30cm']
   };
 }

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { evaluateSuitability, type ClimateData } from '@/lib/suitability';
+import db from '@/lib/db';
+import fs from 'fs';
 
 /**
  * POST /api/evaluate-variety
@@ -34,15 +36,33 @@ export async function POST(req: NextRequest) {
   // ── Hitung skor kesesuaian ──
   const result = evaluateSuitability(meta, climate, placement);
 
-  // ── Coba enrichment via AI jika user punya AI settings ──
+  // ── Coba enrichment via AI jika user punya AI settings atau fallback ke sistem ──
   let aiNote: string | null = null;
   try {
-    const { default: db } = await import('@/lib/db');
-    const settings = db.prepare('SELECT ai_provider, ai_api_key, ai_enabled FROM settings WHERE user_id = ?').get(user.userId) as any;
-    if (settings?.ai_enabled && settings?.ai_api_key) {
-      aiNote = await callAIForVarietyInfo(name, commodity, category, climate, placement, settings);
+    const aiSettings = db.prepare('SELECT * FROM ai_settings WHERE user_id = ?').get(user.userId) as any;
+    
+    let apiKey = aiSettings?.api_key_encrypted;
+    let baseUrl = aiSettings?.custom_endpoint || 'https://openagentic.id/api/v1';
+    let model = aiSettings?.model || 'gemini-3.8-flash-high';
+
+    if (!apiKey) {
+      try {
+        const cfg = JSON.parse(fs.readFileSync('/home/brody/.openclaw/openclaw.json', 'utf-8'));
+        apiKey = cfg.models?.providers?.['custom-openagentic-id']?.apiKey;
+      } catch (e) {}
     }
-  } catch { /* AI optional, skip if error */ }
+
+    if (apiKey) {
+      aiNote = await callAIForVarietyInfo(name, commodity, category, climate, placement, {
+        apiKey,
+        baseUrl,
+        model,
+        provider: aiSettings?.provider || 'custom'
+      });
+    }
+  } catch (err) {
+    console.error('AI Variety Enrichment error:', err);
+  }
 
   return NextResponse.json({
     ...result,
@@ -52,14 +72,9 @@ export async function POST(req: NextRequest) {
   });
 }
 
-/**
- * Infer VarietyMeta dari nama varietas menggunakan keyword heuristic.
- * Ini fallback tanpa AI — tetap akurat untuk nama umum.
- */
 function inferVarietyMeta(name: string, commodity: string, category: string) {
   const lower = name.toLowerCase();
 
-  // Default berdasarkan komoditas
   const defaults: Record<string, { optimal_temp_c: number; min_elevation_m: number; max_elevation_m: number; sunlight_hours: number; fungus_resistance: 'Low' | 'Medium' | 'High' }> = {
     'Mangga':     { optimal_temp_c: 27, min_elevation_m: 0,   max_elevation_m: 600,  sunlight_hours: 8, fungus_resistance: 'Medium' },
     'Alpukat':    { optimal_temp_c: 22, min_elevation_m: 200, max_elevation_m: 1000, sunlight_hours: 6, fungus_resistance: 'Medium' },
@@ -82,7 +97,6 @@ function inferVarietyMeta(name: string, commodity: string, category: string) {
 
   const base = defaults[commodity] ?? { optimal_temp_c: 27, min_elevation_m: 0, max_elevation_m: 800, sunlight_hours: 7, fungus_resistance: 'Medium' as const };
 
-  // Keyword modifiers — sesuaikan meta berdasarkan petunjuk nama
   if (lower.includes('dataran tinggi') || lower.includes('highland') || lower.includes('pegunungan')) {
     base.min_elevation_m = Math.max(base.min_elevation_m, 500);
     base.optimal_temp_c  = Math.min(base.optimal_temp_c, 22);
@@ -96,7 +110,6 @@ function inferVarietyMeta(name: string, commodity: string, category: string) {
     base.optimal_temp_c    = Math.max(base.optimal_temp_c, 28);
   }
   if (lower.includes('impor') || lower.includes('import') || lower.includes('eropa') || lower.includes('jepang') || lower.includes('korea')) {
-    // Varietas impor cenderung butuh kondisi spesifik
     base.fungus_resistance = base.fungus_resistance === 'High' ? 'Medium' : 'Low';
   }
 
@@ -108,13 +121,10 @@ function inferVarietyMeta(name: string, commodity: string, category: string) {
   };
 }
 
-/**
- * Optional: panggil AI untuk deskripsi lebih kaya tentang varietas custom.
- */
 async function callAIForVarietyInfo(
   name: string, commodity: string, category: string,
   climate: ClimateData, placement: string,
-  settings: { ai_provider: string; ai_api_key: string }
+  aiConfig: { apiKey: string; baseUrl: string; model: string; provider: string }
 ): Promise<string> {
   const prompt = `Saya menanam ${name} (varietas ${commodity}, kategori ${category}) di lokasi dengan kondisi:
 - Suhu rata-rata: ${climate.avg_temp_c}°C
@@ -128,26 +138,41 @@ Berikan analisis singkat (2-3 kalimat) dalam Bahasa Indonesia:
 2. Satu tips praktis paling penting untuk kondisi ini.
 Jawab langsung tanpa intro.`;
 
-  const isOpenAI = settings.ai_provider === 'openai' || !settings.ai_provider;
-  const url = isOpenAI
-    ? 'https://api.openai.com/v1/chat/completions'
-    : 'https://api.anthropic.com/v1/messages';
-
-  if (isOpenAI) {
-    const res = await fetch(url, {
+  if (aiConfig.provider === 'anthropic') {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${settings.ai_api_key}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'gpt-4o-mini', messages: [{ role: 'user', content: prompt }], max_tokens: 200 }),
-    });
-    const data = await res.json();
-    return data.choices?.[0]?.message?.content ?? '';
-  } else {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'x-api-key': settings.ai_api_key, 'anthropic-version': '2023-06-01', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-3-haiku-20240307', max_tokens: 200, messages: [{ role: 'user', content: prompt }] }),
+      headers: {
+        'x-api-key': aiConfig.apiKey,
+        'anthropic-version': '2023-06-01',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: aiConfig.model || 'claude-3-5-haiku-20241022',
+        max_tokens: 250,
+        messages: [{ role: 'user', content: prompt }]
+      }),
     });
     const data = await res.json();
     return data.content?.[0]?.text ?? '';
   }
+
+  const endpoint = aiConfig.baseUrl.endsWith('/chat/completions')
+    ? aiConfig.baseUrl
+    : `${aiConfig.baseUrl}/chat/completions`;
+
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${aiConfig.apiKey}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: aiConfig.model || 'gemini-3.8-flash-high',
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 250
+    }),
+  });
+
+  const data = await res.json();
+  return data.choices?.[0]?.message?.content ?? '';
 }

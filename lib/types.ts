@@ -36,7 +36,7 @@ export type WeeklyAnalysis = {
 export type AISettings = {
   id: string;
   user_id: string;
-  provider: 'openai' | 'anthropic' | 'custom';
+  provider: 'gemini' | 'openai' | 'anthropic' | 'custom';
   api_key_encrypted: string;
   model: string;
   custom_endpoint: string | null;

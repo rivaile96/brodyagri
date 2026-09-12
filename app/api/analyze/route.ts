@@ -30,14 +30,18 @@ export async function POST(req: NextRequest) {
 
     // 2. Ambil Kredensial AI
     const aiSettings = db.prepare('SELECT * FROM ai_settings WHERE user_id = ?').get(session.userId) as any;
+    let provider = aiSettings?.provider || 'gemini';
     let apiKey = aiSettings?.api_key_encrypted;
-    let baseUrl = aiSettings?.custom_endpoint || 'https://openagentic.id/api/v1';
-    let model = aiSettings?.model || 'gemini-3.8-flash-high';
+    let baseUrl = aiSettings?.custom_endpoint;
+    let model = aiSettings?.model || 'gemini-2.5-flash';
 
     if (!apiKey) {
       try {
         const cfg = JSON.parse(fs.readFileSync('/home/brody/.openclaw/openclaw.json', 'utf-8'));
         apiKey = cfg.models?.providers?.['custom-openagentic-id']?.apiKey;
+        baseUrl = cfg.models?.providers?.['custom-openagentic-id']?.baseUrl || 'https://openagentic.id/api/v1';
+        model = 'gemini-3.8-flash-high';
+        provider = 'custom';
       } catch (e) {}
     }
 
@@ -92,24 +96,6 @@ ${currentTasksText}
 
 Foto kondisi aktual terlampir. Periksa perubahan fisik tanaman dibanding minggu sebelumnya, evaluasi kesehatan daun/batang, dan berikan tugas tindakan lanjutan untuk minggu ke-${Number(week_number) + 1}.`;
 
-    const userContent: any[] = [{ type: 'text', text: userText }];
-
-    // Lampirkan gambar jika ada
-    if (photo_url) {
-      try {
-        const localPath = path.join(process.cwd(), 'public', photo_url.replace(/^\//, ''));
-        if (fs.existsSync(localPath)) {
-          const imgBase64 = fs.readFileSync(localPath).toString('base64');
-          userContent.push({
-            type: 'image_url',
-            image_url: { url: `data:image/jpeg;base64,${imgBase64}` }
-          });
-        }
-      } catch (e) {
-        console.error('Failed to attach photo base64:', e);
-      }
-    }
-
     let parsed: any = {
       summary: 'Tanaman menunjukkan perkembangan yang stabil. Daun dan batang merespons perawatan dengan baik.',
       health_status: 'Tumbuh Normal',
@@ -122,9 +108,76 @@ Foto kondisi aktual terlampir. Periksa perubahan fisik tanaman dibanding minggu 
       ]
     };
 
-    if (apiKey) {
+    let photoBase64Clean: string | null = null;
+    if (photo_url) {
       try {
-        const aiRes = await fetch(`${baseUrl}/chat/completions`, {
+        const localPath = path.join(process.cwd(), 'public', photo_url.replace(/^\//, ''));
+        if (fs.existsSync(localPath)) {
+          photoBase64Clean = fs.readFileSync(localPath).toString('base64');
+        }
+      } catch (e) {
+        console.error('Failed to read photo base64:', e);
+      }
+    }
+
+    let parsedSuccess = false;
+
+    // ── 1. NATIVE GOOGLE GEMINI DIRECT API (AI Studio Key: AIzaSy...) ──
+    if (provider === 'gemini' && apiKey?.startsWith('AIzaSy') && !baseUrl) {
+      try {
+        const geminiModel = model || 'gemini-2.5-flash';
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`;
+
+        const parts: any[] = [{ text: `${systemPrompt}\n\n${userText}` }];
+        if (photoBase64Clean) {
+          parts.push({
+            inline_data: {
+              mime_type: 'image/jpeg',
+              data: photoBase64Clean
+            }
+          });
+        }
+
+        const gRes = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts }],
+            generationConfig: {
+              temperature: 0.2,
+              response_mime_type: 'application/json'
+            }
+          })
+        });
+
+        if (gRes.ok) {
+          const gData = await gRes.json();
+          const textOut = gData.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (textOut) {
+            parsed = JSON.parse(textOut.replace(/```json/g, '').replace(/```/g, '').trim());
+            parsedSuccess = true;
+          }
+        }
+      } catch (gemErr) {
+        console.error('Analyze Gemini Direct Call Error:', gemErr);
+      }
+    }
+
+    // ── 2. OPENAI-COMPATIBLE / ANTHROPIC / CUSTOM FALLBACK ──
+    if (!parsedSuccess && apiKey) {
+      try {
+        const userContent: any[] = [{ type: 'text', text: userText }];
+        if (photoBase64Clean) {
+          userContent.push({
+            type: 'image_url',
+            image_url: { url: `data:image/jpeg;base64,${photoBase64Clean}` }
+          });
+        }
+
+        const activeBaseUrl = baseUrl || (provider === 'openai' ? 'https://api.openai.com/v1' : 'https://openagentic.id/api/v1');
+        const targetEndpoint = activeBaseUrl.endsWith('/chat/completions') ? activeBaseUrl : `${activeBaseUrl}/chat/completions`;
+
+        const aiRes = await fetch(targetEndpoint, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${apiKey}`,
@@ -188,14 +241,12 @@ Foto kondisi aktual terlampir. Periksa perubahan fisik tanaman dibanding minggu 
     const analysis = db.prepare('SELECT * FROM weekly_analyses WHERE id = ?').get(analysisId);
 
     return NextResponse.json({
+      ok: true,
       analysis,
-      tasks_for_next_week: parsed.tasks_for_next_week ?? [],
-      next_week: nextWeek,
-      cover_photo_url: photo_url,
+      parsed_result: parsed
     });
-
-  } catch (err: any) {
-    console.error('AI analyze error:', err);
-    return NextResponse.json({ error: err.message || 'Terjadi kesalahan server' }, { status: 500 });
+  } catch (error: any) {
+    console.error('Analyze error:', error);
+    return NextResponse.json({ error: error.message || 'Server error' }, { status: 500 });
   }
 }

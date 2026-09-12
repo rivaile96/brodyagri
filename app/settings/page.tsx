@@ -4,21 +4,29 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AppShell from '@/components/layout/AppShell';
 import type { AISettings } from '@/lib/types';
-import { Eye, EyeOff, Loader2, LogOut, Save, ShieldCheck, Cpu, Sliders, Palette, Check, Sparkles } from 'lucide-react';
+import { Eye, EyeOff, Loader2, LogOut, Save, ShieldCheck, Cpu, Sliders, Palette, Check, Sparkles, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
 const PROVIDERS = [
+  { value: 'gemini', label: 'Google Gemini (Direct)', placeholder: 'gemini-2.5-flash' },
   { value: 'openai', label: 'OpenAI Core', placeholder: 'gpt-4o-mini' },
-  { value: 'anthropic', label: 'Anthropic Claude', placeholder: 'claude-haiku-3-5' },
-  { value: 'custom', label: 'Custom / Lokal', placeholder: 'model-name' },
+  { value: 'anthropic', label: 'Anthropic Claude', placeholder: 'claude-3-5-haiku-20241022' },
+  { value: 'custom', label: 'Custom / OpenAgentic', placeholder: 'gemini-3.8-flash-high' },
+];
+
+const GEMINI_MODELS = [
+  { value: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash (Paling Kencang & Terseksi ⚡)' },
+  { value: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash (Stabil Multimodal Visi)' },
+  { value: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro (Penalaran Mendalam)' },
+  { value: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash (Ringan & Hemat Token)' },
 ];
 
 const THEMES = [
   {
     id: 'pearl',
     name: 'Clean White Pearl',
-    desc: 'Dominasi putih bersih & modern ala iOS/Apple (seperti di foto contoh)',
+    desc: 'Dominasi putih bersih & modern ala iOS/Apple',
     bgPreview: '#f6f8f7',
     cardPreview: '#ffffff',
     borderPreview: '#d8e6df',
@@ -65,11 +73,11 @@ export default function SettingsPage() {
   const [showKey, setShowKey] = useState(false);
   const [activeTheme, setActiveTheme] = useState<string>('pearl');
   const [aiSettings, setAiSettings] = useState<Partial<AISettings>>({
-    provider: 'openai',
+    provider: 'gemini',
     api_key_encrypted: '',
-    model: 'gpt-4o-mini',
+    model: 'gemini-2.5-flash',
     custom_endpoint: '',
-    is_active: false,
+    is_active: true,
   });
 
   useEffect(() => {
@@ -79,7 +87,9 @@ export default function SettingsPage() {
     fetch('/api/settings')
       .then(r => r.json())
       .then(data => {
-        setAiSettings(data);
+        if (data && data.provider) {
+          setAiSettings(data);
+        }
         setLoading(false);
       });
   }, []);
@@ -122,7 +132,7 @@ export default function SettingsPage() {
             Pengaturan &amp; Tema
           </h1>
           <p className="text-xs leading-relaxed" style={{ color: 'var(--text-dim)' }}>
-            Sesuaikan palet warna visual aplikasi (White Clean, Dark Hengker, Midnight, Terracotta) dan manajemen kunci integrasi AI.
+            Sesuaikan palet warna visual aplikasi (White Clean, Dark Hengker, Midnight, Terracotta) dan manajemen kunci integrasi Google Gemini / OpenAI.
           </p>
         </div>
 
@@ -160,7 +170,6 @@ export default function SettingsPage() {
                   }}
                 >
                   <div className="flex items-center gap-3">
-                    {/* Swatch Mini Preview */}
                     <div 
                       className="w-9 h-9 rounded-xl border flex items-center justify-center shrink-0 shadow-inner"
                       style={{ backgroundColor: t.cardPreview, borderColor: t.borderPreview }}
@@ -261,9 +270,9 @@ export default function SettingsPage() {
                 {/* Provider Selection */}
                 <div>
                   <label className="text-xs font-mono uppercase font-semibold block mb-2" style={{ color: 'var(--text-dim)' }}>
-                    Infrastruktur AI
+                    Pilih Provider AI
                   </label>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-2 gap-2">
                     {PROVIDERS.map(p => (
                       <button
                         key={p.value}
@@ -273,7 +282,7 @@ export default function SettingsPage() {
                           model: p.placeholder
                         }))}
                         className={cn(
-                          'py-2 px-1 rounded-xl text-xs font-bold border transition-all truncate',
+                          'py-2.5 px-3 rounded-2xl text-xs font-bold border transition-all truncate text-left flex items-center justify-between',
                           aiSettings.provider === p.value
                             ? 'bg-emerald-500/15 border-emerald-500 text-emerald-600 dark:text-emerald-400 shadow-sm'
                             : 'border-zinc-200 dark:border-zinc-800 text-zinc-500 hover:border-zinc-400'
@@ -282,23 +291,52 @@ export default function SettingsPage() {
                           backgroundColor: aiSettings.provider === p.value ? 'var(--badge-bg)' : 'var(--bg-card-subtle)'
                         }}
                       >
-                        {p.label}
+                        <span className="truncate">{p.label}</span>
+                        {aiSettings.provider === p.value && <Check className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-500" />}
                       </button>
                     ))}
                   </div>
                 </div>
 
+                {/* Direct Google Gemini Models Quick Switcher */}
+                {aiSettings.provider === 'gemini' && (
+                  <div className="p-3.5 rounded-2xl border bg-amber-500/5 border-amber-500/30 space-y-2">
+                    <div className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 text-xs font-bold">
+                      <Zap className="w-4 h-4 text-amber-500 fill-amber-500/20" />
+                      <span>Versi Model Google Gemini (Terseksi)</span>
+                    </div>
+                    <div className="grid grid-cols-1 gap-1.5">
+                      {GEMINI_MODELS.map(m => (
+                        <button
+                          key={m.value}
+                          type="button"
+                          onClick={() => setAiSettings(prev => ({ ...prev, model: m.value }))}
+                          className={cn(
+                            'w-full p-2.5 rounded-xl border text-xs font-bold text-left transition-all flex items-center justify-between',
+                            aiSettings.model === m.value
+                              ? 'bg-emerald-500 text-white border-emerald-600 shadow-sm'
+                              : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-200 hover:border-emerald-500/40'
+                          )}
+                        >
+                          <span>{m.label}</span>
+                          {aiSettings.model === m.value && <Check className="w-3.5 h-3.5 shrink-0" />}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* API Key Input */}
                 <div>
                   <label className="text-xs font-mono uppercase font-semibold block mb-1.5" style={{ color: 'var(--text-dim)' }}>
-                    Kredensial API Key
+                    {aiSettings.provider === 'gemini' ? 'Google AI Studio API Key (AIzaSy...)' : 'Kredensial API Key'}
                   </label>
                   <div className="relative">
                     <input
                       type={showKey ? 'text' : 'password'}
                       value={aiSettings.api_key_encrypted ?? ''}
                       onChange={e => setAiSettings(prev => ({ ...prev, api_key_encrypted: e.target.value }))}
-                      placeholder="sk-..."
+                      placeholder={aiSettings.provider === 'gemini' ? 'AIzaSy...' : 'sk-...'}
                       className="w-full border rounded-xl px-3.5 py-2.5 pr-10 text-xs font-mono placeholder-zinc-400 focus:outline-none focus:border-emerald-500"
                       style={{
                         backgroundColor: 'var(--bg-card-subtle)',
@@ -314,19 +352,24 @@ export default function SettingsPage() {
                       {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
+                  {aiSettings.provider === 'gemini' && (
+                    <p className="text-[10px] text-emerald-600 dark:text-emerald-400 mt-1 font-medium">
+                      💡 Dapatkan API Key Gemini gratis langsung dari <a href="https://aistudio.google.com/" target="_blank" rel="noreferrer" className="underline font-bold">Google AI Studio</a>.
+                    </p>
+                  )}
                 </div>
 
-                {/* Endpoint & Model */}
+                {/* Endpoint & Custom Model */}
                 <div className="grid grid-cols-2 gap-2">
                   <div>
                     <label className="text-xs font-mono uppercase font-semibold block mb-1" style={{ color: 'var(--text-dim)' }}>
-                      Model Target
+                      Model Name Target
                     </label>
                     <input
                       type="text"
                       value={aiSettings.model ?? ''}
                       onChange={e => setAiSettings(prev => ({ ...prev, model: e.target.value }))}
-                      placeholder="gemini-3.8-flash-high"
+                      placeholder="gemini-2.5-flash"
                       className="w-full border rounded-xl px-3 py-2 text-xs font-mono placeholder-zinc-400 focus:outline-none focus:border-emerald-500"
                       style={{
                         backgroundColor: 'var(--bg-card-subtle)',
@@ -338,13 +381,13 @@ export default function SettingsPage() {
 
                   <div>
                     <label className="text-xs font-mono uppercase font-semibold block mb-1" style={{ color: 'var(--text-dim)' }}>
-                      Base Endpoint
+                      Base Endpoint (Optional)
                     </label>
                     <input
                       type="text"
                       value={aiSettings.custom_endpoint ?? ''}
                       onChange={e => setAiSettings(prev => ({ ...prev, custom_endpoint: e.target.value }))}
-                      placeholder="https://api..."
+                      placeholder={aiSettings.provider === 'gemini' ? 'https://generativelanguage...' : 'https://api...'}
                       className="w-full border rounded-xl px-3 py-2 text-xs font-mono placeholder-zinc-400 focus:outline-none focus:border-emerald-500"
                       style={{
                         backgroundColor: 'var(--bg-card-subtle)',
@@ -365,12 +408,12 @@ export default function SettingsPage() {
                   ) : saved ? (
                     <>
                       <ShieldCheck className="w-4 h-4" />
-                      <span>Preferensi AI Tersimpan!</span>
+                      <span>Konfigurasi Gemini / AI Tersimpan!</span>
                     </>
                   ) : (
                     <>
                       <Save className="w-4 h-4 stroke-[2.5]" />
-                      <span>Simpan Konfigurasi AI</span>
+                      <span>Simpan Kredensial AI</span>
                     </>
                   )}
                 </button>
