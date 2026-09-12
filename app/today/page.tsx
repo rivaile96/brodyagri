@@ -122,7 +122,7 @@ export default function TodayDashboardPage() {
     active_count: plants.length,
     harvested_count: 0,
     completion_rate: progressPercent,
-    health_index: 95,
+    health_index: plants.length === 0 ? 0 : 95,
   };
 
   const needActionPlants = dashboardData?.need_action || [];
@@ -261,9 +261,11 @@ export default function TodayDashboardPage() {
               <span className="text-[10px] font-mono font-bold uppercase" style={{ color: 'var(--accent-primary)' }}>Indeks Kesehatan AI</span>
               <Activity className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} />
             </div>
-            <p className="text-2xl font-black font-mono" style={{ color: 'var(--text-main)' }}>{stats.health_index}%</p>
+            <p className="text-2xl font-black font-mono" style={{ color: 'var(--text-main)' }}>
+              {plants.length === 0 ? '0%' : `${stats.health_index}%`}
+            </p>
             <span className="text-[10px] block" style={{ color: 'var(--text-dim)' }}>
-              {stats.health_index >= 90 ? 'Kebun Sangat Prima' : 'Perlu Pemantauan'}
+              {plants.length === 0 ? 'Belum Ada Tanaman' : stats.health_index >= 90 ? 'Kebun Sangat Prima' : 'Perlu Pemantauan'}
             </span>
           </div>
 
@@ -280,7 +282,7 @@ export default function TodayDashboardPage() {
             </div>
             <p className="text-2xl font-black font-mono" style={{ color: 'var(--text-main)' }}>{progressPercent}%</p>
             <span className="text-[10px] block" style={{ color: 'var(--text-dim)' }}>
-              {doneTasks}/{totalTasks} Tugas Selesai
+              {plants.length === 0 ? '0 Tugas Aktif' : `${doneTasks}/${totalTasks} Tugas Selesai`}
             </span>
           </div>
         </div>
@@ -427,9 +429,13 @@ export default function TodayDashboardPage() {
           ) : tasks.length === 0 ? (
             <div className="text-center py-6 space-y-2">
               <Sprout className="w-8 h-8 mx-auto" style={{ color: 'var(--accent-primary)' }} />
-              <p className="text-xs font-bold" style={{ color: 'var(--text-main)' }}>Semua Tugas Beres!</p>
+              <p className="text-xs font-bold" style={{ color: 'var(--text-main)' }}>
+                {plants.length === 0 ? 'Belum Ada Tanaman Didaftarkan' : 'Semua Tugas Beres!'}
+              </p>
               <p className="text-[11px]" style={{ color: 'var(--text-dim)' }}>
-                Belum ada tugas perawatan tertunda untuk tanaman Anda saat ini.
+                {plants.length === 0 
+                  ? 'Mulai tanam bibit pertamamu melalui tombol Tanam Baru (+)' 
+                  : 'Belum ada tugas perawatan tertunda untuk tanaman Anda saat ini.'}
               </p>
             </div>
           ) : (

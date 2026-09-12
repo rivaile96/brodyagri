@@ -79,21 +79,24 @@ export async function GET(req: NextRequest) {
 
     const doneCount = allTasks.filter(t => t.is_done).length;
     const totalCount = allTasks.length;
-    const completionRate = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 100;
+    const completionRate = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
 
     // 4. Hitung Garden Health Index (Skor Kesehatan Kebun)
     const analyses = db.prepare(`
       SELECT wa.* FROM weekly_analyses wa
       JOIN plants p ON p.id = wa.plant_id
-      WHERE p.user_id = ?
+      WHERE p.user_id = ? AND p.status = 'active'
     `).all(userId) as any[];
 
-    let healthIndex = 95;
-    if (analyses.length > 0) {
-      // Hitung dari kata kunci dalam evaluasi AI
-      const summaries = analyses.map(a => (a.ai_summary || '').toLowerCase());
-      const warningCount = summaries.filter(s => s.includes('hama') || s.includes('kuning') || s.includes('layu') || s.includes('perhatian')).length;
-      healthIndex = Math.max(60, 98 - (warningCount * 8));
+    let healthIndex = 0;
+    if (activePlants.length > 0) {
+      if (analyses.length > 0) {
+        const summaries = analyses.map(a => (a.ai_summary || '').toLowerCase());
+        const warningCount = summaries.filter(s => s.includes('hama') || s.includes('kuning') || s.includes('layu') || s.includes('perhatian')).length;
+        healthIndex = Math.max(60, 98 - (warningCount * 8));
+      } else {
+        healthIndex = 100; // Tanaman aktif baru tapi belum ada foto evaluasi
+      }
     }
 
     // 5. Tanaman yang Membutuhkan Perhatian / Spotlight (Perlu upload foto minggu ini)
