@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import BottomNav from './BottomNav';
 import { motion } from 'framer-motion';
-import { Sprout, Sun, Moon, Settings as SettingsIcon } from 'lucide-react';
+import { Sprout, Sun, Moon, Settings as SettingsIcon, LogOut, LogIn } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface AppShellProps {
   title?: string;
@@ -14,7 +15,9 @@ interface AppShellProps {
 }
 
 export default function AppShell({ title, rightSlot, children, hideNav = false }: AppShellProps) {
+  const router = useRouter();
   const [currentTheme, setCurrentTheme] = useState<string>('pearl');
+  const [loggingOut, setLoggingOut] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('brodyagri-theme') || 'pearl';
@@ -27,6 +30,18 @@ export default function AppShell({ title, rightSlot, children, hideNav = false }
     setCurrentTheme(nextTheme);
     localStorage.setItem('brodyagri-theme', nextTheme);
     document.documentElement.setAttribute('data-theme', nextTheme);
+  };
+
+  const handleQuickLogout = async () => {
+    if (loggingOut) return;
+    setLoggingOut(true);
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (e) {
+      console.error(e);
+    }
+    router.push('/auth/login');
+    router.refresh();
   };
 
   return (
@@ -99,6 +114,16 @@ export default function AppShell({ title, rightSlot, children, hideNav = false }
             >
               <SettingsIcon className="w-4 h-4" />
             </Link>
+
+            {/* Direct Logout Button */}
+            <button
+              onClick={handleQuickLogout}
+              title="Keluar / Logout"
+              disabled={loggingOut}
+              className="w-9 h-9 rounded-2xl flex items-center justify-center border border-rose-500/30 bg-rose-500/10 text-rose-500 hover:bg-rose-500/20 transition-all duration-200 shadow-sm hover:scale-105 active:scale-95 disabled:opacity-50"
+            >
+              <LogOut className="w-4 h-4 stroke-[2.2]" />
+            </button>
 
             {rightSlot}
           </div>
