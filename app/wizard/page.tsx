@@ -267,7 +267,7 @@ export default function WizardPage() {
           </div>
           <div className="w-full h-1.5 bg-[#0c1410] rounded-full overflow-hidden border border-emerald-900/60 p-0.5">
             <motion.div
-              className="h-full bg-gradient-to-r from-emerald-500 to-green-400 rounded-full"
+              className="h-full bg-emerald-500 rounded-full"
               initial={{ width: '16.6%' }}
               animate={{ width: `${(step / 6) * 100}%` }}
               transition={{ duration: 0.3 }}
@@ -375,7 +375,7 @@ export default function WizardPage() {
                     <button
                       onClick={detectLocation}
                       disabled={locating}
-                      className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-zinc-950 font-black text-xs px-6 py-3.5 rounded-full shadow-lg shadow-emerald-950/40 active:scale-95 transition-all disabled:opacity-60"
+                      className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-6 py-3.5 rounded-full shadow-sm active:scale-95 transition-all disabled:opacity-60"
                     >
                       {locating ? <Loader2 className="w-4 h-4 animate-spin" /> : <MapPin className="w-4 h-4 stroke-[2.5]" />}
                       <span>{locating ? 'Mengambil Arsip Iklim 3 Tahun...' : 'Deteksi Iklim Wilayah Saya'}</span>
@@ -405,7 +405,7 @@ export default function WizardPage() {
                       </div>
 
                       {/* Status Banner AI */}
-                      <div className="p-3 rounded-2xl bg-gradient-to-br from-[#1b3628] to-[#14281e] border border-emerald-600/40 text-xs text-emerald-100/90 leading-relaxed flex items-start gap-2.5">
+                      <div className="p-3 rounded-2xl bg-[#14231b] border border-emerald-600/40 text-xs text-emerald-100/90 leading-relaxed flex items-start gap-2.5">
                         <Sparkles className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                         <div>
                           <strong className="text-emerald-300 block font-bold mb-0.5">Data Iklim Tersimpan Sebagai Basis History:</strong>
@@ -482,7 +482,7 @@ export default function WizardPage() {
                         onClick={() => update('placement', p.value)}
                         className={`w-full p-4 rounded-3xl text-left border transition-all active:scale-[0.98] flex items-start gap-3.5 ${
                           isSelected
-                            ? 'bg-gradient-to-r from-[#183124] to-[#13281d] border-emerald-500 text-white shadow-md ring-1 ring-emerald-400/30'
+                            ? 'bg-[#14231b] border-emerald-500 text-white shadow-sm ring-1 ring-emerald-400/30'
                             : 'bg-[#14231b]/80 border-emerald-900/40 hover:border-emerald-700 text-emerald-100'
                         }`}
                       >
@@ -531,7 +531,7 @@ export default function WizardPage() {
                         }}
                         className={`p-4 rounded-3xl text-left border transition-all active:scale-[0.96] flex flex-col justify-between h-32 ${
                           isSelected
-                            ? 'bg-gradient-to-br from-[#183124] to-[#13281d] border-emerald-500 text-white shadow-md ring-1 ring-emerald-400/30'
+                            ? 'bg-[#14231b] border-emerald-500 text-white shadow-sm ring-1 ring-emerald-400/30'
                             : 'bg-[#14231b]/80 border-emerald-900/40 hover:border-emerald-700 text-emerald-100'
                         }`}
                       >
@@ -574,7 +574,7 @@ export default function WizardPage() {
                         }}
                         className={`p-4 rounded-3xl text-left border transition-all active:scale-[0.96] flex flex-col justify-between h-28 ${
                           isSelected
-                            ? 'bg-gradient-to-br from-[#183124] to-[#13281d] border-emerald-500 text-white shadow-md ring-1 ring-emerald-400/30'
+                            ? 'bg-[#14231b] border-emerald-500 text-white shadow-sm ring-1 ring-emerald-400/30'
                             : 'bg-[#14231b]/80 border-emerald-900/40 hover:border-emerald-700 text-emerald-100'
                         }`}
                       >
@@ -606,7 +606,7 @@ export default function WizardPage() {
                 </div>
 
                 {/* Penjelasan Transparan Sintesis AI */}
-                <div className="p-4 rounded-3xl bg-gradient-to-br from-[#1b3628] to-[#14281e] border border-emerald-600/40 space-y-2.5 shadow-md">
+                <div className="p-4 rounded-3xl bg-[#14231b] border border-emerald-600/40 space-y-2.5 shadow-sm">
                   <div className="flex items-center gap-2 text-emerald-300 font-bold text-xs">
                     <Sparkles className="w-4 h-4 text-amber-400" />
                     <span>Perhitungan Presisi AI Berdasarkan 4 Parameter:</span>
@@ -647,7 +647,7 @@ export default function WizardPage() {
                         }}
                         className={`w-full p-4 rounded-3xl text-left border transition-all space-y-3 active:scale-[0.98] ${
                           isSelected
-                            ? 'bg-gradient-to-br from-[#183124] to-[#13281d] border-emerald-500 text-white shadow-md ring-1 ring-emerald-400/30'
+                            ? 'bg-[#14231b] border-emerald-500 text-white shadow-sm ring-1 ring-emerald-400/30'
                             : 'bg-[#14231b]/80 border-emerald-900/40 hover:border-emerald-700 text-emerald-100'
                         }`}
                       >
@@ -679,7 +679,7 @@ export default function WizardPage() {
                         {/* Skor Bar */}
                         <div className="w-full h-1.5 bg-[#0c1410] rounded-full overflow-hidden">
                           <div
-                            className={cn('h-full rounded-full transition-all', v.badge === 'emerald' ? 'bg-gradient-to-r from-emerald-500 to-green-400' : v.badge === 'amber' ? 'bg-amber-400' : 'bg-rose-400')}
+                            className={cn('h-full rounded-full transition-all', v.badge === 'emerald' ? 'bg-emerald-500' : v.badge === 'amber' ? 'bg-amber-400' : 'bg-rose-400')}
                             style={{ width: `${v.score}%` }}
                           />
                         </div>
@@ -746,7 +746,7 @@ export default function WizardPage() {
                         <button
                           onClick={handleEvaluateCustom}
                           disabled={!customVarietyName.trim() || loadingCustom}
-                          className="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-500 text-zinc-950 font-black text-xs flex items-center gap-1.5 transition-all disabled:opacity-50"
+                          className="px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all disabled:opacity-50"
                         >
                           {loadingCustom ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
                           <span>Uji AI</span>
@@ -796,7 +796,7 @@ export default function WizardPage() {
                             <div
                               className={cn(
                                 'h-full rounded-full transition-all',
-                                customResult.badge === 'emerald' ? 'bg-gradient-to-r from-emerald-500 to-green-500' : customResult.badge === 'amber' ? 'bg-amber-400' : 'bg-rose-400'
+                                customResult.badge === 'emerald' ? 'bg-emerald-500' : customResult.badge === 'amber' ? 'bg-amber-400' : 'bg-rose-400'
                               )}
                               style={{ width: `${customResult.score}%` }}
                             />
@@ -845,7 +845,7 @@ export default function WizardPage() {
                             onClick={() => {
                               update('variety', customVarietyName.trim());
                             }}
-                            className="w-full py-3 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-zinc-950 text-xs font-black rounded-2xl transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-1.5"
+                            className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-2xl transition-all shadow-sm active:scale-[0.98] flex items-center justify-center gap-1.5"
                           >
                             <Check className="w-4 h-4 stroke-[3]" />
                             <span>Gunakan Varietas Ini ({customVarietyName.trim()})</span>
@@ -949,7 +949,7 @@ export default function WizardPage() {
             <button
               onClick={() => setStep(s => s + 1)}
               disabled={!canNext()}
-              className="px-7 py-3.5 rounded-full bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-zinc-950 text-xs font-black transition-all flex items-center gap-1.5 disabled:opacity-40 shadow-lg shadow-emerald-950/40 active:scale-95"
+              className="px-7 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 disabled:opacity-40 shadow-sm active:scale-95"
             >
               <span>Lanjutkan</span>
               <ChevronRight className="w-4 h-4 stroke-[3]" />
@@ -958,7 +958,7 @@ export default function WizardPage() {
             <button
               onClick={handleSubmit}
               disabled={!canNext() || submitting}
-              className="px-7 py-3.5 rounded-full bg-gradient-to-r from-emerald-500 to-green-500 text-zinc-950 text-xs font-black transition-all flex items-center gap-1.5 disabled:opacity-40 shadow-lg shadow-emerald-950/40 active:scale-95"
+              className="px-7 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 disabled:opacity-40 shadow-sm active:scale-95"
             >
               {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4 stroke-[3]" />}
               <span>Simpan &amp; Kunci Database</span>

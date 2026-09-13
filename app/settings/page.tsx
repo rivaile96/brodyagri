@@ -401,7 +401,7 @@ export default function SettingsPage() {
                 <button
                   onClick={handleSaveAI}
                   disabled={saving}
-                  className="w-full py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-600 text-zinc-950 font-black text-xs flex items-center justify-center gap-2 shadow-md shadow-emerald-500/20 active:scale-[0.98] transition-all disabled:opacity-50 mt-2"
+                  className="w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] transition-all disabled:opacity-50 mt-2"
                 >
                   {saving ? (
                     <Loader2 className="w-4 h-4 animate-spin" />

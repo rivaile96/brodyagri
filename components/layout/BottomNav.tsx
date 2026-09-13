@@ -41,7 +41,7 @@ export default function BottomNav() {
                   whileTap={{ scale: 0.92 }}
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                  className="w-11 h-11 rounded-full bg-gradient-to-tr from-emerald-500 via-green-500 to-amber-400 text-zinc-950 flex items-center justify-center shadow-lg shadow-emerald-600/30 ring-2 ring-emerald-300/30"
+                  className="w-11 h-11 rounded-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 flex items-center justify-center shadow-lg shadow-emerald-600/20 ring-2 ring-emerald-400/30"
                 >
                   <Icon className="w-5 h-5 stroke-[2.8]" />
                 </motion.div>

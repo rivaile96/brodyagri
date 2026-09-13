@@ -27,9 +27,9 @@ export async function POST(req: NextRequest) {
 
   const photo_url = `/uploads/${filename}`;
 
-  // Update cover photo profil tanaman ke foto terbaru ini langsung
+  // Update cover photo profil tanaman ke foto terbaru ini langsung (jika milik user)
   if (plant_id && plant_id !== 'plant') {
-    db.prepare('UPDATE plants SET cover_photo_url = ? WHERE id = ?').run(photo_url, plant_id);
+    db.prepare('UPDATE plants SET cover_photo_url = ? WHERE id = ? AND user_id = ?').run(photo_url, plant_id, session.userId);
   }
 
   return NextResponse.json({ photo_url, url: photo_url });

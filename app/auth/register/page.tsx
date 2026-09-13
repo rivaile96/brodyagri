@@ -110,7 +110,7 @@ export default function RegisterPage() {
       >
         {/* Brand Header Minimalis */}
         <div className="text-center space-y-1.5">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 text-zinc-950 flex items-center justify-center mx-auto shadow-md shadow-emerald-600/20 ring-2 ring-emerald-400/20">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-sm ring-1 ring-emerald-500/20">
             <Sprout className="w-6 h-6 stroke-[2.4]" />
           </div>
           <h1 className="text-2xl font-black tracking-tight" style={{ color: 'var(--text-main)' }}>
@@ -131,7 +131,7 @@ export default function RegisterPage() {
             alt="Bibit Tanaman Bersama"
             className="w-full h-full object-cover object-center filter brightness-[0.9] contrast-[1.05]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-black/40" />
           <span className="absolute bottom-2.5 left-3.5 text-[11px] font-bold text-white drop-shadow-md flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span>Mulai Perjalanan Tani Cerdas</span>

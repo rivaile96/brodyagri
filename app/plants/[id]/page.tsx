@@ -197,7 +197,7 @@ export default function PlantDetailPage() {
           {plant.cover_photo_url ? (
             <div className="h-52 w-full overflow-hidden relative">
               <img src={plant.cover_photo_url} className="w-full h-full object-cover" alt={plant.name} />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-black/40" />
               <span className="absolute top-3 right-3 px-3 py-1 bg-black/70 backdrop-blur-md rounded-full text-[10px] font-mono text-emerald-300 border border-white/20 flex items-center gap-1">
                 <Camera className="w-3 h-3 text-emerald-400" />
                 <span>Foto Profil Terbaru (Mg {plant.current_week - 1 > 0 ? plant.current_week - 1 : 1})</span>
@@ -224,7 +224,7 @@ export default function PlantDetailPage() {
                 </p>
               </div>
               <div className="text-right shrink-0">
-                <span className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-emerald-500 to-green-600 text-zinc-950 text-xs font-black rounded-full shadow-sm">
+                <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-600 text-white text-xs font-bold rounded-full shadow-sm">
                   <Sprout className="w-3.5 h-3.5" />
                   <span>Minggu Ke-{plant.current_week}</span>
                 </span>
@@ -340,7 +340,7 @@ export default function PlantDetailPage() {
                 <button
                   onClick={handleUploadAndAnalyze}
                   disabled={uploading || analyzing}
-                  className="w-full py-3.5 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-zinc-950 font-black text-xs flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all disabled:opacity-50"
+                  className="w-full py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all disabled:opacity-50"
                 >
                   {uploading ? (
                     <>

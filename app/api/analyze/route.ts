@@ -25,8 +25,11 @@ export async function POST(req: NextRequest) {
 
     const { plant_id, week_number, photo_url, completed_tasks, plant_info } = await req.json();
 
-    // 1. Ambil Data Tanaman & Seluruh Riwayat Pertumbuhan Sebelumnya
-    const plant = db.prepare('SELECT * FROM plants WHERE id = ?').get(plant_id) as any;
+    // 1. Ambil Data Tanaman & Seluruh Riwayat Pertumbuhan Sebelumnya (Pastikan milik user)
+    const plant = db.prepare('SELECT * FROM plants WHERE id = ? AND user_id = ?').get(plant_id, session.userId) as any;
+    if (!plant) {
+      return NextResponse.json({ error: 'Tanaman tidak ditemukan atau tidak memiliki akses' }, { status: 404 });
+    }
     const pastAnalyses = db.prepare(`
       SELECT week_number, photo_url, ai_summary, tasks_for_next_week, created_at 
       FROM weekly_analyses 
@@ -210,7 +213,9 @@ Foto kondisi aktual terlampir. Periksa perubahan fisik tanaman dibanding minggu 
         });
 
         if (aiRes.ok) {
-          const aiData = await aiRes.json();
+          const textResp = await aiRes.text();
+          const cleanedResp = textResp.replace(/data:\s*\[DONE\].*/g, '').trim();
+          const aiData = JSON.parse(cleanedResp);
           const rawContent = aiData.choices?.[0]?.message?.content || '{}';
           const resObj = extractJson(rawContent);
           if (resObj) {

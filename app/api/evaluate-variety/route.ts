@@ -206,6 +206,8 @@ Jelaskan keunggulan varietas ini dan tips praktis perawatannya di kondisi terseb
     }),
   });
 
-  const data = await res.json();
+  const textResp = await res.text();
+  const cleanedResp = textResp.replace(/data:\s*\[DONE\].*/g, '').trim();
+  const data = JSON.parse(cleanedResp);
   return data.choices?.[0]?.message?.content ?? '';
 }

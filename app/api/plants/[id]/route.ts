@@ -25,9 +25,23 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (!plant) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
   const body = await req.json();
-  const fields = Object.keys(body).map(k => `${k} = ?`).join(', ');
-  const values = [...Object.values(body), id];
-  db.prepare(`UPDATE plants SET ${fields} WHERE id = ?`).run(...values);
+  const ALLOWED_FIELDS = ['name', 'variety_name', 'crop_name', 'category', 'location_type', 'planted_at', 'cover_photo_url', 'current_week'];
+  const updates: string[] = [];
+  const values: any[] = [];
+
+  for (const key of Object.keys(body)) {
+    if (ALLOWED_FIELDS.includes(key)) {
+      updates.push(`${key} = ?`);
+      values.push(body[key]);
+    }
+  }
+
+  if (updates.length === 0) {
+    return NextResponse.json({ error: 'No valid fields provided' }, { status: 400 });
+  }
+
+  values.push(id, session.userId);
+  db.prepare(`UPDATE plants SET ${updates.join(', ')} WHERE id = ? AND user_id = ?`).run(...values);
 
   return NextResponse.json({ ok: true });
 }

@@ -51,7 +51,7 @@ export default function AppShell({ title, rightSlot, children, hideNav = false }
       >
         <div className="flex items-center justify-between h-15 px-4 max-w-lg mx-auto">
           <Link href="/today" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center text-zinc-950 shadow-md shadow-emerald-600/20 ring-2 ring-emerald-400/20 group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 rounded-2xl bg-emerald-500 flex items-center justify-center text-zinc-950 shadow-sm ring-1 ring-emerald-400/30 group-hover:scale-105 transition-transform">
               <Sprout className="w-5 h-5 stroke-[2.4]" />
             </div>
             <div>
@@ -106,7 +106,7 @@ export default function AppShell({ title, rightSlot, children, hideNav = false }
       </header>
 
       {/* Main Container */}
-      <main className="flex-1 max-w-lg mx-auto w-full px-4 pt-5 pb-32 relative z-10">
+      <main className="flex-1 max-w-lg mx-auto w-full px-4 pt-5 pb-36 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}

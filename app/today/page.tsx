@@ -155,7 +155,7 @@ export default function TodayDashboardPage() {
           <div className="flex items-center gap-2">
             <Link
               href="/wizard"
-              className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 text-zinc-950 flex items-center justify-center shadow-md hover:scale-105 active:scale-95 transition-all"
+              className="w-10 h-10 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center shadow-sm hover:scale-105 active:scale-95 transition-all"
               title="Tanam Baru"
             >
               <Plus className="w-5 h-5 stroke-[2.8]" />

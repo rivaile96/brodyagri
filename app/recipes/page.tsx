@@ -2,33 +2,20 @@
 
 import { useState } from 'react';
 import AppShell from '@/components/layout/AppShell';
+import BottomDrawer from '@/components/ui/BottomDrawer';
 import {
   FlaskConical,
-  BookOpen,
   Calculator,
-  Droplets,
-  CheckCircle2,
   ChevronRight,
   Sparkles,
   Shovel,
   Recycle,
-  Layers,
   Sprout,
-  Sun,
   ShieldCheck,
-  AlertTriangle,
-  Info,
-  Apple,
-  Trash2,
-  Clock,
-  Beaker,
   Search,
-  Zap,
   Scissors,
   Bug,
-  HelpCircle,
-  Wine,
-  Leaf
+  Trash2,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -190,10 +177,10 @@ const ORGANIC_WASTE_FERTILIZERS = [
       '200ml Cuka Masak Dapur (Asam Asetat 5%)',
       'Wadah toples kaca terbuka'
     ],
-    science: 'Asam asetat mengekstraksi Kalsium Karbonat padat ($CaCO_3$) menjadi Kalsium Asetat cair yang langsung bisa diserap oleh pembuluh tanaman tanpa menunggu berbulan-bulan.',
+    science: 'Asam asetat mengekstraksi Kalsium Karbonat padat (CaCO3) menjadi Kalsium Asetat cair yang langsung bisa diserap oleh pembuluh tanaman tanpa menunggu berbulan-bulan.',
     howToMake: [
       'Sangrai sebentar cangkang telur agar kering dan mudah diremas.',
-      'Masukkan remasan cangkang ke dalam toples kaca, lalu tuangkan cuka dapur (akan muncul gelembung gas $CO_2$ pertanda kalsium sedang larut).',
+      'Masukkan remasan cangkang ke dalam toples kaca, lalu tuangkan cuka dapur (akan muncul gelembung gas CO2 pertanda kalsium sedang larut).',
       'Biarkan selama 24-48 jam hingga gelembung berhenti dan air menjadi bening kekuningan.',
       'Saring cairan kalsium murni.'
     ],
@@ -218,35 +205,57 @@ const ORGANIC_WASTE_FERTILIZERS = [
       'Simpan di tempat teduh selama 4 hari (buka tutup sesekali buang gas).',
       'Saring airnya.'
     ],
-    usage: 'Kocorkan 250ml per pot tanaman buah atau cabai setiap 10 hari sekali saat mulai muncul bakal bunga.'
+    usage: 'Encerkan 1 gelas (200ml) ke dalam 1 liter air bersih. Siramkan ke tanaman yang sedang mulai belajar berbunga.'
   }
 ];
 
-// 3. DAFTAR PESTISIDA NABATI RUMAHAN
+// 3. DAFTAR RACIKAN PESTISIDA NABATI DARI BAHAN DAPUR
 const PEST_CONTROL_RECIPES = [
   {
-    id: 'white-oil-emulsion',
-    title: 'Formulasi "White Oil" (Pestisida Pelapis Kutu Putih & Kebul)',
-    category: 'Insektisida Kontak Murni Dapur',
-    target: 'Kutu Putih (Mealybugs), Kutu Kebul, Kutu Daun (Aphids)',
+    id: 'pestisida-bawang-putih-cabai',
+    title: 'Pestisida Nabati Bawang Putih & Cabai Rawit',
+    target: 'Kutu Kebul, Kutu Daun (Aphids), Semut, Belalang',
+    category: 'Insektisida Nabati Kontak & Repellent',
     difficulty: 'Sangat Mudah',
     materials: [
-      '1 cangkir Minyak Goreng Kelapa (200ml)',
-      '1/4 cangkir Sabun Cuci Piring Cair (50ml)'
+      '1 bonggol Bawang Putih (± 10 siung)',
+      '10 buah Cabai Rawit pedas',
+      '1 liter air bersih',
+      '1 sendok teh sabun cuci piring (sebagai pelekat)'
     ],
-    science: 'Campuran minyak dan sabun membentuk emulsi putih pekat yang saat disemprotkan akan melapisi saluran napas (*spirakel*) hama serangga hingga lemas mati tanpa racun kimia.',
+    science: 'Senyawa Allicin pada bawang dan Capsaicin pedas cabai membakar lapisan lilin pelindung tubuh hama serangga dan merusak sensor penciumannya.',
     howToMake: [
-      'Campurkan minyak goreng dan sabun cuci piring ke dalam botol kecil.',
-      'Kocok kuat-kuat selama 1-2 menit hingga cairan berubah menjadi emulsi putih susu kental (Stock White Oil).',
-      'Simpan stock emulsi ini di wadah tertutup rapat (bisa bertahan hingga 6 bulan).'
+      'Blender bawang putih dan cabai rawit dengan 500ml air hingga halus.',
+      'Diamkan rendaman semalaman (24 jam) di tempat teduh.',
+      'Saring menggunakan kain tipis/saringan kopi.',
+      'Tambahkan sisa 500ml air + 1 sdt sabun cair, aduk perlahan tanpa berbusa.'
     ],
-    usage: 'Ambil 1 sendok makan (15ml) Stock White Oil, campurkan ke dalam 1 liter air hangat, kocok rata. Semprotkan langsung ke koloni kutu putih pada sore hari.'
+    usage: 'Semprotkan merata ke balik-balik daun (sarang kutu kebul) pada sore hari pukul 16.30 setelah matahari tidak terik. Ulangi 3 hari sekali.'
   },
   {
-    id: 'ekstrak-tembakau-nicotine',
-    title: 'Ekstrak Tembakau Nikotin (Racun Kontak Ulat & Thrips)',
-    category: 'Insektisida Saraf Alami',
-    target: 'Ulat Grayak, Thrips Daun Keriting, Belalang',
+    id: 'fungisida-kunyit-baking-soda',
+    title: 'Fungisida Organik Kunyit & Baking Soda',
+    target: 'Embun Tepung (Powdery Mildew), Bercak Daun, Antraknosa',
+    category: 'Fungisida & Anti Jamur Alami',
+    difficulty: 'Sangat Mudah',
+    materials: [
+      '100 gram Rimpang Kunyit Tua',
+      '1 sendok teh Baking Soda (Natrium Bikarbonat)',
+      '1 liter air bersih'
+    ],
+    science: 'Kurkumin dalam kunyit adalah antimikroba kuat, dan Baking Soda menaikkan pH permukaan daun menjadi basa sehingga spora jamur mati seketika.',
+    howToMake: [
+      'Parut atau blender kunyit dengan air, peras air sarinya.',
+      'Campurkan 1 sdt baking soda ke dalam perasan air kunyit, aduk larut.',
+      'Masukkan ke botol spray.'
+    ],
+    usage: 'Semprotkan pada daun yang mulai timbul bintik putih tepung atau bercak kuning jamur. Lakukan di pagi hari.'
+  },
+  {
+    id: 'tembakau-anti-ulat',
+    title: 'Ekstrak Rendaman Tembakau (Anti Ulat & Thrips)',
+    target: 'Ulat Grayak, Thrips Penggulung Daun, Tungau Merah',
+    category: 'Insektisida Nabati Sistemik Ringan',
     difficulty: 'Mudah',
     materials: [
       '50 gram Tembakau Murni / Puntung Rokok Bekas (20 puntung)',
@@ -294,6 +303,12 @@ export default function RecipesPage() {
   const [activeTab, setActiveTab] = useState<'media' | 'waste' | 'pest' | 'tips' | 'calc'>('media');
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Selected Drawer Modal Item
+  const [selectedItem, setSelectedItem] = useState<{
+    type: 'media' | 'waste' | 'pest' | 'tips';
+    data: any;
+  } | null>(null);
+
   // Calculator State
   const [potSize, setPotSize] = useState<number>(30); // diameter cm
   const [phase, setPhase] = useState<'vegetative' | 'generative'>('vegetative');
@@ -319,17 +334,22 @@ export default function RecipesPage() {
   };
 
   return (
-    <AppShell title="Kamus Nutrisi &amp; Formulasi">
-      <div className="space-y-5">
-        {/* Header */}
+    <AppShell title="Kamus Nutrisi & Formulasi">
+      <div className="space-y-4">
+        {/* Header Ringkas */}
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-900/60 border border-emerald-700/40 text-emerald-300 text-xs font-semibold">
-            <FlaskConical className="w-3.5 h-3.5 text-amber-400" />
-            <span>Kamus Agrikultur &amp; Organik Rumahan</span>
+          <div 
+            className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full border text-xs font-semibold"
+            style={{ backgroundColor: 'var(--badge-bg)', borderColor: 'var(--badge-border)', color: 'var(--badge-text)' }}
+          >
+            <FlaskConical className="w-3.5 h-3.5 text-amber-500" />
+            <span>Kamus Formulasi & Racikan</span>
           </div>
-          <h1 className="text-2xl font-black text-white tracking-tight">Kamus Nutrisi &amp; Perawatan</h1>
-          <p className="text-xs text-emerald-200/70 leading-relaxed">
-            Ensiklopedia lengkap meracik media tanam anti-gagal, pupuk organik limbah dapur, pestisida nabati, ZPT alami, dan trik membuahkan tabulampot.
+          <h1 className="text-xl font-black tracking-tight" style={{ color: 'var(--text-main)' }}>
+            Kamus Nutrisi & Perawatan
+          </h1>
+          <p className="text-xs" style={{ color: 'var(--text-dim)' }}>
+            Sentuh kartu untuk melihat takaran, bahan, dan cara meracik.
           </p>
         </div>
 
@@ -339,14 +359,20 @@ export default function RecipesPage() {
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Cari resep (cth: Kalsium, Bawang, Rooftop, Anggur, Kutu Putih...)"
-            className="w-full bg-[#14231b] border border-emerald-800/60 rounded-2xl pl-10 pr-4 py-3 text-xs text-white placeholder-emerald-700/80 focus:outline-none focus:border-emerald-500 shadow-inner"
+            placeholder="Cari racikan (cth: Kalsium, Bawang, Anggur, Kutu...)"
+            className="w-full border rounded-2xl pl-10 pr-4 py-2.5 text-xs focus:outline-none transition-colors shadow-sm"
+            style={{
+              backgroundColor: 'var(--bg-card)',
+              borderColor: 'var(--border-card)',
+              color: 'var(--text-main)',
+            }}
           />
-          <Search className="w-4 h-4 text-emerald-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-dim)' }} />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-emerald-400 font-bold bg-emerald-950 px-2 py-0.5 rounded-full"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold px-2 py-0.5 rounded-full"
+              style={{ backgroundColor: 'var(--bg-card-subtle)', color: 'var(--accent-primary)' }}
             >
               Reset
             </button>
@@ -358,132 +384,141 @@ export default function RecipesPage() {
           <button
             onClick={() => setActiveTab('media')}
             className={cn(
-              "shrink-0 px-4 py-2.5 rounded-2xl text-xs font-black transition-all flex items-center gap-1.5",
+              "shrink-0 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-1.5 border",
               activeTab === 'media'
-                ? "bg-gradient-to-r from-emerald-500 to-green-500 text-zinc-950 shadow-md scale-[1.02]"
-                : "bg-[#14231b]/80 border border-emerald-800/40 text-emerald-300/70 hover:text-white"
+                ? "bg-emerald-600 text-white border-emerald-600 shadow-sm"
+                : "text-dim border-transparent hover:border-emerald-500/20"
             )}
+            style={{
+              backgroundColor: activeTab === 'media' ? undefined : 'var(--bg-card)',
+              borderColor: activeTab === 'media' ? undefined : 'var(--border-card)',
+              color: activeTab === 'media' ? '#ffffff' : 'var(--text-dim)',
+            }}
           >
             <Shovel className="w-3.5 h-3.5" />
-            <span>Racik Media ({MEDIA_RECIPES.length})</span>
+            <span>Media ({MEDIA_RECIPES.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('waste')}
             className={cn(
-              "shrink-0 px-4 py-2.5 rounded-2xl text-xs font-black transition-all flex items-center gap-1.5",
+              "shrink-0 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-1.5 border",
               activeTab === 'waste'
-                ? "bg-gradient-to-r from-emerald-500 to-green-500 text-zinc-950 shadow-md scale-[1.02]"
-                : "bg-[#14231b]/80 border border-emerald-800/40 text-emerald-300/70 hover:text-white"
+                ? "bg-emerald-600 text-white border-emerald-600 shadow-sm"
+                : "border-transparent"
             )}
+            style={{
+              backgroundColor: activeTab === 'waste' ? undefined : 'var(--bg-card)',
+              borderColor: activeTab === 'waste' ? undefined : 'var(--border-card)',
+              color: activeTab === 'waste' ? '#ffffff' : 'var(--text-dim)',
+            }}
           >
             <Recycle className="w-3.5 h-3.5" />
-            <span>Pupuk &amp; ZPT Dapur ({ORGANIC_WASTE_FERTILIZERS.length})</span>
+            <span>Pupuk Dapur ({ORGANIC_WASTE_FERTILIZERS.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('pest')}
             className={cn(
-              "shrink-0 px-4 py-2.5 rounded-2xl text-xs font-black transition-all flex items-center gap-1.5",
+              "shrink-0 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-1.5 border",
               activeTab === 'pest'
-                ? "bg-gradient-to-r from-emerald-500 to-green-500 text-zinc-950 shadow-md scale-[1.02]"
-                : "bg-[#14231b]/80 border border-emerald-800/40 text-emerald-300/70 hover:text-white"
+                ? "bg-emerald-600 text-white border-emerald-600 shadow-sm"
+                : "border-transparent"
             )}
+            style={{
+              backgroundColor: activeTab === 'pest' ? undefined : 'var(--bg-card)',
+              borderColor: activeTab === 'pest' ? undefined : 'var(--border-card)',
+              color: activeTab === 'pest' ? '#ffffff' : 'var(--text-dim)',
+            }}
           >
             <Bug className="w-3.5 h-3.5" />
-            <span>Pestisida Nabati ({PEST_CONTROL_RECIPES.length})</span>
+            <span>Pestisida ({PEST_CONTROL_RECIPES.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('tips')}
             className={cn(
-              "shrink-0 px-4 py-2.5 rounded-2xl text-xs font-black transition-all flex items-center gap-1.5",
+              "shrink-0 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-1.5 border",
               activeTab === 'tips'
-                ? "bg-gradient-to-r from-emerald-500 to-green-500 text-zinc-950 shadow-md scale-[1.02]"
-                : "bg-[#14231b]/80 border border-emerald-800/40 text-emerald-300/70 hover:text-white"
+                ? "bg-emerald-600 text-white border-emerald-600 shadow-sm"
+                : "border-transparent"
             )}
+            style={{
+              backgroundColor: activeTab === 'tips' ? undefined : 'var(--bg-card)',
+              borderColor: activeTab === 'tips' ? undefined : 'var(--border-card)',
+              color: activeTab === 'tips' ? '#ffffff' : 'var(--text-dim)',
+            }}
           >
             <Scissors className="w-3.5 h-3.5" />
-            <span>Trik Tabulampot ({SECRET_GARDENING_TIPS.length})</span>
+            <span>Tabulampot ({SECRET_GARDENING_TIPS.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('calc')}
             className={cn(
-              "shrink-0 px-4 py-2.5 rounded-2xl text-xs font-black transition-all flex items-center gap-1.5",
+              "shrink-0 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-1.5 border",
               activeTab === 'calc'
-                ? "bg-gradient-to-r from-emerald-500 to-green-500 text-zinc-950 shadow-md scale-[1.02]"
-                : "bg-[#14231b]/80 border border-emerald-800/40 text-emerald-300/70 hover:text-white"
+                ? "bg-emerald-600 text-white border-emerald-600 shadow-sm"
+                : "border-transparent"
             )}
+            style={{
+              backgroundColor: activeTab === 'calc' ? undefined : 'var(--bg-card)',
+              borderColor: activeTab === 'calc' ? undefined : 'var(--border-card)',
+              color: activeTab === 'calc' ? '#ffffff' : 'var(--text-dim)',
+            }}
           >
             <Calculator className="w-3.5 h-3.5" />
-            <span>Kalkulator Pot</span>
+            <span>Kalkulator</span>
           </button>
         </div>
 
-        {/* CONTENT TABS */}
+        {/* CONTENT LIST (COMPACT CARDS) */}
         <AnimatePresence mode="wait">
           {/* 1. TAB RACIKAN MEDIA TANAM */}
           {activeTab === 'media' && (
             <motion.div
               key="media-tab"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="space-y-4"
+              exit={{ opacity: 0, y: -6 }}
+              className="space-y-2.5"
             >
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-[#1b3628] to-[#14281e] border border-emerald-600/40 text-xs text-emerald-100/90 leading-relaxed flex items-start gap-2.5 shadow-sm">
-                <Sparkles className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                <div>
-                  <strong className="text-emerald-300 block font-bold mb-0.5">Kunci Utama Media Pot Subur:</strong>
-                  Media dalam pot tidak boleh memadat seperti tanah biasa. Wajib memiliki rongga udara (porositas) dari sekam bakar/pasir malang agar akar bisa bernapas bebas dan terhindar dari penyakit busuk akar.
-                </div>
-              </div>
-
               {filterByQuery(MEDIA_RECIPES).map((item) => (
-                <div
+                <motion.div
                   key={item.id}
-                  className="rounded-3xl bg-[#14231b]/90 border border-emerald-800/40 p-5 space-y-3.5 backdrop-blur-md shadow-md"
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setSelectedItem({ type: 'media', data: item })}
+                  className="p-3.5 rounded-2xl border transition-all flex items-center justify-between gap-3 cursor-pointer shadow-sm hover:border-emerald-500/40"
+                  style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-card)' }}
                 >
-                  <div className="flex items-start justify-between gap-3 border-b border-emerald-900/80 pb-3">
-                    <div>
-                      <span className="text-[9px] font-mono text-emerald-400 uppercase font-bold tracking-wider block mb-0.5">
-                        {item.target}
-                      </span>
-                      <h3 className="text-base font-black text-white">{item.title}</h3>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div 
+                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border"
+                      style={{ backgroundColor: 'var(--bg-card-subtle)', borderColor: 'var(--border-card-subtle)', color: 'var(--accent-primary)' }}
+                    >
+                      <Shovel className="w-5 h-5 stroke-[2]" />
                     </div>
-                    <span className="text-[9px] font-bold px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800/60 shrink-0">
-                      {item.difficulty}
-                    </span>
-                  </div>
-
-                  <div className="p-3 rounded-2xl bg-[#0c1410] border border-emerald-700/40 text-xs text-emerald-200">
-                    <span className="text-[10px] font-mono uppercase text-amber-400 font-bold block mb-1">
-                      📐 Rumus Takaran Rasio:
-                    </span>
-                    <strong className="text-white block leading-relaxed">{item.ratio}</strong>
-                  </div>
-
-                  <p className="text-xs text-emerald-100/80 leading-relaxed">
-                    <strong className="text-emerald-300">Alasan Ilmiah:</strong> {item.why}
-                  </p>
-
-                  <div className="space-y-2 pt-1 border-t border-emerald-900/60">
-                    <span className="text-[10px] font-mono uppercase text-emerald-300/80 font-bold block">
-                      Langkah Pembuatan:
-                    </span>
-                    <div className="space-y-1.5">
-                      {item.steps.map((step: string, idx: number) => (
-                        <div key={idx} className="text-xs text-emerald-100/90 flex items-start gap-2">
-                          <span className="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
-                            {idx + 1}
-                          </span>
-                          <span className="leading-relaxed">{step}</span>
-                        </div>
-                      ))}
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span 
+                          className="text-[9px] font-mono font-bold uppercase px-2 py-0.2 rounded-full border"
+                          style={{ backgroundColor: 'var(--badge-bg)', borderColor: 'var(--badge-border)', color: 'var(--badge-text)' }}
+                        >
+                          {item.target}
+                        </span>
+                        <span className="text-[9px] font-medium" style={{ color: 'var(--text-dim)' }}>
+                          • {item.difficulty}
+                        </span>
+                      </div>
+                      <h3 className="text-xs font-bold truncate leading-tight" style={{ color: 'var(--text-main)' }}>
+                        {item.title}
+                      </h3>
                     </div>
                   </div>
-                </div>
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style={{ color: 'var(--text-dim)' }}>
+                    <ChevronRight className="w-4 h-4" />
+                  </div>
+                </motion.div>
               ))}
             </motion.div>
           )}
@@ -492,84 +527,47 @@ export default function RecipesPage() {
           {activeTab === 'waste' && (
             <motion.div
               key="waste-tab"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="space-y-4"
+              exit={{ opacity: 0, y: -6 }}
+              className="space-y-2.5"
             >
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-[#272a1c] to-[#1c2016] border border-amber-700/40 text-xs text-amber-100/90 leading-relaxed flex items-start gap-2.5 shadow-sm">
-                <Recycle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                <div>
-                  <strong className="text-amber-300 block font-bold mb-0.5">Zero Waste Home Farming:</strong>
-                  Hampir 60% sampah dapur rumah tangga (kulit buah, bawang, nasi, cangkang telur, air kelapa) adalah nutrisi emas &amp; ZPT alami bagi tanaman. Tidak perlu beli obat kimia mahal!
-                </div>
-              </div>
-
               {filterByQuery(ORGANIC_WASTE_FERTILIZERS).map((item) => (
-                <div
+                <motion.div
                   key={item.id}
-                  className="rounded-3xl bg-[#14231b]/90 border border-emerald-800/40 p-5 space-y-3.5 backdrop-blur-md shadow-md"
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setSelectedItem({ type: 'waste', data: item })}
+                  className="p-3.5 rounded-2xl border transition-all flex items-center justify-between gap-3 cursor-pointer shadow-sm hover:border-emerald-500/40"
+                  style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-card)' }}
                 >
-                  <div className="flex items-start justify-between gap-3 border-b border-emerald-900/80 pb-3">
-                    <div>
-                      <span className="text-[9px] font-mono text-amber-400 uppercase font-bold tracking-wider block mb-0.5">
-                        {item.category}
-                      </span>
-                      <h3 className="text-base font-black text-white">{item.title}</h3>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div 
+                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border"
+                      style={{ backgroundColor: 'var(--bg-card-subtle)', borderColor: 'var(--border-card-subtle)', color: 'var(--accent-primary)' }}
+                    >
+                      <Recycle className="w-5 h-5 stroke-[2]" />
                     </div>
-                    <div className="text-right shrink-0">
-                      <span className="text-[9px] font-mono text-emerald-300 bg-emerald-950 px-2 py-0.5 rounded-full border border-emerald-800 block">
-                        {item.time}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="p-2.5 rounded-xl bg-[#0c1410] border border-emerald-900/60 flex items-center gap-2 text-xs text-emerald-200">
-                    <Trash2 className="w-4 h-4 text-amber-400 shrink-0" />
-                    <span><strong>Bahan Limbah:</strong> {item.wasteSource}</span>
-                  </div>
-
-                  <p className="text-xs text-emerald-100/80 leading-relaxed">
-                    <strong className="text-emerald-300">Khasiat Ilmiah:</strong> {item.science}
-                  </p>
-
-                  <div className="space-y-1 bg-[#0c1410]/50 p-3 rounded-2xl border border-emerald-900/40">
-                    <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold block">
-                      Bahan yang Disiapkan:
-                    </span>
-                    <ul className="space-y-1">
-                      {item.materials.map((m: string, idx: number) => (
-                        <li key={idx} className="text-xs text-emerald-100/90 flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                          <span>{m}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="space-y-2 pt-1 border-t border-emerald-900/60">
-                    <span className="text-[10px] font-mono uppercase text-emerald-300/80 font-bold block">
-                      Instruksi Pembuatan:
-                    </span>
-                    <div className="space-y-1.5">
-                      {item.howToMake.map((step: string, idx: number) => (
-                        <div key={idx} className="text-xs text-emerald-100/90 flex items-start gap-2">
-                          <span className="w-4 h-4 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
-                            {idx + 1}
-                          </span>
-                          <span className="leading-relaxed">{step}</span>
-                        </div>
-                      ))}
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span 
+                          className="text-[9px] font-mono font-bold uppercase px-2 py-0.2 rounded-full border"
+                          style={{ backgroundColor: 'var(--badge-bg)', borderColor: 'var(--badge-border)', color: 'var(--badge-text)' }}
+                        >
+                          {item.wasteSource}
+                        </span>
+                        <span className="text-[9px] font-medium" style={{ color: 'var(--text-dim)' }}>
+                          • {item.time}
+                        </span>
+                      </div>
+                      <h3 className="text-xs font-bold truncate leading-tight" style={{ color: 'var(--text-main)' }}>
+                        {item.title}
+                      </h3>
                     </div>
                   </div>
-
-                  <div className="p-3 rounded-2xl bg-gradient-to-br from-[#183124] to-[#13281d] border border-emerald-600/40 text-xs text-emerald-100">
-                    <strong className="text-emerald-300 block font-mono text-[10px] uppercase tracking-wider mb-1">
-                      💡 Dosis &amp; Cara Penyiraman:
-                    </strong>
-                    {item.usage}
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style={{ color: 'var(--text-dim)' }}>
+                    <ChevronRight className="w-4 h-4" />
                   </div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           )}
@@ -578,82 +576,44 @@ export default function RecipesPage() {
           {activeTab === 'pest' && (
             <motion.div
               key="pest-tab"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="space-y-4"
+              exit={{ opacity: 0, y: -6 }}
+              className="space-y-2.5"
             >
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-[#311e18] to-[#241510] border border-rose-700/40 text-xs text-rose-100/90 leading-relaxed flex items-start gap-2.5 shadow-sm">
-                <Bug className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
-                <div>
-                  <strong className="text-rose-300 block font-bold mb-0.5">Solusi Anti Hama Tanpa Bahan Kimia Beracun:</strong>
-                  Racikan pestisida nabati dari bahan dapur aman untuk lingkungan rumah, tidak meninggalkan racun pada sayuran yang dipanen, dan sangat efektif membasmi serangga.
-                </div>
-              </div>
-
               {filterByQuery(PEST_CONTROL_RECIPES).map((item) => (
-                <div
+                <motion.div
                   key={item.id}
-                  className="rounded-3xl bg-[#14231b]/90 border border-emerald-800/40 p-5 space-y-3.5 backdrop-blur-md shadow-md"
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setSelectedItem({ type: 'pest', data: item })}
+                  className="p-3.5 rounded-2xl border transition-all flex items-center justify-between gap-3 cursor-pointer shadow-sm hover:border-emerald-500/40"
+                  style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-card)' }}
                 >
-                  <div className="flex items-start justify-between gap-3 border-b border-emerald-900/80 pb-3">
-                    <div>
-                      <span className="text-[9px] font-mono text-rose-400 uppercase font-bold tracking-wider block mb-0.5">
-                        {item.category}
-                      </span>
-                      <h3 className="text-base font-black text-white">{item.title}</h3>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div 
+                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border"
+                      style={{ backgroundColor: 'var(--bg-card-subtle)', borderColor: 'var(--border-card-subtle)', color: 'var(--accent-primary)' }}
+                    >
+                      <Bug className="w-5 h-5 stroke-[2]" />
                     </div>
-                    <span className="text-[9px] font-bold px-2.5 py-1 rounded-full bg-rose-950 text-rose-300 border border-rose-800/60 shrink-0">
-                      {item.difficulty}
-                    </span>
-                  </div>
-
-                  <div className="p-2.5 rounded-xl bg-[#0c1410] border border-emerald-900/60 flex items-center gap-2 text-xs text-emerald-200">
-                    <ShieldCheck className="w-4 h-4 text-rose-400 shrink-0" />
-                    <span><strong>Sasaran Hama:</strong> {item.target}</span>
-                  </div>
-
-                  <p className="text-xs text-emerald-100/80 leading-relaxed">
-                    <strong className="text-emerald-300">Cara Kerja Ilmiah:</strong> {item.science}
-                  </p>
-
-                  <div className="space-y-1 bg-[#0c1410]/50 p-3 rounded-2xl border border-emerald-900/40">
-                    <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold block">
-                      Bahan yang Disiapkan:
-                    </span>
-                    <ul className="space-y-1">
-                      {item.materials.map((m: string, idx: number) => (
-                        <li key={idx} className="text-xs text-emerald-100/90 flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-rose-400 shrink-0" />
-                          <span>{m}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="space-y-2 pt-1 border-t border-emerald-900/60">
-                    <span className="text-[10px] font-mono uppercase text-emerald-300/80 font-bold block">
-                      Instruksi Pembuatan:
-                    </span>
-                    <div className="space-y-1.5">
-                      {item.howToMake.map((step: string, idx: number) => (
-                        <div key={idx} className="text-xs text-emerald-100/90 flex items-start gap-2">
-                          <span className="w-4 h-4 rounded-full bg-rose-500/20 text-rose-300 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
-                            {idx + 1}
-                          </span>
-                          <span className="leading-relaxed">{step}</span>
-                        </div>
-                      ))}
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span 
+                          className="text-[9px] font-mono font-bold uppercase px-2 py-0.2 rounded-full border"
+                          style={{ backgroundColor: 'var(--badge-bg)', borderColor: 'var(--badge-border)', color: 'var(--badge-text)' }}
+                        >
+                          {item.target}
+                        </span>
+                      </div>
+                      <h3 className="text-xs font-bold truncate leading-tight" style={{ color: 'var(--text-main)' }}>
+                        {item.title}
+                      </h3>
                     </div>
                   </div>
-
-                  <div className="p-3 rounded-2xl bg-gradient-to-br from-[#183124] to-[#13281d] border border-emerald-600/40 text-xs text-emerald-100">
-                    <strong className="text-emerald-300 block font-mono text-[10px] uppercase tracking-wider mb-1">
-                      💡 Cara Aplikasi Penyemprotan:
-                    </strong>
-                    {item.usage}
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style={{ color: 'var(--text-dim)' }}>
+                    <ChevronRight className="w-4 h-4" />
                   </div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           )}
@@ -662,51 +622,44 @@ export default function RecipesPage() {
           {activeTab === 'tips' && (
             <motion.div
               key="tips-tab"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="space-y-4"
+              exit={{ opacity: 0, y: -6 }}
+              className="space-y-2.5"
             >
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-[#183124] to-[#13281d] border border-emerald-600/40 text-xs text-emerald-100/90 leading-relaxed flex items-start gap-2.5 shadow-sm">
-                <Scissors className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <div>
-                  <strong className="text-emerald-300 block font-bold mb-0.5">Trik Rahasia Pembuahan Tanaman Pot:</strong>
-                  Rahasia agar tanaman buah di pot tidak hanya tumbuh tinggi menjadi daun saja, namun rajin memunculkan bunga dan berbuah lebat sepanjang tahun.
-                </div>
-              </div>
-
               {filterByQuery(SECRET_GARDENING_TIPS).map((item) => (
-                <div
+                <motion.div
                   key={item.id}
-                  className="rounded-3xl bg-[#14231b]/90 border border-emerald-800/40 p-5 space-y-3.5 backdrop-blur-md shadow-md"
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setSelectedItem({ type: 'tips', data: item })}
+                  className="p-3.5 rounded-2xl border transition-all flex items-center justify-between gap-3 cursor-pointer shadow-sm hover:border-emerald-500/40"
+                  style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-card)' }}
                 >
-                  <div className="border-b border-emerald-900/80 pb-3">
-                    <span className="text-[9px] font-mono text-emerald-400 uppercase font-bold tracking-wider block mb-0.5">
-                      {item.category}
-                    </span>
-                    <h3 className="text-base font-black text-white">{item.title}</h3>
-                  </div>
-
-                  <p className="text-xs text-emerald-100/80 leading-relaxed">
-                    {item.desc}
-                  </p>
-
-                  <div className="space-y-2 pt-1 border-t border-emerald-900/60">
-                    <span className="text-[10px] font-mono uppercase text-emerald-300/80 font-bold block">
-                      Langkah Eksekusi Praktis:
-                    </span>
-                    <div className="space-y-2">
-                      {item.steps.map((step: string, idx: number) => (
-                        <div key={idx} className="p-3 rounded-2xl bg-[#0c1410] border border-emerald-900/60 text-xs text-emerald-100/90 flex items-start gap-2.5">
-                          <span className="w-5 h-5 rounded-full bg-emerald-500 text-zinc-950 text-xs font-black flex items-center justify-center shrink-0 mt-0.5">
-                            {idx + 1}
-                          </span>
-                          <span className="leading-relaxed">{step}</span>
-                        </div>
-                      ))}
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div 
+                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border"
+                      style={{ backgroundColor: 'var(--bg-card-subtle)', borderColor: 'var(--border-card-subtle)', color: 'var(--accent-primary)' }}
+                    >
+                      <Scissors className="w-5 h-5 stroke-[2]" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span 
+                          className="text-[9px] font-mono font-bold uppercase px-2 py-0.2 rounded-full border"
+                          style={{ backgroundColor: 'var(--badge-bg)', borderColor: 'var(--badge-border)', color: 'var(--badge-text)' }}
+                        >
+                          {item.category}
+                        </span>
+                      </div>
+                      <h3 className="text-xs font-bold truncate leading-tight" style={{ color: 'var(--text-main)' }}>
+                        {item.title}
+                      </h3>
                     </div>
                   </div>
-                </div>
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style={{ color: 'var(--text-dim)' }}>
+                    <ChevronRight className="w-4 h-4" />
+                  </div>
+                </motion.div>
               ))}
             </motion.div>
           )}
@@ -715,18 +668,21 @@ export default function RecipesPage() {
           {activeTab === 'calc' && (
             <motion.div
               key="calc-tab"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="rounded-3xl bg-[#14231b]/90 border border-emerald-800/40 p-5 space-y-5 backdrop-blur-md shadow-md"
+              exit={{ opacity: 0, y: -6 }}
+              className="rounded-3xl border p-5 space-y-4 shadow-sm"
+              style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-card)' }}
             >
               <div className="space-y-1">
-                <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold block">
-                  Presisi Osmotik Akar Pot
+                <span className="text-[10px] font-mono uppercase font-bold block" style={{ color: 'var(--accent-primary)' }}>
+                  Presisi Dosis Pot
                 </span>
-                <h3 className="text-base font-black text-white">Kalkulator Dosis Pemupukan Pot</h3>
-                <p className="text-xs text-emerald-200/70 leading-relaxed">
-                  Menghitung takaran aman agar akar di dalam pot tidak terbakar / mengalami dehidrasi akibat konsentrasi pupuk berlebihan.
+                <h3 className="text-base font-black" style={{ color: 'var(--text-main)' }}>
+                  Kalkulator Dosis Pemupukan
+                </h3>
+                <p className="text-xs" style={{ color: 'var(--text-dim)' }}>
+                  Menghitung takaran aman agar akar pot tidak panas atau over-dosis.
                 </p>
               </div>
 
@@ -734,10 +690,13 @@ export default function RecipesPage() {
                 {/* Pot Slider */}
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <label className="text-xs font-bold uppercase text-emerald-300">
-                      Ukuran Diameter Pot:
+                    <label className="text-xs font-bold uppercase" style={{ color: 'var(--text-main)' }}>
+                      Diameter Pot:
                     </label>
-                    <span className="text-base font-black font-mono text-emerald-400 bg-emerald-950 px-3 py-0.5 rounded-full border border-emerald-800">
+                    <span 
+                      className="text-sm font-black font-mono px-3 py-0.5 rounded-full border"
+                      style={{ backgroundColor: 'var(--badge-bg)', borderColor: 'var(--badge-border)', color: 'var(--badge-text)' }}
+                    >
                       {potSize} cm
                     </span>
                   </div>
@@ -748,69 +707,80 @@ export default function RecipesPage() {
                     step="5"
                     value={potSize}
                     onChange={(e) => setPotSize(Number(e.target.value))}
-                    className="w-full accent-emerald-400 bg-[#0c1410] rounded-lg cursor-pointer h-2"
+                    className="w-full accent-emerald-500 rounded-lg cursor-pointer h-2"
                   />
-                  <div className="flex justify-between text-[9px] font-mono text-emerald-400/60">
-                    <span>15cm (Bibit/Sayur)</span>
+                  <div className="flex justify-between text-[9px] font-mono" style={{ color: 'var(--text-dim)' }}>
+                    <span>15cm (Bibit)</span>
                     <span>30cm (Sedang)</span>
-                    <span>60cm (Tabulampot Besar)</span>
+                    <span>60cm (Tabulampot)</span>
                   </div>
                 </div>
 
                 {/* Fase Pertumbuhan */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase text-emerald-300 block">
-                    Fase Pertumbuhan Tanaman
+                  <label className="text-xs font-bold uppercase" style={{ color: 'var(--text-main)' }}>
+                    Fase Pertumbuhan
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => setPhase('vegetative')}
                       className={cn(
-                        "p-3.5 rounded-2xl border text-left transition-all active:scale-[0.98]",
+                        "p-3 rounded-2xl border text-left transition-all active:scale-[0.98]",
                         phase === 'vegetative'
-                          ? "bg-gradient-to-br from-[#183124] to-[#13281d] border-emerald-500 text-white shadow-md ring-1 ring-emerald-400/30"
-                          : "bg-[#0c1410] border-emerald-900/60 text-emerald-300/60"
+                          ? "border-emerald-500 ring-1 ring-emerald-400/30"
+                          : ""
                       )}
+                      style={{
+                        backgroundColor: phase === 'vegetative' ? 'var(--badge-bg)' : 'var(--bg-card-subtle)',
+                        borderColor: phase === 'vegetative' ? 'var(--accent-primary)' : 'var(--border-card-subtle)',
+                      }}
                     >
-                      <span className="text-xs font-black block text-emerald-300">🌱 Fase Vegetatif</span>
-                      <span className="text-[10px] text-emerald-200/70 block mt-0.5">Pertumbuhan Daun &amp; Batang Baru</span>
+                      <span className="text-xs font-bold block" style={{ color: 'var(--accent-primary)' }}>🌱 Vegetatif</span>
+                      <span className="text-[10px] block mt-0.5" style={{ color: 'var(--text-dim)' }}>Pertumbuhan Daun & Ranting</span>
                     </button>
                     <button
                       onClick={() => setPhase('generative')}
                       className={cn(
-                        "p-3.5 rounded-2xl border text-left transition-all active:scale-[0.98]",
+                        "p-3 rounded-2xl border text-left transition-all active:scale-[0.98]",
                         phase === 'generative'
-                          ? "bg-gradient-to-br from-[#183124] to-[#13281d] border-emerald-500 text-white shadow-md ring-1 ring-emerald-400/30"
-                          : "bg-[#0c1410] border-emerald-900/60 text-emerald-300/60"
+                          ? "border-amber-500 ring-1 ring-amber-400/30"
+                          : ""
                       )}
+                      style={{
+                        backgroundColor: phase === 'generative' ? 'var(--badge-bg)' : 'var(--bg-card-subtle)',
+                        borderColor: phase === 'generative' ? '#f59e0b' : 'var(--border-card-subtle)',
+                      }}
                     >
-                      <span className="text-xs font-black block text-amber-300">🌸 Fase Generatif</span>
-                      <span className="text-[10px] text-amber-200/70 block mt-0.5">Bunga &amp; Pembesaran Buah</span>
+                      <span className="text-xs font-bold block text-amber-500">🌸 Generatif</span>
+                      <span className="text-[10px] block mt-0.5" style={{ color: 'var(--text-dim)' }}>Bunga & Buah</span>
                     </button>
                   </div>
                 </div>
 
                 {/* Hasil Kalkulasi Card */}
-                <div className="rounded-3xl bg-gradient-to-br from-[#183124] to-[#13281d] border border-emerald-600/40 p-5 space-y-3.5 shadow-md">
-                  <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block">
-                    Takaran Rekomendasi Aman
+                <div 
+                  className="rounded-2xl border p-4 space-y-3 shadow-sm"
+                  style={{ backgroundColor: 'var(--bg-card-subtle)', borderColor: 'var(--border-card-subtle)' }}
+                >
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider block" style={{ color: 'var(--accent-primary)' }}>
+                    Takaran Aman Terhitung
                   </span>
 
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-[#0c1410]/80 p-3.5 rounded-2xl border border-emerald-900/60 text-center">
-                      <span className="text-[9px] font-mono text-emerald-300/70 block">Dosis Pupuk Padat/NPK</span>
-                      <span className="text-2xl font-black font-mono text-emerald-400">{doseGrams} g</span>
-                      <span className="text-[9px] text-emerald-300/60 block">(± {Math.round(doseGrams / 5 * 10) / 10} sendok teh)</span>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div className="p-3 rounded-xl border text-center" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-card)' }}>
+                      <span className="text-[9px] font-mono block" style={{ color: 'var(--text-dim)' }}>Dosis Pupuk NPK</span>
+                      <span className="text-xl font-black font-mono block mt-0.5" style={{ color: 'var(--accent-primary)' }}>{doseGrams} g</span>
+                      <span className="text-[9px] block" style={{ color: 'var(--text-dim)' }}>(± {Math.round(doseGrams / 5 * 10) / 10} sdt)</span>
                     </div>
-                    <div className="bg-[#0c1410]/80 p-3.5 rounded-2xl border border-emerald-900/60 text-center">
-                      <span className="text-[9px] font-mono text-emerald-300/70 block">Volume Air Pelarut</span>
-                      <span className="text-2xl font-black font-mono text-emerald-400">{waterLiter} L</span>
-                      <span className="text-[9px] text-emerald-300/60 block">(Air Sumur / Bebas Kaporit)</span>
+                    <div className="p-3 rounded-xl border text-center" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-card)' }}>
+                      <span className="text-[9px] font-mono block" style={{ color: 'var(--text-dim)' }}>Air Pelarut</span>
+                      <span className="text-xl font-black font-mono block mt-0.5" style={{ color: 'var(--accent-primary)' }}>{waterLiter} L</span>
+                      <span className="text-[9px] block" style={{ color: 'var(--text-dim)' }}>(Bebas kaporit)</span>
                     </div>
                   </div>
 
-                  <p className="text-[11px] text-emerald-100 leading-relaxed pt-1">
-                    💡 <strong>Aturan Siram:</strong> Larutkan pupuk hingga homogen, siramkan melingkar di sekeliling dinding pot (sejauh 5 cm dari batang utama). Lakukan setiap 14 hari sekali pada pagi hari.
+                  <p className="text-[11px] leading-relaxed pt-1" style={{ color: 'var(--text-muted)' }}>
+                    💡 <strong>Cara Pakai:</strong> Larutkan merata, siram melingkar di dinding tepi pot (jangan langsung terkena batang). Ulangi 14 hari sekali di pagi hari.
                   </p>
                 </div>
               </div>
@@ -818,6 +788,180 @@ export default function RecipesPage() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* DETAIL DRAWER / BOTTOM SHEET */}
+      <BottomDrawer
+        isOpen={!!selectedItem}
+        onClose={() => setSelectedItem(null)}
+        title={selectedItem?.data?.title || 'Detail Formulasi'}
+        badge={selectedItem?.data?.target || selectedItem?.data?.category || selectedItem?.data?.wasteSource}
+      >
+        {selectedItem && (
+          <div className="space-y-4 text-xs">
+            {/* 1. MEDIA TANAM DETAILS */}
+            {selectedItem.type === 'media' && (
+              <>
+                <div className="p-3.5 rounded-2xl border" style={{ backgroundColor: 'var(--badge-bg)', borderColor: 'var(--badge-border)', color: 'var(--badge-text)' }}>
+                  <span className="text-[10px] font-mono uppercase font-bold block mb-1">📐 Rumus Rasio Media:</span>
+                  <p className="font-bold text-sm leading-relaxed">{selectedItem.data.ratio}</p>
+                </div>
+
+                <div className="space-y-1.5">
+                  <span className="text-[10px] font-mono uppercase font-bold block" style={{ color: 'var(--accent-primary)' }}>
+                    Karakteristik & Alasan Ilmiah:
+                  </span>
+                  <p className="leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+                    {selectedItem.data.why}
+                  </p>
+                </div>
+
+                <div className="space-y-2 pt-2 border-t" style={{ borderColor: 'var(--border-card-subtle)' }}>
+                  <span className="text-[10px] font-mono uppercase font-bold block" style={{ color: 'var(--accent-primary)' }}>
+                    Langkah Peracikan:
+                  </span>
+                  <div className="space-y-2">
+                    {selectedItem.data.steps.map((step: string, idx: number) => (
+                      <div key={idx} className="p-2.5 rounded-xl border flex items-start gap-2.5" style={{ backgroundColor: 'var(--bg-card-subtle)', borderColor: 'var(--border-card-subtle)' }}>
+                        <span 
+                          className="w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5"
+                          style={{ backgroundColor: 'var(--badge-bg)', color: 'var(--badge-text)' }}
+                        >
+                          {idx + 1}
+                        </span>
+                        <span className="leading-relaxed" style={{ color: 'var(--text-main)' }}>{step}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* 2. PUPUK DAPUR DETAILS */}
+            {selectedItem.type === 'waste' && (
+              <>
+                <div className="p-3 rounded-2xl border flex items-center gap-2" style={{ backgroundColor: 'var(--bg-card-subtle)', borderColor: 'var(--border-card-subtle)' }}>
+                  <Trash2 className="w-4 h-4 text-amber-500 shrink-0" />
+                  <span style={{ color: 'var(--text-main)' }}><strong>Bahan Limbah:</strong> {selectedItem.data.wasteSource}</span>
+                </div>
+
+                <div className="space-y-1.5">
+                  <span className="text-[10px] font-mono uppercase font-bold block" style={{ color: 'var(--accent-primary)' }}>
+                    Bahan yang Disiapkan:
+                  </span>
+                  <ul className="space-y-1">
+                    {selectedItem.data.materials.map((m: string, idx: number) => (
+                      <li key={idx} className="flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                        <span>{m}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="space-y-2 pt-2 border-t" style={{ borderColor: 'var(--border-card-subtle)' }}>
+                  <span className="text-[10px] font-mono uppercase font-bold block" style={{ color: 'var(--accent-primary)' }}>
+                    Instruksi Pembuatan:
+                  </span>
+                  <div className="space-y-2">
+                    {selectedItem.data.howToMake.map((step: string, idx: number) => (
+                      <div key={idx} className="p-2.5 rounded-xl border flex items-start gap-2.5" style={{ backgroundColor: 'var(--bg-card-subtle)', borderColor: 'var(--border-card-subtle)' }}>
+                        <span 
+                          className="w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5"
+                          style={{ backgroundColor: 'var(--badge-bg)', color: 'var(--badge-text)' }}
+                        >
+                          {idx + 1}
+                        </span>
+                        <span className="leading-relaxed" style={{ color: 'var(--text-main)' }}>{step}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-2xl border space-y-1" style={{ backgroundColor: 'var(--badge-bg)', borderColor: 'var(--badge-border)', color: 'var(--badge-text)' }}>
+                  <strong className="block font-bold text-xs">💡 Dosis & Cara Aplikasi:</strong>
+                  <p className="leading-relaxed">{selectedItem.data.usage}</p>
+                </div>
+              </>
+            )}
+
+            {/* 3. PESTISIDA DETAILS */}
+            {selectedItem.type === 'pest' && (
+              <>
+                <div className="p-3 rounded-2xl border flex items-center gap-2" style={{ backgroundColor: 'var(--bg-card-subtle)', borderColor: 'var(--border-card-subtle)' }}>
+                  <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <span style={{ color: 'var(--text-main)' }}><strong>Sasaran Hama:</strong> {selectedItem.data.target}</span>
+                </div>
+
+                <div className="space-y-1.5">
+                  <span className="text-[10px] font-mono uppercase font-bold block" style={{ color: 'var(--accent-primary)' }}>
+                    Bahan-Bahan:
+                  </span>
+                  <ul className="space-y-1">
+                    {selectedItem.data.materials.map((m: string, idx: number) => (
+                      <li key={idx} className="flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
+                        <span>{m}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="space-y-2 pt-2 border-t" style={{ borderColor: 'var(--border-card-subtle)' }}>
+                  <span className="text-[10px] font-mono uppercase font-bold block" style={{ color: 'var(--accent-primary)' }}>
+                    Langkah Pembuatan:
+                  </span>
+                  <div className="space-y-2">
+                    {selectedItem.data.howToMake.map((step: string, idx: number) => (
+                      <div key={idx} className="p-2.5 rounded-xl border flex items-start gap-2.5" style={{ backgroundColor: 'var(--bg-card-subtle)', borderColor: 'var(--border-card-subtle)' }}>
+                        <span 
+                          className="w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5"
+                          style={{ backgroundColor: 'var(--badge-bg)', color: 'var(--badge-text)' }}
+                        >
+                          {idx + 1}
+                        </span>
+                        <span className="leading-relaxed" style={{ color: 'var(--text-main)' }}>{step}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-2xl border space-y-1" style={{ backgroundColor: 'var(--badge-bg)', borderColor: 'var(--badge-border)', color: 'var(--badge-text)' }}>
+                  <strong className="block font-bold text-xs">💡 Cara Penyemprotan:</strong>
+                  <p className="leading-relaxed">{selectedItem.data.usage}</p>
+                </div>
+              </>
+            )}
+
+            {/* 4. TIPS TABULAMPOT DETAILS */}
+            {selectedItem.type === 'tips' && (
+              <>
+                <p className="leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+                  {selectedItem.data.desc}
+                </p>
+
+                <div className="space-y-2 pt-2 border-t" style={{ borderColor: 'var(--border-card-subtle)' }}>
+                  <span className="text-[10px] font-mono uppercase font-bold block" style={{ color: 'var(--accent-primary)' }}>
+                    Langkah Eksekusi:
+                  </span>
+                  <div className="space-y-2">
+                    {selectedItem.data.steps.map((step: string, idx: number) => (
+                      <div key={idx} className="p-2.5 rounded-xl border flex items-start gap-2.5" style={{ backgroundColor: 'var(--bg-card-subtle)', borderColor: 'var(--border-card-subtle)' }}>
+                        <span 
+                          className="w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5"
+                          style={{ backgroundColor: 'var(--badge-bg)', color: 'var(--badge-text)' }}
+                        >
+                          {idx + 1}
+                        </span>
+                        <span className="leading-relaxed" style={{ color: 'var(--text-main)' }}>{step}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </BottomDrawer>
     </AppShell>
   );
 }

@@ -77,7 +77,7 @@ export default function GuideDetailPage() {
     }>
       <div className="space-y-5">
         {/* Header Title Card */}
-        <div className="rounded-3xl bg-gradient-to-br from-[#183124] to-[#13281d] border border-emerald-700/40 p-6 space-y-4 backdrop-blur-md shadow-lg">
+        <div className="rounded-3xl bg-[#14231b] border border-emerald-700/40 p-6 space-y-4 backdrop-blur-md shadow-sm">
           <div className="space-y-2">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-[10px] font-mono text-emerald-300 uppercase font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30">
@@ -133,7 +133,7 @@ export default function GuideDetailPage() {
           {/* Action CTA Button */}
           <Link
             href="/wizard"
-            className="w-full py-3.5 rounded-full bg-gradient-to-r from-emerald-500 to-green-500 text-zinc-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/50 transition-all active:scale-[0.98]"
+            className="w-full py-3.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98]"
           >
             <Plus className="w-4 h-4 stroke-[3]" />
             <span>Mulai Tanam Spesies Ini di Kebunku</span>
@@ -146,7 +146,7 @@ export default function GuideDetailPage() {
             onClick={() => setActiveTab('overview')}
             className={cn(
               "flex-1 py-2 rounded-2xl transition-all text-center",
-              activeTab === 'overview' ? "bg-gradient-to-r from-emerald-500 to-green-500 text-zinc-950 font-black shadow-md" : "text-emerald-300/70 hover:text-white"
+              activeTab === 'overview' ? "bg-emerald-500 text-zinc-950 font-bold shadow-sm" : "text-emerald-300/70 hover:text-white"
             )}
           >
             Media
@@ -156,7 +156,7 @@ export default function GuideDetailPage() {
             onClick={() => setActiveTab('vegetative')}
             className={cn(
               "flex-1 py-2 rounded-2xl transition-all text-center",
-              activeTab === 'vegetative' ? "bg-gradient-to-r from-emerald-500 to-green-500 text-zinc-950 font-black shadow-md" : "text-emerald-300/70 hover:text-white"
+              activeTab === 'vegetative' ? "bg-emerald-500 text-zinc-950 font-bold shadow-sm" : "text-emerald-300/70 hover:text-white"
             )}
           >
             Vegetatif
@@ -166,7 +166,7 @@ export default function GuideDetailPage() {
             onClick={() => setActiveTab('generative')}
             className={cn(
               "flex-1 py-2 rounded-2xl transition-all text-center",
-              activeTab === 'generative' ? "bg-gradient-to-r from-emerald-500 to-green-500 text-zinc-950 font-black shadow-md" : "text-emerald-300/70 hover:text-white"
+              activeTab === 'generative' ? "bg-emerald-500 text-zinc-950 font-bold shadow-sm" : "text-emerald-300/70 hover:text-white"
             )}
           >
             Pembuahan
@@ -176,7 +176,7 @@ export default function GuideDetailPage() {
             onClick={() => setActiveTab('pests')}
             className={cn(
               "flex-1 py-2 rounded-2xl transition-all text-center",
-              activeTab === 'pests' ? "bg-gradient-to-r from-emerald-500 to-green-500 text-zinc-950 font-black shadow-md" : "text-emerald-300/70 hover:text-white"
+              activeTab === 'pests' ? "bg-emerald-500 text-zinc-950 font-bold shadow-sm" : "text-emerald-300/70 hover:text-white"
             )}
           >
             Hama
@@ -218,7 +218,7 @@ export default function GuideDetailPage() {
                 )}
 
                 {media.drainage_note && (
-                  <div className="p-3.5 rounded-2xl bg-gradient-to-br from-[#183124] to-[#13281d] border border-emerald-600/40 text-xs text-emerald-100 leading-relaxed">
+                  <div className="p-3.5 rounded-2xl bg-[#0c1410] border border-emerald-600/40 text-xs text-emerald-100 leading-relaxed">
                     <strong className="text-emerald-300 block font-bold mb-0.5">Catatan Drainase:</strong>
                     {media.drainage_note}
                   </div>
@@ -342,7 +342,7 @@ export default function GuideDetailPage() {
                         <strong className="text-emerald-300">Gejala Fisik:</strong> {item.symptoms}
                       </p>
 
-                      <div className="p-3 rounded-xl bg-gradient-to-br from-[#183124] to-[#13281d] border border-emerald-600/40 text-xs text-emerald-100">
+                      <div className="p-3 rounded-xl bg-[#0c1410] border border-emerald-600/40 text-xs text-emerald-100">
                         <strong className="text-emerald-300 block font-mono text-[10px] uppercase mb-0.5">Solusi Penanganan:</strong>
                         {item.solution}
                       </div>

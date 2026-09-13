@@ -10,17 +10,12 @@ import {
   Sun,
   Clock,
   ChevronRight,
-  Sparkles,
   TreePine,
   Apple,
   Salad,
   Flame,
-  Wheat,
-  Mountain,
-  ArrowRight,
-  Compass
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 const CATEGORIES = ['Semua', 'Buah-buahan', 'Sayuran', 'Rempah & Herbal', 'Tanaman Hias'];
@@ -63,16 +58,21 @@ export default function GuideIndexPage() {
 
   return (
     <AppShell title="Kamus Tani">
-      <div className="space-y-5">
-        {/* Header */}
+      <div className="space-y-4">
+        {/* Header Ringkas */}
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-900/60 border border-emerald-700/40 text-emerald-300 text-xs font-semibold">
-            <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+          <div 
+            className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full border text-xs font-semibold"
+            style={{ backgroundColor: 'var(--badge-bg)', borderColor: 'var(--badge-border)', color: 'var(--badge-text)' }}
+          >
+            <BookOpen className="w-3.5 h-3.5 text-amber-500" />
             <span>Playbook Budidaya Lengkap</span>
           </div>
-          <h1 className="text-2xl font-black text-white tracking-tight">Kamus Tani &amp; Budidaya</h1>
-          <p className="text-xs text-emerald-200/70 leading-relaxed">
-            Panduan komprehensif hulu ke hilir untuk setiap spesies tanaman: dari pemilihan bibit, pembentukan tajuk cabang, trik pembuahan, hingga penanganan hama.
+          <h1 className="text-xl font-black tracking-tight" style={{ color: 'var(--text-main)' }}>
+            Kamus Tani &amp; Budidaya
+          </h1>
+          <p className="text-xs" style={{ color: 'var(--text-dim)' }}>
+            Panduan hulu ke hilir: media, percabangan, pembuahan, dan hama.
           </p>
         </div>
 
@@ -83,13 +83,19 @@ export default function GuideIndexPage() {
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Cari tanaman (contoh: Anggur, Mangga, Cabai, Monstera...)"
-            className="w-full bg-[#14231b] border border-emerald-800/60 rounded-2xl pl-10 pr-4 py-3 text-xs text-white placeholder-emerald-700/80 focus:outline-none focus:border-emerald-500 shadow-inner"
+            className="w-full border rounded-2xl pl-10 pr-4 py-2.5 text-xs focus:outline-none transition-colors shadow-sm"
+            style={{
+              backgroundColor: 'var(--bg-card)',
+              borderColor: 'var(--border-card)',
+              color: 'var(--text-main)',
+            }}
           />
-          <Search className="w-4 h-4 text-emerald-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-dim)' }} />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-emerald-400 font-bold bg-emerald-950 px-2 py-0.5 rounded-full"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold px-2 py-0.5 rounded-full"
+              style={{ backgroundColor: 'var(--bg-card-subtle)', color: 'var(--accent-primary)' }}
             >
               Reset
             </button>
@@ -105,11 +111,16 @@ export default function GuideIndexPage() {
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
                 className={cn(
-                  "shrink-0 px-4 py-2 rounded-2xl text-xs font-black transition-all flex items-center gap-1.5",
+                  "shrink-0 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-1.5 border",
                   isSelected
-                    ? "bg-gradient-to-r from-emerald-500 to-green-500 text-zinc-950 shadow-md scale-[1.02]"
-                    : "bg-[#14231b]/80 border border-emerald-800/40 text-emerald-300/70 hover:text-white"
+                    ? "bg-emerald-600 text-white border-emerald-600 shadow-sm"
+                    : "border-transparent"
                 )}
+                style={{
+                  backgroundColor: isSelected ? undefined : 'var(--bg-card)',
+                  borderColor: isSelected ? undefined : 'var(--border-card)',
+                  color: isSelected ? '#ffffff' : 'var(--text-dim)',
+                }}
               >
                 <span>{cat}</span>
               </button>
@@ -117,71 +128,78 @@ export default function GuideIndexPage() {
           })}
         </div>
 
-        {/* List of Plant Playbooks */}
+        {/* List of Plant Playbooks (Clean & Compact Cards) */}
         {loading ? (
-          <div className="space-y-3">
-            {[1, 2, 3].map(i => (
-              <div key={i} className="bg-[#14231b]/60 border border-emerald-900/40 rounded-3xl p-5 animate-pulse space-y-2">
-                <div className="h-4 bg-emerald-950 rounded w-1/2" />
-                <div className="h-3 bg-emerald-950 rounded w-3/4" />
+          <div className="space-y-2.5">
+            {[1, 2, 3, 4].map(i => (
+              <div 
+                key={i} 
+                className="border rounded-2xl p-4 animate-pulse space-y-2"
+                style={{ backgroundColor: 'var(--bg-card-subtle)', borderColor: 'var(--border-card)' }}
+              >
+                <div className="h-4 rounded w-1/2" style={{ backgroundColor: 'var(--border-card)' }} />
+                <div className="h-3 rounded w-3/4" style={{ backgroundColor: 'var(--border-card)' }} />
               </div>
             ))}
           </div>
         ) : guides.length === 0 ? (
-          <div className="rounded-3xl bg-[#14231b]/60 border border-emerald-800/40 p-8 text-center space-y-3 backdrop-blur-md">
-            <Sprout className="w-10 h-10 text-emerald-500 mx-auto stroke-[1.5]" />
-            <h3 className="text-sm font-bold text-white">Spesies Belum Tersedia</h3>
-            <p className="text-xs text-emerald-200/60 max-w-xs mx-auto">
+          <div 
+            className="rounded-3xl border p-8 text-center space-y-3 backdrop-blur-md"
+            style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-card)' }}
+          >
+            <Sprout className="w-10 h-10 mx-auto stroke-[1.5]" style={{ color: 'var(--accent-primary)' }} />
+            <h3 className="text-sm font-bold" style={{ color: 'var(--text-main)' }}>Spesies Belum Tersedia</h3>
+            <p className="text-xs max-w-xs mx-auto" style={{ color: 'var(--text-dim)' }}>
               Kamus Tani terus diperkaya secara berkala melalui AI &amp; botani updater. Coba kata kunci lainnya.
             </p>
           </div>
         ) : (
-          <div className="space-y-3.5">
+          <div className="space-y-2.5">
             {guides.map(item => {
               const CatIcon = CATEGORY_ICONS[item.category] || TreePine;
               return (
                 <Link key={item.id} href={`/guide/${item.slug}`}>
                   <motion.div
                     whileTap={{ scale: 0.98 }}
-                    className="p-5 rounded-3xl bg-[#14231b]/90 border border-emerald-800/40 hover:border-emerald-500/60 transition-all space-y-3 shadow-md backdrop-blur-md group"
+                    className="p-3.5 rounded-2xl border hover:border-emerald-500/40 transition-all flex items-center justify-between gap-3 shadow-sm group"
+                    style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-card)' }}
                   >
-                    <div className="flex items-start justify-between gap-3 border-b border-emerald-900/80 pb-3">
-                      <div>
-                        <div className="flex items-center gap-1.5 mb-1">
-                          <span className="text-[9px] font-mono text-emerald-400 uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-800">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div 
+                        className="w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform"
+                        style={{ backgroundColor: 'var(--bg-card-subtle)', borderColor: 'var(--border-card-subtle)', color: 'var(--accent-primary)' }}
+                      >
+                        <CatIcon className="w-5 h-5 stroke-[2]" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span 
+                            className="text-[9px] font-mono font-bold uppercase px-2 py-0.2 rounded-full border"
+                            style={{ backgroundColor: 'var(--badge-bg)', borderColor: 'var(--badge-border)', color: 'var(--badge-text)' }}
+                          >
                             {item.category}
                           </span>
-                          <span className="text-[9px] font-bold text-amber-400 bg-amber-950/40 px-2 py-0.5 rounded-full border border-amber-800/40">
-                            {item.difficulty}
+                          <span className="text-[9px] font-medium" style={{ color: 'var(--text-dim)' }}>
+                            • {item.difficulty}
                           </span>
                         </div>
-                        <h2 className="text-base font-black text-white group-hover:text-emerald-300 transition-colors">
+                        <h2 className="text-xs font-bold truncate leading-tight group-hover:text-emerald-500 transition-colors" style={{ color: 'var(--text-main)' }}>
                           {item.title}
                         </h2>
-                      </div>
-                      <div className="w-9 h-9 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0 group-hover:scale-110 transition-transform">
-                        <CatIcon className="w-4 h-4" />
-                      </div>
-                    </div>
-
-                    <p className="text-xs text-emerald-100/80 leading-relaxed line-clamp-2">
-                      {item.summary}
-                    </p>
-
-                    <div className="grid grid-cols-2 gap-2 pt-1 text-[10px] text-emerald-300/80 font-medium">
-                      <div className="flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                        <span className="truncate">{item.harvest_time}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <Sun className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                        <span className="truncate">{item.sunlight_req}</span>
+                        <div className="flex items-center gap-3 mt-1 text-[10px]" style={{ color: 'var(--text-dim)' }}>
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-3 h-3 text-amber-500" />
+                            {item.harvest_time}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Sun className="w-3 h-3 text-amber-500" />
+                            {item.sunlight_req}
+                          </span>
+                        </div>
                       </div>
                     </div>
-
-                    <div className="pt-2 flex items-center justify-between border-t border-emerald-900/60 text-xs font-bold text-emerald-400">
-                      <span>Buka Playbook Budidaya Lengkap</span>
-                      <ChevronRight className="w-4 h-4 text-emerald-400 group-hover:translate-x-1 transition-transform" />
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 group-hover:translate-x-0.5 transition-transform" style={{ color: 'var(--text-dim)' }}>
+                      <ChevronRight className="w-4 h-4" />
                     </div>
                   </motion.div>
                 </Link>

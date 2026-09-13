@@ -196,7 +196,7 @@ export default function DoctorPage() {
             <button
               onClick={handleDiagnose}
               disabled={loading || (!photo && !symptoms.trim())}
-              className="w-full py-4 rounded-full bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 disabled:opacity-40 text-zinc-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/40 transition-all active:scale-[0.98]"
+              className="w-full py-4 rounded-full bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 text-zinc-950 font-black text-xs flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.98]"
             >
               {loading ? (
                 <>
@@ -252,7 +252,7 @@ export default function DoctorPage() {
               )}
 
               {result.home_remedy && (
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-[#1b3628] to-[#14281e] border border-emerald-600/40 space-y-2">
+                <div className="p-4 rounded-2xl bg-[#14231b] border border-emerald-600/40 space-y-2">
                   <div className="flex items-center gap-2 text-emerald-300">
                     <ShieldCheck className="w-4 h-4 text-emerald-400" />
                     <span className="text-xs font-bold uppercase tracking-wider">Solusi Dapur Alami (Direkomendasikan)</span>

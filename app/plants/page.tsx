@@ -55,7 +55,7 @@ export default function PlantsPage() {
   return (
     <AppShell title="Koleksi Kebunku" rightSlot={
       <Link href="/wizard"
-        className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-zinc-950 font-black text-xs py-2 px-3.5 rounded-full shadow-md active:scale-95 transition-all">
+        className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2 px-3.5 rounded-full shadow-sm active:scale-95 transition-all">
         <Plus className="w-4 h-4 stroke-[2.8]" />
         <span>Tanam Baru</span>
       </Link>
@@ -83,7 +83,7 @@ export default function PlantsPage() {
               Mulai menanam dan catat progres mingguan tanaman kesayanganmu di sini.
             </p>
           </div>
-          <Link href="/wizard" className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-600 text-zinc-950 font-black text-xs px-6 py-3.5 rounded-full shadow-md active:scale-95 transition-all">
+          <Link href="/wizard" className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-6 py-3.5 rounded-full shadow-sm active:scale-95 transition-all">
             <span>Tanam Sekarang</span>
             <ArrowRight className="w-4 h-4" />
           </Link>

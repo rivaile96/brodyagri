@@ -97,7 +97,9 @@ Gejala yang terlihat: ${symptoms || 'Lihat gambar terlampir'}`;
           const gData = await geminiRes.json();
           const textOut = gData.candidates?.[0]?.content?.parts?.[0]?.text;
           if (textOut) {
-            parsedResult = JSON.parse(textOut.replace(/```json/g, '').replace(/```/g, '').trim());
+            const cleanText = textOut.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
+            const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
+            parsedResult = JSON.parse(jsonMatch ? jsonMatch[0] : cleanText);
           }
         }
       } catch (gemErr) {
@@ -137,10 +139,14 @@ Gejala yang terlihat: ${symptoms || 'Lihat gambar terlampir'}`;
       });
 
       if (aiRes.ok) {
-        const data = await aiRes.json();
+        const textResp = await aiRes.text();
+        const cleanedResp = textResp.replace(/data:\s*\[DONE\].*/g, '').trim();
+        const data = JSON.parse(cleanedResp);
         const raw = data.choices?.[0]?.message?.content;
         if (raw) {
-          parsedResult = JSON.parse(raw.replace(/```json/g, '').replace(/```/g, '').trim());
+          const cleanRaw = raw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
+          const jsonMatch = cleanRaw.match(/\{[\s\S]*\}/);
+          parsedResult = JSON.parse(jsonMatch ? jsonMatch[0] : cleanRaw);
         }
       }
     }
