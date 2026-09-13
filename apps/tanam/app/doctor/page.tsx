@@ -76,8 +76,8 @@ export default function DoctorPage() {
  <span className="text-[10px] font-mono font-semibold uppercase tracking-widest text-emerald-400 block">
  Diagnostic Studio
  </span>
- <h1 className="text-2xl font-black text-white tracking-tight">Dokter Tanaman</h1>
- <p className="text-xs text-emerald-200/70 leading-relaxed">
+ <h1 className="text-2xl font-black  tracking-tight" style={{ color: "var(--text-main)" }}>Dokter Tanaman</h1>
+ <p className="text-xs /70 leading-relaxed">
  Sistem visi komputer &amp; pakar agrikultur untuk identifikasi penyakit tanaman serta rekomendasi formulasi organik.
  </p>
  </div>
@@ -90,7 +90,7 @@ export default function DoctorPage() {
  >
  {/* Input Foto (Kamera + Galeri Terpisah) */}
  <div className="rounded-3xl border p-5 space-y-3.5 backdrop-blur-md shadow-md">
- <span className="text-xs font-bold text-emerald-300 uppercase tracking-wider block">
+ <span className="text-xs font-bold  uppercase tracking-wider block">
  1. Foto Gejala / Bagian Sakit
  </span>
 
@@ -134,8 +134,8 @@ export default function DoctorPage() {
  <Camera className="w-5 h-5 stroke-[2.2]" />
  </div>
  <div>
- <span className="text-xs font-black text-white block">Ambil Foto</span>
- <span className="text-[10px] text-emerald-300/70">Buka Kamera Langsung</span>
+ <span className="text-xs font-black  block" style={{ color: "var(--text-main)" }}>Ambil Foto</span>
+ <span className="text-[10px] /70">Buka Kamera Langsung</span>
  </div>
  </button>
 
@@ -148,8 +148,8 @@ export default function DoctorPage() {
  <ImageIcon className="w-5 h-5 stroke-[2.2]" />
  </div>
  <div>
- <span className="text-xs font-black text-white block">Pilih Galeri</span>
- <span className="text-[10px] text-amber-200/70">Upload dari Memori HP</span>
+ <span className="text-xs font-black  block" style={{ color: "var(--text-main)" }}>Pilih Galeri</span>
+ <span className="text-[10px] /70">Upload dari Memori HP</span>
  </div>
  </button>
  </div>
@@ -158,13 +158,13 @@ export default function DoctorPage() {
 
  {/* Input Deskripsi */}
  <div className="rounded-3xl border p-5 space-y-3.5 backdrop-blur-md shadow-md">
- <span className="text-xs font-bold text-emerald-300 uppercase tracking-wider block">
+ <span className="text-xs font-bold  uppercase tracking-wider block">
  2. Keterangan Spesimen
  </span>
 
  <div className="space-y-3">
  <div>
- <span className="text-xs text-emerald-200/80 block mb-1 font-medium">Nama Tanaman (Opsional)</span>
+ <span className="text-xs /80 block mb-1 font-medium">Nama Tanaman (Opsional)</span>
  <input
  type="text"
  value={cropName}
@@ -175,7 +175,7 @@ export default function DoctorPage() {
  </div>
 
  <div>
- <span className="text-xs text-emerald-200/80 block mb-1 font-medium">Keluhan / Gejala Fisik</span>
+ <span className="text-xs /80 block mb-1 font-medium">Keluhan / Gejala Fisik</span>
  <textarea
  rows={3}
  value={symptoms}
@@ -188,7 +188,7 @@ export default function DoctorPage() {
  </div>
 
  {error && (
- <p className="text-xs text-rose-300 bg-rose-950/40 p-3 rounded-xl border border-rose-800/40">
+ <p className="text-xs  bg-rose-950/40 p-3 rounded-xl border border-rose-800/40">
  {error}
  </p>
  )}
@@ -222,27 +222,27 @@ export default function DoctorPage() {
  <div className="flex items-start justify-between border-b pb-4">
  <div>
  <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold block">Diagnosa Terverifikasi</span>
- <h2 className="text-lg font-black text-white">{result.diagnosis}</h2>
+ <h2 className="text-lg font-black " style={{ color: "var(--text-main)" }}>{result.diagnosis}</h2>
  </div>
  <div className="text-right shrink-0">
  <span className={cn(
  "text-[9px] font-mono font-bold uppercase px-2.5 py-1 rounded-full border",
- result.severity === 'Kritis' ? "bg-rose-500/20 text-rose-300 border-rose-500/30" :
- result.severity === 'Sedang' ? "bg-amber-500/20 text-amber-300 border-amber-500/30" :
- "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+ result.severity === 'Kritis' ? "bg-rose-500/20  border-rose-500/30" :
+ result.severity === 'Sedang' ? "bg-amber-500/20  border-amber-500/30" :
+ "bg-emerald-500/20  border-emerald-500/30"
  )}>
  Tingkat: {result.severity}
  </span>
- <p className="text-[9px] font-mono text-emerald-300/60 mt-1">Akurasi {result.confidence || 85}%</p>
+ <p className="text-[9px] font-mono /60 mt-1">Akurasi {result.confidence || 85}%</p>
  </div>
  </div>
 
  {result.causes?.length > 0 && (
  <div className="space-y-1.5">
- <span className="text-[10px] font-mono uppercase text-emerald-300/80 font-bold block">Faktor Penyebab:</span>
+ <span className="text-[10px] font-mono uppercase /80 font-bold block">Faktor Penyebab:</span>
  <ul className="space-y-1">
  {result.causes.map((c: string, idx: number) => (
- <li key={idx} className="text-xs text-emerald-100 flex items-start gap-2">
+ <li key={idx} className="text-xs  flex items-start gap-2">
  <span className="text-rose-400 font-bold">•</span>
  <span>{c}</span>
  </li>
@@ -253,16 +253,16 @@ export default function DoctorPage() {
 
  {result.home_remedy && (
  <div className="p-4 rounded-2xl border space-y-2">
- <div className="flex items-center gap-2 text-emerald-300">
+ <div className="flex items-center gap-2 ">
  <ShieldCheck className="w-4 h-4 text-emerald-400" />
  <span className="text-xs font-bold uppercase tracking-wider">Solusi Dapur Alami (Direkomendasikan)</span>
  </div>
- <p className="text-xs font-bold text-white">{result.home_remedy.title}</p>
- <div className="text-xs text-emerald-100/90 leading-relaxed p-3 rounded-xl border space-y-1.5">
+ <p className="text-xs font-bold " style={{ color: "var(--text-main)" }}>{result.home_remedy.title}</p>
+ <div className="text-xs /90 leading-relaxed p-3 rounded-xl border space-y-1.5">
  <p className="font-semibold text-emerald-400 text-[11px]">Bahan Racikan:</p>
- <p className="text-emerald-100">{result.home_remedy.recipe}</p>
+ <p className="">{result.home_remedy.recipe}</p>
  <p className="font-semibold text-emerald-400 text-[11px] pt-1">Instruksi Aplikasi:</p>
- <p className="text-emerald-100">{result.home_remedy.instructions}</p>
+ <p className="">{result.home_remedy.instructions}</p>
  </div>
  </div>
  )}
@@ -270,21 +270,21 @@ export default function DoctorPage() {
  {result.chemical_remedy && (
  <div className="p-4 rounded-2xl border space-y-1.5">
  <span className="text-[10px] font-mono uppercase text-amber-400 font-semibold block">Opsi Obat Toko Pertanian</span>
- <p className="text-xs text-emerald-100">
- <strong className="text-white">Formulasi:</strong> {result.chemical_remedy.product}
+ <p className="text-xs ">
+ <strong className="" style={{ color: "var(--text-main)" }}>Formulasi:</strong> {result.chemical_remedy.product}
  </p>
- <p className="text-xs text-emerald-300/80">
- <strong className="text-emerald-200">Dosis:</strong> {result.chemical_remedy.instructions}
+ <p className="text-xs /80">
+ <strong className="">Dosis:</strong> {result.chemical_remedy.instructions}
  </p>
  </div>
  )}
 
  {result.preventions?.length > 0 && (
  <div className="space-y-1.5 pt-2 border-t ">
- <span className="text-[10px] font-mono uppercase text-emerald-300/80 font-bold block">Pencegahan Agar Tidak Terulang:</span>
+ <span className="text-[10px] font-mono uppercase /80 font-bold block">Pencegahan Agar Tidak Terulang:</span>
  <div className="space-y-1">
  {result.preventions.map((p: string, idx: number) => (
- <div key={idx} className="flex items-start gap-2 text-xs text-emerald-100">
+ <div key={idx} className="flex items-start gap-2 text-xs ">
  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
  <span>{p}</span>
  </div>

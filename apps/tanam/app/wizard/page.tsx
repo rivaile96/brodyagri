@@ -254,7 +254,7 @@ export default function WizardPage() {
  <div className="space-y-5">
  {/* Step Indicator Header */}
  <div className="space-y-2">
- <div className="flex items-center justify-between text-[11px] font-mono font-semibold text-emerald-300">
+ <div className="flex items-center justify-between text-[11px] font-mono font-semibold ">
  <span>TAHAP {step} DARI 6</span>
  <span className="text-emerald-400 font-bold">
  {step === 1 && 'Audit Iklim 3 Tahun'}
@@ -278,7 +278,7 @@ export default function WizardPage() {
  {/* ── RANTAI RIWAYAT KEPUTUSAN / HISTORY CHAIN (PERSISTENT BREADCRUMB 1 -> 2 -> 3 -> 4) ── */}
  {step > 1 && state.climate && (
  <div className="p-3.5 rounded-2xl border shadow-sm space-y-2 backdrop-blur-md">
- <div className="flex items-center justify-between text-[10px] font-bold text-emerald-300">
+ <div className="flex items-center justify-between text-[10px] font-bold ">
  <span className="flex items-center gap-1.5 uppercase font-mono tracking-wider">
  <History className="w-3.5 h-3.5 text-amber-400" />
  <span>Rantai Riwayat Analisis Terpadu</span>
@@ -288,7 +288,7 @@ export default function WizardPage() {
 
  <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-hidden text-[11px]">
  {/* Badge 1: Location & 3Y Climate */}
- <div className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-xl border text-emerald-200">
+ <div className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-xl border ">
  <MapPin className="w-3 h-3 text-emerald-400 shrink-0" />
  <span className="font-bold truncate max-w-[110px]">{state.location?.name?.split(',')[0]}</span>
  <span className="text-[9px] text-emerald-400/70 font-mono">({state.climate.avg_temp_c}°C · {state.climate.elevation_m}m)</span>
@@ -300,7 +300,7 @@ export default function WizardPage() {
  {/* Badge 2: Placement */}
  <div className={cn(
  "shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-xl border transition-all",
- step >= 2 ? " text-emerald-200" : "bg-zinc-900/40 border-zinc-800 text-zinc-500"
+ step >= 2 ? " " : "bg-zinc-900/40 border-zinc-800 text-zinc-500"
  )}>
  {selectedPlacement && <selectedPlacement.icon className="w-3 h-3 text-amber-400 shrink-0" />}
  <span className="font-semibold">{selectedPlacement?.label.split('/')[0].trim()}</span>
@@ -311,7 +311,7 @@ export default function WizardPage() {
  <>
  <ChevronRight className="w-3 h-3 text-emerald-600 shrink-0" />
  {/* Badge 3: Category */}
- <div className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-xl border text-emerald-200">
+ <div className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-xl border ">
  <TreePine className="w-3 h-3 text-green-400 shrink-0" />
  <span className="font-semibold">{state.category || 'Pilih Kategori'}</span>
  </div>
@@ -323,7 +323,7 @@ export default function WizardPage() {
  <>
  <ChevronRight className="w-3 h-3 text-emerald-600 shrink-0" />
  {/* Badge 4: Commodity */}
- <div className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-xl border text-emerald-200">
+ <div className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-xl border ">
  <Tag className="w-3 h-3 text-cyan-400 shrink-0" />
  <span className="font-semibold">{state.commodity}</span>
  </div>
@@ -350,8 +350,8 @@ export default function WizardPage() {
  <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold block">
  Pijakan 1: Telemetry &amp; Historical Climate
  </span>
- <h2 className="text-xl font-black text-white tracking-tight">Audit Iklim Wilayah (3 Tahun)</h2>
- <p className="text-xs text-emerald-200/70 leading-relaxed">
+ <h2 className="text-xl font-black  tracking-tight" style={{ color: "var(--text-main)" }}>Audit Iklim Wilayah (3 Tahun)</h2>
+ <p className="text-xs /70 leading-relaxed">
  AI membaca riwayat cuaca 3 tahun lokasi Anda untuk dasar kecocokan jenis varietas.
  </p>
  </div>
@@ -362,12 +362,12 @@ export default function WizardPage() {
  <Compass className="w-7 h-7 stroke-[2]" />
  </div>
  <div className="space-y-1 max-w-xs mx-auto">
- <p className="text-sm font-black text-white">Sinkronisasi GPS &amp; Stasiun Cuaca</p>
- <p className="text-xs text-emerald-200/60">Tekan tombol di bawah untuk menarik telemetri elevasi dan riwayat cuaca 3 tahun lokasi Anda.</p>
+ <p className="text-sm font-black " style={{ color: "var(--text-main)" }}>Sinkronisasi GPS &amp; Stasiun Cuaca</p>
+ <p className="text-xs /60">Tekan tombol di bawah untuk menarik telemetri elevasi dan riwayat cuaca 3 tahun lokasi Anda.</p>
  </div>
 
  {locError && (
- <p className="text-xs text-rose-300 bg-rose-950/40 p-3 rounded-xl border border-rose-800/40">
+ <p className="text-xs  bg-rose-950/40 p-3 rounded-xl border border-rose-800/40">
  {locError}
  </p>
  )}
@@ -390,8 +390,8 @@ export default function WizardPage() {
  <span className="text-[9px] font-mono uppercase text-emerald-400 font-bold block mb-0.5">
  Lokasi Geografis Terverifikasi
  </span>
- <p className="text-sm font-black text-white">{state.location?.name}</p>
- <span className="text-[10px] text-emerald-300/80 font-medium block mt-0.5">
+ <p className="text-sm font-black " style={{ color: "var(--text-main)" }}>{state.location?.name}</p>
+ <span className="text-[10px] /80 font-medium block mt-0.5">
  Zona: {state.climate.climate_zone ?? 'Tropis Dataran Rendah'}
  </span>
  </div>
@@ -405,10 +405,10 @@ export default function WizardPage() {
  </div>
 
  {/* Status Banner AI */}
- <div className="p-3 rounded-2xl border text-xs text-emerald-100/90 leading-relaxed flex items-start gap-2.5">
+ <div className="p-3 rounded-2xl border text-xs /90 leading-relaxed flex items-start gap-2.5">
  <Sparkles className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
  <div>
- <strong className="text-emerald-300 block font-bold mb-0.5">Data Iklim Tersimpan Sebagai Basis History:</strong>
+ <strong className=" block font-bold mb-0.5">Data Iklim Tersimpan Sebagai Basis History:</strong>
  Rerata suhu {state.climate.avg_temp_c}°C, elevasi {state.climate.elevation_m} mdpl, curah hujan {state.climate.annual_rainfall_mm} mm/thn, dan sinar {state.climate.sunshine_hours_day ?? 6.8} jam/hari akan otomatis dikunci ke langkah 2, 3, 4, dan evaluasi varietas.
  </div>
  </div>
@@ -417,40 +417,40 @@ export default function WizardPage() {
  <div className="grid grid-cols-2 gap-2.5 pt-1">
  <div className="p-3.5 rounded-2xl border space-y-1">
  <div className="flex items-center justify-between">
- <span className="text-[10px] text-emerald-300/70 font-semibold">Suhu Rerata 3 Thn</span>
+ <span className="text-[10px] /70 font-semibold">Suhu Rerata 3 Thn</span>
  <Thermometer className="w-4 h-4 text-amber-400" />
  </div>
- <p className="text-lg font-black text-white">{state.climate.avg_temp_c}°C</p>
+ <p className="text-lg font-black " style={{ color: "var(--text-main)" }}>{state.climate.avg_temp_c}°C</p>
  <span className="text-[9px] text-emerald-400 block font-medium">Hari ini: {state.climate.current_temp_c}°C ({state.climate.current_weather})</span>
  </div>
 
  <div className="p-3.5 rounded-2xl border space-y-1">
  <div className="flex items-center justify-between">
- <span className="text-[10px] text-emerald-300/70 font-semibold">Elevasi / Ketinggian</span>
+ <span className="text-[10px] /70 font-semibold">Elevasi / Ketinggian</span>
  <Mountain className="w-4 h-4 text-emerald-400" />
  </div>
- <p className="text-lg font-black text-white">{state.climate.elevation_m} mdpl</p>
- <span className="text-[9px] text-emerald-300/80 block font-medium">
+ <p className="text-lg font-black " style={{ color: "var(--text-main)" }}>{state.climate.elevation_m} mdpl</p>
+ <span className="text-[9px] /80 block font-medium">
  {state.climate.elevation_m > 700 ? 'Dataran Tinggi' : state.climate.elevation_m > 400 ? 'Dataran Menengah' : 'Dataran Rendah'}
  </span>
  </div>
 
  <div className="p-3.5 rounded-2xl border space-y-1">
  <div className="flex items-center justify-between">
- <span className="text-[10px] text-emerald-300/70 font-semibold">Curah Hujan Tahunan</span>
+ <span className="text-[10px] /70 font-semibold">Curah Hujan Tahunan</span>
  <CloudRain className="w-4 h-4 text-cyan-400" />
  </div>
- <p className="text-lg font-black text-white">{state.climate.annual_rainfall_mm} mm</p>
- <span className="text-[9px] text-cyan-300 block font-medium">± {state.climate.dry_months_count ?? 3} bulan kemarau/thn</span>
+ <p className="text-lg font-black " style={{ color: "var(--text-main)" }}>{state.climate.annual_rainfall_mm} mm</p>
+ <span className="text-[9px]  block font-medium">± {state.climate.dry_months_count ?? 3} bulan kemarau/thn</span>
  </div>
 
  <div className="p-3.5 rounded-2xl border space-y-1">
  <div className="flex items-center justify-between">
- <span className="text-[10px] text-emerald-300/70 font-semibold">Penyinaran Surya</span>
+ <span className="text-[10px] /70 font-semibold">Penyinaran Surya</span>
  <Sun className="w-4 h-4 text-amber-400 fill-amber-400/30" />
  </div>
- <p className="text-lg font-black text-white">{state.climate.sunshine_hours_day ?? 6.8} jam/hari</p>
- <span className="text-[9px] text-amber-300 block font-medium">Kelembaban {state.climate.avg_humidity_pct}%</span>
+ <p className="text-lg font-black " style={{ color: "var(--text-main)" }}>{state.climate.sunshine_hours_day ?? 6.8} jam/hari</p>
+ <span className="text-[9px]  block font-medium">Kelembaban {state.climate.avg_humidity_pct}%</span>
  </div>
  </div>
  </div>
@@ -466,8 +466,8 @@ export default function WizardPage() {
  <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold block">
  Pijakan 2: Wadah &amp; Paparan Sinar
  </span>
- <h2 className="text-xl font-black text-white tracking-tight">Area Penanaman di Rumah</h2>
- <p className="text-xs text-emerald-200/70 leading-relaxed">
+ <h2 className="text-xl font-black  tracking-tight" style={{ color: "var(--text-main)" }}>Area Penanaman di Rumah</h2>
+ <p className="text-xs /70 leading-relaxed">
  Setiap area memiliki suhu mikro, terpaan angin, dan kapasitas volume media tanah yang berbeda.
  </p>
  </div>
@@ -483,7 +483,7 @@ export default function WizardPage() {
  className={`w-full p-4 rounded-3xl text-left border transition-all active:scale-[0.98] flex items-start gap-3.5 ${
  isSelected
  ? ' border-emerald-500 text-white shadow-sm ring-1 ring-emerald-400/30'
- : ' hover:border-emerald-700 text-emerald-100'
+ : ' hover:border-emerald-700 '
  }`}
  >
  <div className={cn("w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 border mt-0.5", p.iconBg)}>
@@ -491,10 +491,10 @@ export default function WizardPage() {
  </div>
  <div className="flex-1 min-w-0">
  <div className="flex items-center justify-between mb-1">
- <p className="text-sm font-black tracking-tight text-white">{p.label}</p>
+ <p className="text-sm font-black tracking-tight " style={{ color: "var(--text-main)" }}>{p.label}</p>
  {isSelected && <Check className="w-4 h-4 text-emerald-400 stroke-[3]" />}
  </div>
- <p className="text-xs text-emerald-200/70 leading-relaxed">{p.desc}</p>
+ <p className="text-xs /70 leading-relaxed">{p.desc}</p>
  </div>
  </button>
  );
@@ -510,8 +510,8 @@ export default function WizardPage() {
  <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold block">
  Pijakan 3: Kelompok Komoditas
  </span>
- <h2 className="text-xl font-black text-white tracking-tight">Kategori Tanaman</h2>
- <p className="text-xs text-emerald-200/70 leading-relaxed">
+ <h2 className="text-xl font-black  tracking-tight" style={{ color: "var(--text-main)" }}>Kategori Tanaman</h2>
+ <p className="text-xs /70 leading-relaxed">
  Pilih rumpun tanaman yang ingin dibudidayakan di kebun Anda.
  </p>
  </div>
@@ -532,14 +532,14 @@ export default function WizardPage() {
  className={`p-4 rounded-3xl text-left border transition-all active:scale-[0.96] flex flex-col justify-between h-32 ${
  isSelected
  ? ' border-emerald-500 text-white shadow-sm ring-1 ring-emerald-400/30'
- : ' hover:border-emerald-700 text-emerald-100'
+ : ' hover:border-emerald-700 '
  }`}
  >
  <div className={cn("w-10 h-10 rounded-2xl flex items-center justify-center border", catMeta.bg)}>
  <CatIcon className={cn("w-5 h-5", catMeta.color)} />
  </div>
  <div>
- <p className="text-xs font-black tracking-tight text-white">{cat.label}</p>
+ <p className="text-xs font-black tracking-tight " style={{ color: "var(--text-main)" }}>{cat.label}</p>
  <span className="text-[9px] text-emerald-400/70 font-medium block mt-0.5">Pilih Rumpun</span>
  </div>
  </button>
@@ -556,8 +556,8 @@ export default function WizardPage() {
  <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold block">
  Pijakan 4: Spesies Pilihan
  </span>
- <h2 className="text-xl font-black text-white tracking-tight">Pilih Jenis Spesies {state.category}</h2>
- <p className="text-xs text-emerald-200/70 leading-relaxed">
+ <h2 className="text-xl font-black  tracking-tight" style={{ color: "var(--text-main)" }}>Pilih Jenis Spesies {state.category}</h2>
+ <p className="text-xs /70 leading-relaxed">
  Spesies dalam rumpun <span className="text-emerald-400 font-bold">{state.category}</span> yang akan dievaluasi dengan iklim 3 tahun.
  </p>
  </div>
@@ -575,15 +575,15 @@ export default function WizardPage() {
  className={`p-4 rounded-3xl text-left border transition-all active:scale-[0.96] flex flex-col justify-between h-28 ${
  isSelected
  ? ' border-emerald-500 text-white shadow-sm ring-1 ring-emerald-400/30'
- : ' hover:border-emerald-700 text-emerald-100'
+ : ' hover:border-emerald-700 '
  }`}
  >
  <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
  <Tag className="w-4 h-4" />
  </div>
  <div>
- <p className="text-xs font-black tracking-tight text-white">{cmd.name}</p>
- <p className="text-[10px] text-emerald-200/60 line-clamp-1 mt-0.5">{cmd.description}</p>
+ <p className="text-xs font-black tracking-tight " style={{ color: "var(--text-main)" }}>{cmd.name}</p>
+ <p className="text-[10px] /60 line-clamp-1 mt-0.5">{cmd.description}</p>
  </div>
  </button>
  );
@@ -599,38 +599,38 @@ export default function WizardPage() {
  <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold block">
  Pijakan 5: Sintesis Akurasi AI
  </span>
- <h2 className="text-xl font-black text-white tracking-tight">Kesesuaian Varietas {state.commodity}</h2>
- <p className="text-xs text-emerald-200/70 leading-relaxed">
+ <h2 className="text-xl font-black  tracking-tight" style={{ color: "var(--text-main)" }}>Kesesuaian Varietas {state.commodity}</h2>
+ <p className="text-xs /70 leading-relaxed">
  AI menghitung kesesuaian biologis dengan mensintesiskan seluruh data dari langkah 1 sampai 4.
  </p>
  </div>
 
  {/* Penjelasan Transparan Sintesis AI */}
  <div className="p-4 rounded-3xl border space-y-2.5 shadow-sm">
- <div className="flex items-center gap-2 text-emerald-300 font-bold text-xs">
+ <div className="flex items-center gap-2  font-bold text-xs">
  <Sparkles className="w-4 h-4 text-amber-400" />
  <span>Perhitungan Presisi AI Berdasarkan 4 Parameter:</span>
  </div>
- <div className="grid grid-cols-2 gap-2 text-[11px] text-emerald-100/90">
+ <div className="grid grid-cols-2 gap-2 text-[11px] /90">
  <div className="p-2.5 rounded-2xl border ">
  <span className="text-emerald-400/80 font-mono text-[9px] block">1. IKLIM 3 TAHUN</span>
  <strong>{state.location?.name?.split(',')[0]}</strong>
- <p className="text-[10px] text-emerald-300/70">{state.climate?.avg_temp_c}°C · {state.climate?.elevation_m} mdpl</p>
+ <p className="text-[10px] /70">{state.climate?.avg_temp_c}°C · {state.climate?.elevation_m} mdpl</p>
  </div>
  <div className="p-2.5 rounded-2xl border ">
  <span className="text-emerald-400/80 font-mono text-[9px] block">2. PENEMPATAN</span>
  <strong>{selectedPlacement?.label}</strong>
- <p className="text-[10px] text-emerald-300/70">Wadah pot &amp; intensitas cahaya</p>
+ <p className="text-[10px] /70">Wadah pot &amp; intensitas cahaya</p>
  </div>
  <div className="p-2.5 rounded-2xl border ">
  <span className="text-emerald-400/80 font-mono text-[9px] block">3. RUMPUN</span>
  <strong>{state.category}</strong>
- <p className="text-[10px] text-emerald-300/70">Sifat fotosintesis famili</p>
+ <p className="text-[10px] /70">Sifat fotosintesis famili</p>
  </div>
  <div className="p-2.5 rounded-2xl border ">
  <span className="text-emerald-400/80 font-mono text-[9px] block">4. SPESIES</span>
  <strong>{state.commodity}</strong>
- <p className="text-[10px] text-emerald-300/70">Kebutuhan jam sinar &amp; air</p>
+ <p className="text-[10px] /70">Kebutuhan jam sinar &amp; air</p>
  </div>
  </div>
  </div>
@@ -648,14 +648,14 @@ export default function WizardPage() {
  className={`w-full p-4 rounded-3xl text-left border transition-all space-y-3 active:scale-[0.98] ${
  isSelected
  ? ' border-emerald-500 text-white shadow-sm ring-1 ring-emerald-400/30'
- : ' hover:border-emerald-700 text-emerald-100'
+ : ' hover:border-emerald-700 '
  }`}
  >
  <div className="flex items-start justify-between gap-3">
  <div>
  <div className="flex items-center gap-2">
  <span className="text-xs font-mono font-bold text-emerald-500">#{i + 1}</span>
- <p className="text-sm font-black text-white tracking-tight">{v.name}</p>
+ <p className="text-sm font-black  tracking-tight" style={{ color: "var(--text-main)" }}>{v.name}</p>
  </div>
  <span className={cn(
  'text-[9px] font-bold uppercase tracking-wider mt-0.5 inline-block',
@@ -672,7 +672,7 @@ export default function WizardPage() {
  )}>
  {v.score}%
  </span>
- <span className="text-[8px] font-mono uppercase tracking-wider text-emerald-300/60 block">Kesesuaian</span>
+ <span className="text-[8px] font-mono uppercase tracking-wider /60 block">Kesesuaian</span>
  </div>
  </div>
 
@@ -684,25 +684,25 @@ export default function WizardPage() {
  />
  </div>
 
- <p className="text-xs text-emerald-200/80 leading-relaxed">{v.description}</p>
+ <p className="text-xs /80 leading-relaxed">{v.description}</p>
 
  <div className="space-y-1 pt-1">
  {v.advantages.map((adv, j) => (
- <div key={j} className="flex items-start gap-1.5 text-[11px] text-emerald-300">
+ <div key={j} className="flex items-start gap-1.5 text-[11px] ">
  <span className="text-emerald-400 font-bold shrink-0">✓</span>
  <span>{adv}</span>
  </div>
  ))}
  {v.challenges.map((ch, j) => (
- <div key={j} className="flex items-start gap-1.5 text-[11px] text-amber-300">
+ <div key={j} className="flex items-start gap-1.5 text-[11px] ">
  <span className="text-amber-400 font-bold shrink-0">!</span>
  <span>{ch}</span>
  </div>
  ))}
  </div>
 
- <div className="p-2.5 rounded-2xl border text-[11px] text-emerald-200/90">
- <strong className="text-emerald-300 block mb-0.5">Rekomendasi Racikan Media:</strong>
+ <div className="p-2.5 rounded-2xl border text-[11px] /90">
+ <strong className=" block mb-0.5">Rekomendasi Racikan Media:</strong>
  {v.media}
  </div>
  </button>
@@ -719,14 +719,14 @@ export default function WizardPage() {
  setCustomResult(null);
  setCustomError('');
  }}
- className="w-full py-3.5 px-4 rounded-3xl border border-dashed hover:border-emerald-500 text-emerald-300 hover:text-white text-xs font-bold flex items-center justify-center gap-2 transition-all /40"
+ className="w-full py-3.5 px-4 rounded-3xl border border-dashed hover:border-emerald-500  hover:text-white text-xs font-bold flex items-center justify-center gap-2 transition-all /40"
  >
  <Plus className="w-4 h-4 text-emerald-400" />
  <span>Input Varietas Sendiri (Diuji terhadap 4 Parameter)</span>
  </button>
  ) : (
  <div className="rounded-3xl /95 border p-5 space-y-3">
- <div className="flex items-center gap-2 text-emerald-300">
+ <div className="flex items-center gap-2 ">
  <Sparkles className="w-4 h-4 text-amber-400" />
  <span className="text-xs font-bold uppercase tracking-wider">Uji Kesesuaian Varietas Custom</span>
  </div>
@@ -754,7 +754,7 @@ export default function WizardPage() {
  </div>
 
  {customError && (
- <p className="text-xs text-rose-300">{customError}</p>
+ <p className="text-xs ">{customError}</p>
  )}
 
  {customResult && (
@@ -855,7 +855,7 @@ export default function WizardPage() {
 
  <button
  onClick={() => setShowCustomInput(false)}
- className="text-[11px] text-emerald-400/60 hover:text-emerald-300 block"
+ className="text-[11px] text-emerald-400/60 hover: block"
  >
  Batal / Tutup
  </button>
@@ -872,15 +872,15 @@ export default function WizardPage() {
  <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold block">
  Pijakan 6: Identitas &amp; Penguncian Database
  </span>
- <h2 className="text-xl font-black text-white tracking-tight">Beri Nama Tanamanmu</h2>
- <p className="text-xs text-emerald-200/70 leading-relaxed">
+ <h2 className="text-xl font-black  tracking-tight" style={{ color: "var(--text-main)" }}>Beri Nama Tanamanmu</h2>
+ <p className="text-xs /70 leading-relaxed">
  Seluruh riwayat telemetri iklim 3 tahun &amp; penempatan akan diarsip permanen dengan tanaman ini.
  </p>
  </div>
 
  <div className="rounded-3xl border p-5 space-y-4 backdrop-blur-md shadow-md">
  <div>
- <label className="text-xs font-bold uppercase tracking-wider text-emerald-300 block mb-1.5">
+ <label className="text-xs font-bold uppercase tracking-wider  block mb-1.5">
  Nama Panggilan Tanaman
  </label>
  <input
@@ -893,7 +893,7 @@ export default function WizardPage() {
  </div>
 
  <div>
- <label className="text-xs font-bold uppercase tracking-wider text-emerald-300 block mb-1.5">
+ <label className="text-xs font-bold uppercase tracking-wider  block mb-1.5">
  Tanggal Mulai Tanam
  </label>
  <input
@@ -905,26 +905,26 @@ export default function WizardPage() {
  </div>
 
  {/* Summary Box History Chain */}
- <div className="p-4 rounded-2xl border space-y-2 text-xs text-emerald-100">
+ <div className="p-4 rounded-2xl border space-y-2 text-xs ">
  <div className="flex justify-between items-center">
  <span className="text-emerald-400/70">1. Wilayah &amp; Iklim:</span>
- <strong className="text-white font-mono">{state.location?.name?.split(',')[0]} ({state.climate?.avg_temp_c}°C)</strong>
+ <strong className=" font-mono" style={{ color: "var(--text-main)" }}>{state.location?.name?.split(',')[0]} ({state.climate?.avg_temp_c}°C)</strong>
  </div>
  <div className="flex justify-between items-center">
  <span className="text-emerald-400/70">2. Area Penempatan:</span>
- <strong className="text-white">{selectedPlacement?.label}</strong>
+ <strong className="" style={{ color: "var(--text-main)" }}>{selectedPlacement?.label}</strong>
  </div>
  <div className="flex justify-between items-center">
  <span className="text-emerald-400/70">3. Rumpun Kategori:</span>
- <strong className="text-white">{state.category}</strong>
+ <strong className="" style={{ color: "var(--text-main)" }}>{state.category}</strong>
  </div>
  <div className="flex justify-between items-center">
  <span className="text-emerald-400/70">4. Spesies Komoditas:</span>
- <strong className="text-white">{state.commodity}</strong>
+ <strong className="" style={{ color: "var(--text-main)" }}>{state.commodity}</strong>
  </div>
  <div className="flex justify-between items-center pt-1 border-t ">
  <span className="text-emerald-400/70">5. Varietas Terpilih:</span>
- <strong className="text-emerald-300 font-bold">{state.variety}</strong>
+ <strong className=" font-bold">{state.variety}</strong>
  </div>
  </div>
  </div>
@@ -938,7 +938,7 @@ export default function WizardPage() {
  {step > 1 ? (
  <button
  onClick={() => setStep(s => s - 1)}
- className="px-5 py-3 rounded-full border text-emerald-200 hover:text-white text-xs font-bold transition-all flex items-center gap-1.5 active:scale-95"
+ className="px-5 py-3 rounded-full border  hover:text-white text-xs font-bold transition-all flex items-center gap-1.5 active:scale-95"
  >
  <ChevronLeft className="w-4 h-4" />
  <span>Sebelumnya</span>

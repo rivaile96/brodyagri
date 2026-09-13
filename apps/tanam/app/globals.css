@@ -159,53 +159,47 @@ html, body {
   border-color: var(--border-card-subtle) !important;
 }
 
+
 /* ==========================================================================
-   HIGH CONTRAST TEXT RULES FOR LIGHT THEMES (PEARL & TERRACOTTA)
+   HIGH CONTRAST & ACCESSIBILITY OVERRIDES FOR LIGHT THEMES (PEARL & TERRACOTTA)
    ========================================================================== */
+
 [data-theme="pearl"],
 [data-theme="terracotta"] {
-  /* Override white / pale text in content containers into dark crisp font */
-  p.text-white,
-  h1.text-white,
-  h2.text-white,
-  h3.text-white,
-  h4.text-white,
-  span.text-white,
-  strong.text-white,
-  div.text-white,
-  .text-white:not(button *):not([class*="bg-emerald"]):not([class*="bg-rose"]):not([class*="bg-amber"]):not([class*="bg-zinc-900"] *) {
-    color: var(--text-main) !important;
-  }
-
-  /* Override pale green and pale gray texts in light mode to high-contrast dark-tinted colors */
+  /* Core text overrides */
+  .text-white,
+  .text-zinc-100,
+  .text-zinc-200,
+  .text-zinc-300,
+  .text-emerald-50,
   .text-emerald-100,
   .text-emerald-200,
-  .text-emerald-300,
-  [class*="text-emerald-100"],
-  [class*="text-emerald-200"],
-  [class*="text-emerald-300"] {
-    color: var(--text-muted) !important;
+  .text-emerald-300 {
+    color: var(--text-main) !important;
   }
 
   .text-emerald-400 {
     color: var(--accent-primary) !important;
   }
 
-  .text-zinc-100,
-  .text-zinc-200,
-  .text-zinc-300 {
-    color: var(--text-main) !important;
-  }
-
   .text-zinc-400,
-  .text-zinc-500 {
+  .text-zinc-500,
+  .text-emerald-200\/70,
+  .text-emerald-300\/70,
+  .text-emerald-100\/90 {
     color: var(--text-dim) !important;
   }
 
-  /* Form inputs text & background */
-  input, textarea, select {
-    background-color: var(--bg-card-subtle) !important;
-    border-color: var(--border-card) !important;
-    color: var(--text-main) !important;
+  /* Exception for solid color buttons and badges that have dark/emerald backgrounds */
+  button.bg-emerald-600 *,
+  button.bg-emerald-500 *,
+  a.bg-emerald-600 *,
+  a.bg-emerald-500 *,
+  .bg-emerald-600 *,
+  .bg-emerald-500 *,
+  .bg-amber-500 *,
+  .bg-rose-500 *,
+  .bg-zinc-900 * {
+    color: inherit;
   }
 }

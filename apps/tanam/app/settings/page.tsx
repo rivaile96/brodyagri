@@ -128,7 +128,7 @@ export default function SettingsPage() {
             <Palette className="w-3.5 h-3.5" />
             <span>Kustomisasi Tampilan &amp; Preferensi</span>
           </div>
-          <h1 className="text-2xl font-black tracking-tight" style={{ color: 'var(--text-main)' }}>
+          <h1 className="text-2xl font-black tracking-tight" style={{ color: "var(--text-main)" }}>
             Pengaturan &amp; Tema
           </h1>
           <p className="text-xs leading-relaxed" style={{ color: 'var(--text-dim)' }}>

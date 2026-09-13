@@ -198,7 +198,7 @@ export default function PlantDetailPage() {
             <div className="h-52 w-full overflow-hidden relative">
               <img src={plant.cover_photo_url} className="w-full h-full object-cover" alt={plant.name} />
               <div className="absolute inset-0 bg-black/40" />
-              <span className="absolute top-3 right-3 px-3 py-1 bg-black/70 backdrop-blur-md rounded-full text-[10px] font-mono text-emerald-300 border border-white/20 flex items-center gap-1">
+              <span className="absolute top-3 right-3 px-3 py-1 bg-black/70 backdrop-blur-md rounded-full text-[10px] font-mono  border border-white/20 flex items-center gap-1">
                 <Camera className="w-3 h-3 text-emerald-400" />
                 <span>Foto Profil Terbaru (Mg {plant.current_week - 1 > 0 ? plant.current_week - 1 : 1})</span>
               </span>
@@ -224,7 +224,7 @@ export default function PlantDetailPage() {
                 </p>
               </div>
               <div className="text-right shrink-0">
-                <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-600 text-white text-xs font-bold rounded-full shadow-sm">
+                <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-600  text-xs font-bold rounded-full shadow-sm" style={{ color: "var(--text-main)" }}>
                   <Sprout className="w-3.5 h-3.5" />
                   <span>Minggu Ke-{plant.current_week}</span>
                 </span>

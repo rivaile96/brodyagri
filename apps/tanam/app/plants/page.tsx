@@ -8,9 +8,9 @@ import { Plus, ChevronRight, Sprout, Calendar, ArrowRight, Tag, CheckCircle2, Al
 import { motion, AnimatePresence } from 'framer-motion';
 
 const STATUS_LABEL: Record<string, { label: string; class: string; icon: any }> = {
-  active: { label: 'Aktif Tumbuh', class: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 border-emerald-500/30', icon: Sprout },
-  harvested: { label: 'Panen Selesai', class: 'bg-amber-500/15 text-amber-600 dark:text-amber-300 border-amber-500/30', icon: CheckCircle2 },
-  dead: { label: 'Gagal Tumbuh', class: 'bg-rose-500/15 text-rose-600 dark:text-rose-300 border-rose-500/30', icon: AlertCircle },
+  active: { label: 'Aktif Tumbuh', class: 'bg-emerald-500/15 text-emerald-600 dark: border-emerald-500/30', icon: Sprout },
+  harvested: { label: 'Panen Selesai', class: 'bg-amber-500/15 text-amber-600 dark: border-amber-500/30', icon: CheckCircle2 },
+  dead: { label: 'Gagal Tumbuh', class: 'bg-rose-500/15 text-rose-600 dark: border-rose-500/30', icon: AlertCircle },
 };
 
 export default function PlantsPage() {
