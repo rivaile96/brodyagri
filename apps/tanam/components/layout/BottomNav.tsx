@@ -28,7 +28,7 @@ export default function BottomNav() {
           borderColor: 'var(--nav-border)'
         }}
       >
-        {navItems.map(({ href, label, icon: Icon, special }) => {
+        {navItems.map(({ href, label, icon: Icon, special, external }) => {
           const isActive = pathname === href || pathname.startsWith(href + '/');
 
           if (special) {
