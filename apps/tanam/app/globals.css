@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-/* THEME PRESETS VIA CSS VARIABLES */
+/* ==========================================================================
+   THEME PRESETS VIA CSS VARIABLES (BRODYAGRI TANAM)
+   ========================================================================== */
 
 :root,
 [data-theme="pearl"] {
@@ -49,10 +51,10 @@
   color-scheme: dark;
   --bg-main: #090a0a;
   --bg-card: #131517;
-  --bg-card-subtle: #191c1f;
-  --bg-card-hover: #202428;
+  --bg-card-subtle: #1a1d20;
+  --bg-card-hover: #22272c;
   --border-card: #282e34;
-  --border-card-subtle: #1c2126;
+  --border-card-subtle: #1e2328;
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-dim: #64748b;
@@ -63,7 +65,7 @@
   --badge-bg: rgba(34, 197, 94, 0.15);
   --badge-text: #4ade80;
   --badge-border: rgba(34, 197, 94, 0.3);
-  --shadow-color: rgba(0, 0, 0, 0.8);
+  --shadow-color: rgba(0, 0, 0, 0.85);
 }
 
 [data-theme="terracotta"] {
@@ -92,16 +94,13 @@
   box-sizing: border-box;
 }
 
-body {
-  background-color: var(--bg-main);
-  color: var(--text-main);
+html, body {
+  background-color: var(--bg-main) !important;
+  color: var(--text-main) !important;
   min-height: 100dvh;
   overscroll-behavior: none;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   transition: background-color 0.25s ease, color 0.25s ease;
-}
-
-html {
   scroll-behavior: smooth;
 }
 
@@ -114,95 +113,56 @@ html {
 }
 
 /* ==========================================================================
-   GLOBAL CSS OVERRIDES FOR HIGH CONTRAST IN LIGHT THEMES (PEARL & TERRACOTTA)
+   GLOBAL THEME HELPERS FOR STRICT COMPLIANCE
    ========================================================================== */
 
+/* Universal Card & Container Styles */
+.theme-card {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-card) !important;
+  color: var(--text-main) !important;
+}
+
+.theme-card-subtle {
+  background-color: var(--bg-card-subtle) !important;
+  border-color: var(--border-card-subtle) !important;
+  color: var(--text-main) !important;
+}
+
+.theme-text-main {
+  color: var(--text-main) !important;
+}
+
+.theme-text-dim {
+  color: var(--text-dim) !important;
+}
+
+.theme-badge {
+  background-color: var(--badge-bg) !important;
+  border-color: var(--badge-border) !important;
+  color: var(--badge-text) !important;
+}
+
+/* Automatic override for legacy dark classes to bind to CSS Variables */
+[class*="bg-[#14231b]"],
+[class*="bg-[#131517]"],
+[class*="bg-[#183124]"],
+[class*="bg-[#1b3628]"] {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-card) !important;
+}
+
+[class*="bg-[#0c1410]"],
+[class*="bg-[#090a0a]"],
+[class*="bg-[#191c1f]"] {
+  background-color: var(--bg-card-subtle) !important;
+  border-color: var(--border-card-subtle) !important;
+}
+
+/* Light themes font overrides */
 [data-theme="pearl"],
 [data-theme="terracotta"] {
-  /* Override text-white & text-emerald-50 menjadi warna teks utama gelap pekat */
-  .text-white,
-  .text-emerald-50 {
+  .text-white {
     color: var(--text-main) !important;
-  }
-
-  /* Override background kartu dark [#14231b] menjadi kartu putih bersih dengan border */
-  [class*="bg-[#14231b]"] {
-    background-color: var(--bg-card) !important;
-    border-color: var(--border-card) !important;
-    box-shadow: 0 4px 20px -2px var(--shadow-color) !important;
-  }
-
-  /* Override inner panel [#0c1410] */
-  [class*="bg-[#0c1410]"] {
-    background-color: var(--bg-card-subtle) !important;
-    border-color: var(--border-card-subtle) !important;
-  }
-
-  /* Override container gelap gradient */
-  [class*="from-[#183124]"],
-  [class*="from-[#1b3628]"],
-  [class*="from-[#2a2215]"] {
-    background-image: none !important;
-    background-color: var(--bg-card) !important;
-    border-color: var(--border-card) !important;
-  }
-
-  /* Tombol aksi checklist & card task di mode terang */
-  button span.text-emerald-50,
-  button span.text-white,
-  .text-emerald-50,
-  .text-emerald-100,
-  .text-emerald-200,
-  [class*="text-emerald-100"],
-  [class*="text-emerald-200"] {
-    color: var(--text-muted) !important;
-  }
-
-  .text-emerald-300,
-  [class*="text-emerald-300"] {
-    color: var(--text-dim) !important;
-  }
-
-  /* Teks task yang sudah selesai dicoret */
-  [class*="text-emerald-300/40"] {
-    color: #9ca3af !important;
-  }
-
-  /* Input and Textarea */
-  input, textarea, select {
-    background-color: var(--bg-card-subtle) !important;
-    border-color: var(--border-card) !important;
-    color: var(--text-main) !important;
-  }
-  input::placeholder, textarea::placeholder {
-    color: var(--text-dim) !important;
-  }
-
-  /* Badges */
-  [class*="bg-emerald-500/20"],
-  [class*="bg-emerald-900"],
-  [class*="bg-emerald-950"] {
-    background-color: var(--badge-bg) !important;
-    border-color: var(--badge-border) !important;
-    color: var(--badge-text) !important;
-  }
-
-  /* Tombol Hapus (Trash) merah agar kontras tinggi */
-  [class*="bg-rose-950"] {
-    background-color: #fee2e2 !important;
-    border-color: #fca5a5 !important;
-    color: #dc2626 !important;
-  }
-  [class*="bg-rose-950"]:hover {
-    background-color: #dc2626 !important;
-    color: #ffffff !important;
-  }
-
-  /* Borders */
-  [class*="border-emerald-800"],
-  [class*="border-emerald-900"],
-  [class*="border-emerald-700"],
-  [class*="border-emerald-950"] {
-    border-color: var(--border-card) !important;
   }
 }

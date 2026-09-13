@@ -24,6 +24,7 @@ export default function AppShell({ title, rightSlot, children, hideNav = false }
   useEffect(() => {
     const saved = localStorage.getItem('brodyagri-theme') || 'pearl';
     setCurrentTheme(saved);
+    document.documentElement.setAttribute('data-theme', saved);
   }, []);
 
   const toggleQuickTheme = () => {
