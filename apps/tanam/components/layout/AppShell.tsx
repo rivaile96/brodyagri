@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import BottomNav from './BottomNav';
+import OdooAppLauncher from './OdooAppLauncher';
 import { motion } from 'framer-motion';
-import { Sprout, Sun, Moon, Settings as SettingsIcon, LogOut, LogIn } from 'lucide-react';
+import { Sprout, Sun, Moon, Settings as SettingsIcon, LogOut, LayoutGrid } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -18,6 +19,7 @@ export default function AppShell({ title, rightSlot, children, hideNav = false }
   const router = useRouter();
   const [currentTheme, setCurrentTheme] = useState<string>('pearl');
   const [loggingOut, setLoggingOut] = useState(false);
+  const [isLauncherOpen, setIsLauncherOpen] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('brodyagri-theme') || 'pearl';
@@ -65,22 +67,38 @@ export default function AppShell({ title, rightSlot, children, hideNav = false }
         }}
       >
         <div className="flex items-center justify-between h-15 px-4 max-w-lg mx-auto">
-          <Link href="/today" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-2xl bg-emerald-500 flex items-center justify-center text-zinc-950 shadow-sm ring-1 ring-emerald-400/30 group-hover:scale-105 transition-transform">
-              <Sprout className="w-5 h-5 stroke-[2.4]" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-base font-black tracking-tight leading-none" style={{ color: 'var(--text-main)' }}>
-                  {title ?? 'BrodyAgri'}
-                </span>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+          <div className="flex items-center gap-2">
+            {/* Odoo Style 9-Dots App Switcher Button */}
+            <button
+              onClick={() => setIsLauncherOpen(true)}
+              title="Agri Suite App Switcher (Odoo Style)"
+              className="w-9 h-9 rounded-2xl flex items-center justify-center border transition-all duration-200 shadow-sm hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: 'var(--bg-card)',
+                borderColor: 'var(--border-card)',
+                color: 'var(--accent-primary)'
+              }}
+            >
+              <LayoutGrid className="w-4.5 h-4.5 stroke-[2.3]" />
+            </button>
+
+            <Link href="/today" className="flex items-center gap-2.5 group">
+              <div className="w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center text-zinc-950 shadow-sm ring-1 ring-emerald-400/30 group-hover:scale-105 transition-transform">
+                <Sprout className="w-4.5 h-4.5 stroke-[2.4]" />
               </div>
-              <span className="text-[10px] font-medium tracking-wide" style={{ color: 'var(--text-dim)' }}>
-                Sahabat Tani Pemula
-              </span>
-            </div>
-          </Link>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm font-black tracking-tight leading-none" style={{ color: 'var(--text-main)' }}>
+                    {title ?? 'BrodyAgri'}
+                  </span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                </div>
+                <span className="text-[9.5px] font-medium tracking-wide block" style={{ color: 'var(--text-dim)' }}>
+                  Tanam (Private)
+                </span>
+              </div>
+            </Link>
+          </div>
           
           <div className="flex items-center gap-2">
             {/* Quick Theme Switcher Button */}
@@ -144,6 +162,13 @@ export default function AppShell({ title, rightSlot, children, hideNav = false }
 
       {/* Floating Bottom Nav */}
       {!hideNav && <BottomNav />}
+
+      {/* Odoo Style Launcher Overlay */}
+      <OdooAppLauncher
+        isOpen={isLauncherOpen}
+        onClose={() => setIsLauncherOpen(false)}
+        currentApp="tanam"
+      />
     </div>
   );
 }

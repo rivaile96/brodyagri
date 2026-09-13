@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { TrendingUp, LineChart, Compass, Store, RefreshCw, Sun, Moon, Sprout } from 'lucide-react';
+import { TrendingUp, LineChart, Compass, Store, RefreshCw, Sun, Moon, Sprout, LayoutGrid } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import OdooAppLauncher from './OdooAppLauncher';
 
 const navItems = [
   { href: '/', label: 'Harga Pasar', icon: TrendingUp },
@@ -23,6 +24,7 @@ interface AppShellProps {
 export default function AppShell({ title, subtitle, children }: AppShellProps) {
   const pathname = usePathname();
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [isLauncherOpen, setIsLauncherOpen] = useState(false);
 
   useEffect(() => {
     const saved = (localStorage.getItem('agriradar-theme') as 'dark' | 'light') || 'dark';
@@ -45,22 +47,38 @@ export default function AppShell({ title, subtitle, children }: AppShellProps) {
         style={{ backgroundColor: 'var(--bg-header)', borderColor: 'var(--border-card)' }}
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 h-15 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-amber-500 flex items-center justify-center text-zinc-950 font-black text-sm shadow-sm">
-              AR
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-base font-black tracking-tight" style={{ color: 'var(--text-primary)' }}>
-                  {title ?? 'AgriRadar'}
-                </span>
-                <span className="w-2 h-2 rounded-full bg-amber-500" />
+          <div className="flex items-center gap-2.5">
+            {/* Odoo Style 9-Dots App Switcher Button */}
+            <button
+              onClick={() => setIsLauncherOpen(true)}
+              title="Agri Suite App Switcher (Odoo Style)"
+              className="w-9 h-9 rounded-xl border flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-sm"
+              style={{
+                backgroundColor: 'var(--bg-card)',
+                borderColor: 'var(--border-card)',
+                color: 'var(--accent-primary)',
+              }}
+            >
+              <LayoutGrid className="w-4.5 h-4.5 stroke-[2.3]" />
+            </button>
+
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-amber-500 flex items-center justify-center text-zinc-950 font-black text-xs shadow-sm">
+                AR
               </div>
-              <span className="text-[11px] block font-medium" style={{ color: 'var(--text-dim)' }}>
-                {subtitle ?? 'Intelijen Pasar & Prediksi Tanam'}
-              </span>
-            </div>
-          </Link>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm font-black tracking-tight" style={{ color: 'var(--text-primary)' }}>
+                    {title ?? 'AgriRadar'}
+                  </span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                </div>
+                <span className="text-[10px] block font-medium" style={{ color: 'var(--text-dim)' }}>
+                  Pasar (Publik)
+                </span>
+              </div>
+            </Link>
+          </div>
 
           {/* Desktop Navigation Links (Hidden on Mobile) */}
           <nav className="hidden md:flex items-center gap-1.5 bg-zinc-900/50 p-1.5 rounded-2xl border" style={{ backgroundColor: 'var(--bg-card-subtle)', borderColor: 'var(--border-card)' }}>
@@ -152,6 +170,13 @@ export default function AppShell({ title, subtitle, children }: AppShellProps) {
           })}
         </nav>
       </div>
+
+      {/* Odoo Style App Launcher Overlay */}
+      <OdooAppLauncher
+        isOpen={isLauncherOpen}
+        onClose={() => setIsLauncherOpen(false)}
+        currentApp="mayur"
+      />
     </div>
   );
 }
