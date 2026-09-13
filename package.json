@@ -1,37 +1,14 @@
 {
-  "name": "brodyagri",
-  "version": "0.1.0",
+  "name": "brodyagri-monorepo",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev:tanam": "npm run dev --workspace=apps/tanam",
+    "dev:mayur": "npm run dev --workspace=apps/mayur",
+    "build:tanam": "npm run build --workspace=apps/tanam",
+    "build:mayur": "npm run build --workspace=apps/mayur",
+    "build": "npm run build:tanam && npm run build:mayur"
   },
-  "dependencies": {
-    "@supabase/ssr": "^0.12.7",
-    "@supabase/supabase-js": "^2.109.0",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/better-sqlite3": "^9.6.0",
-    "bcryptjs": "^3.0.3",
-    "better-sqlite3": "^12.11.1",
-    "clsx": "^2.1.1",
-    "framer-motion": "^13.2.0",
-    "jose": "^6.2.12",
-    "lucide-react": "^1.45.0",
-    "next": "16.3.4",
-    "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "tailwind-merge": "^3.6.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.3.4",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+  "workspaces": [
+    "apps/*"
+  ]
 }

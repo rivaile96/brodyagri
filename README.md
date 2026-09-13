@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BrodyAgri Ecosystem (Monorepo)
 
-## Getting Started
+Monorepo terintegrasi untuk ekosistem pertanian & intelijen pasar komoditas pangan.
 
-First, run the development server:
+## Struktur Aplikasi
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Repositori ini dikelola dalam arsitektur **Monorepo (npm workspaces)**:
+
+```text
+brodyagri/
+├── apps/
+│   ├── tanam/      # BrodyAgri: Panduan berkebun, AI dokter tanaman, resep panen, jadwal rawat
+│   └── mayur/      # AgriRadar: Pemantau harga komoditas pasar (3 level), prediksi panen AI, bursa petani
+├── ecosystem.config.cjs # Konfigurasi deployment PM2 production
+└── package.json    # Monorepo workspaces definition
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 1. BrodyAgri (`apps/tanam`)
+- **Domain**: `https://tanam.brody.my.id`
+- **Port**: `3001`
+- **Fitur Utama**:
+  - Panduan Tanam Step-by-Step & Jadwal Rawat Harian
+  - AI Diagnosa Kesehatan & Hama Tanaman (Vision AI)
+  - Bottom Drawer Resep Masakan Berdasarkan Hasil Panen
+  - Formulasi Nutrisi & Pupuk Organik
+  - Integrasi Link Langsung ke Pasar Komoditas AgriRadar
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 2. AgriRadar (`apps/mayur`)
+- **Domain**: `https://mayur.brody.my.id`
+- **Port**: `3003`
+- **Fitur Utama**:
+  - Live Commodity Ticker: 53+ Komoditas pangan & pertanian
+  - Multi-Tier Pricing: Petani/Kebun, Grosir/Pasar Induk, Konsumen/Eceran
+  - AI Price Forecasting: Prediksi tren harga saat panen tiba
+  - Smart Crop Advisor: Rekomendasi tanaman paling bernilai ekonomi tinggi
+  - Papan Panen Petani: Pasar langsung petani ke pembeli
+  - Integrasi Link Langsung ke Kebunku BrodyAgri
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Menjalankan di Lokal / Server
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Install Dependencies
+```bash
+npm install
+```
 
-## Deploy on Vercel
+### Jalankan Development Mode
+```bash
+# Menjalankan BrodyAgri (tanam)
+npm run dev:tanam
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Menjalankan AgriRadar (mayur)
+npm run dev:mayur
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Build Production
+```bash
+npm run build:tanam
+npm run build:mayur
+```
+
+### Deploy PM2
+```bash
+pm2 start ecosystem.config.cjs
+pm2 save
+```

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Sprout, Plus, BookOpen, FlaskConical, Stethoscope } from 'lucide-react';
+import { Home, Sprout, Plus, BookOpen, FlaskConical, Stethoscope, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -13,6 +13,7 @@ const navItems = [
   { href: '/recipes', label: 'Formulasi', icon: FlaskConical },
   { href: '/guide', label: 'Kamus', icon: BookOpen },
   { href: '/doctor', label: 'Dokter AI', icon: Stethoscope },
+  { href: 'https://mayur.brody.my.id', label: 'Pasar', icon: TrendingUp, external: true },
 ];
 
 export default function BottomNav() {
@@ -53,7 +54,9 @@ export default function BottomNav() {
             <Link
               key={href}
               href={href}
-              className="relative flex flex-col items-center justify-center flex-1 py-1 px-0.5 rounded-full group min-w-[48px]"
+              target={external ? "_blank" : undefined}
+              rel={external ? "noopener noreferrer" : undefined}
+              className="relative flex flex-col items-center justify-center flex-1 py-1 px-0.5 rounded-full group min-w-[44px]"
             >
               <motion.div
                 whileTap={{ scale: 0.9 }}
