@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import {
   Mail,
   Lock,
@@ -13,7 +12,7 @@ import {
   ArrowRight,
   Sun,
   Moon,
-  Zap
+  ShieldCheck
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -62,11 +61,6 @@ export default function LoginPage() {
     router.refresh();
   };
 
-  const fillDemoAccount = () => {
-    setEmail('admin@brodyagri.com');
-    setPassword('12345678');
-  };
-
   return (
     <div 
       className="min-h-dvh flex flex-col justify-center items-center px-4 py-6 relative overflow-hidden font-sans transition-colors duration-250 selection:bg-emerald-500/30 selection:text-emerald-900"
@@ -113,7 +107,7 @@ export default function LoginPage() {
             BrodyAgri
           </h1>
           <p className="text-xs font-medium" style={{ color: 'var(--text-dim)' }}>
-            Sahabat Tani &amp; Urban Farming Pemula
+            Modul Tanam • Akses Khusus Pemilik
           </p>
         </div>
 
@@ -130,7 +124,7 @@ export default function LoginPage() {
           <div className="absolute inset-0 bg-black/40" />
           <span className="absolute bottom-2.5 left-3.5 text-[11px] font-bold text-white drop-shadow-md flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Bertumbuh Bersama Dari Rumah</span>
+            <span>Sistem Kebun Mandiri</span>
           </span>
         </div>
 
@@ -142,20 +136,26 @@ export default function LoginPage() {
             borderColor: 'var(--border-card)' 
           }}
         >
-          <div>
-            <h2 className="text-base font-black tracking-tight" style={{ color: 'var(--text-main)' }}>
-              Masuk ke Akun
-            </h2>
-            <p className="text-[11px]" style={{ color: 'var(--text-dim)' }}>
-              Pantau kebun dan checklist tugas mingguanmu
-            </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-base font-black tracking-tight" style={{ color: 'var(--text-main)' }}>
+                Masuk ke Akun
+              </h2>
+              <p className="text-[11px]" style={{ color: 'var(--text-dim)' }}>
+                Akses kebun &amp; checklist tugas mingguan
+              </p>
+            </div>
+            <span className="text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+              <ShieldCheck className="w-3 h-3" />
+              <span>Privat</span>
+            </span>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-3.5">
             {/* Input Email */}
             <div className="space-y-1">
               <label className="block text-[10px] font-mono uppercase font-bold" style={{ color: 'var(--text-dim)' }}>
-                Email
+                Email Akun
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none" style={{ color: 'var(--text-dim)' }}>
@@ -165,7 +165,7 @@ export default function LoginPage() {
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="email@kamu.com"
+                  placeholder="rifaimanudin@gmail.com"
                   required
                   className="w-full pl-9 pr-3.5 py-2.5 border rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-500 transition-all shadow-sm"
                   style={{
@@ -210,7 +210,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Remember Me & Demo Shortcut */}
+            {/* Remember Me */}
             <div className="flex items-center justify-between text-xs pt-0.5">
               <label className="flex items-center gap-1.5 cursor-pointer select-none">
                 <input
@@ -219,17 +219,8 @@ export default function LoginPage() {
                   onChange={e => setRememberMe(e.target.checked)}
                   className="w-3.5 h-3.5 rounded border cursor-pointer accent-emerald-600"
                 />
-                <span className="text-[11px] font-semibold" style={{ color: 'var(--text-muted)' }}>Ingat saya</span>
+                <span className="text-[11px] font-semibold" style={{ color: 'var(--text-muted)' }}>Ingat sesi login</span>
               </label>
-
-              <button
-                type="button"
-                onClick={fillDemoAccount}
-                className="text-[11px] font-bold hover:underline"
-                style={{ color: 'var(--accent-primary)' }}
-              >
-                Isi Demo (1-Tap)
-              </button>
             </div>
 
             {error && (
@@ -259,13 +250,11 @@ export default function LoginPage() {
           </form>
         </div>
 
-        {/* Footer Navigation */}
-        <p className="text-center text-xs font-medium" style={{ color: 'var(--text-dim)' }}>
-          Belum punya akun?{' '}
-          <Link href="/auth/register" className="font-bold underline hover:opacity-80 transition-opacity" style={{ color: 'var(--accent-primary)' }}>
-            Daftar sekarang ➔
-          </Link>
-        </p>
+        {/* Footer Security Badge */}
+        <div className="flex items-center justify-center gap-1.5 text-[11px] font-medium" style={{ color: 'var(--text-dim)' }}>
+          <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+          <span>Registrasi publik dinonaktifkan (Mode Privat)</span>
+        </div>
       </motion.div>
     </div>
   );
