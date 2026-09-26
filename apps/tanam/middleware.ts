@@ -5,7 +5,7 @@ const SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET ?? 'brodyagri-secret-key-ganti-di-production-2026'
 );
 
-const PUBLIC_PATHS = ['/', '/auth/login', '/auth/register', '/api/auth'];
+const PUBLIC_PATHS = ['/', '/auth/login', '/auth/register', '/api/auth', '/api/climate'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
