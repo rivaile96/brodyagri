@@ -77,6 +77,7 @@ export const COMMODITIES: Record<string, { name: string; emoji: string; descript
     { name: 'Jeruk',       emoji: '🍊', description: 'Jeruk nipis, lemon, jeruk manis. Cocok pot & pekarangan.' },
     { name: 'Anggur',      emoji: '🍇', description: 'Butuh rambatan, cocok iklim kering-lembab bergantian.' },
     { name: 'Semangka',    emoji: '🍉', description: 'Cocok lahan terbuka & iklim panas. Panen 60-70 hari.' },
+    { name: 'Melon',       emoji: '🍈', description: 'Buah manis merambat, cocok iklim panas & lahan/pot besar. Panen 60-75 hari.' },
     { name: 'Nanas',       emoji: '🍍', description: 'Sangat tahan panas, cocok pekarangan & lahan terbuka.' },
     { name: 'Sirsak',      emoji: '🍏', description: 'Tumbuh subur di dataran rendah tropis.' },
     { name: 'Rambutan',    emoji: '🍒', description: 'Cocok dataran rendah lembab, butuh lahan cukup.' },
@@ -246,6 +247,20 @@ export const VARIETIES: Record<string, { name: string; description: string; opti
     { name: 'New Dragon', description: 'Kulit bergaris, daging merah, panen 65 hari.', optimal_temp_c: 29, min_elevation_m: 0, max_elevation_m: 500, sunlight_hours: 8, fungus_resistance: 'Medium' },
     { name: 'Quality F1', description: 'Daging merah gelap, rasa sangat manis, produktif.', optimal_temp_c: 28, min_elevation_m: 0, max_elevation_m: 400, sunlight_hours: 8, fungus_resistance: 'High' },
     { name: 'Inul', description: 'Tanpa biji, daging renyah, populer petani.', optimal_temp_c: 29, min_elevation_m: 0, max_elevation_m: 400, sunlight_hours: 8, fungus_resistance: 'Medium' },
+  ],
+  // MELON
+  'Melon': [
+    { name: 'Golden Apollo', description: 'Melon golden kulit kuning mulus manis legit. Sangat genjah & populer.', optimal_temp_c: 28, min_elevation_m: 0, max_elevation_m: 600, sunlight_hours: 8, fungus_resistance: 'High' },
+    { name: 'Action 434', description: 'Rock melon bernet tebal, daging oranye renyah manis.', optimal_temp_c: 28, min_elevation_m: 0, max_elevation_m: 500, sunlight_hours: 8, fungus_resistance: 'High' },
+    { name: 'Glamour', description: 'Daging hijau manis aromatik, net halus, genjah.', optimal_temp_c: 27, min_elevation_m: 0, max_elevation_m: 600, sunlight_hours: 8, fungus_resistance: 'Medium' },
+    { name: 'Sky Rocket', description: 'Melon renyah legendaris, tahan cuaca panas & adaptif.', optimal_temp_c: 28, min_elevation_m: 0, max_elevation_m: 500, sunlight_hours: 8, fungus_resistance: 'High' },
+    { name: 'Honey Globe', description: 'Melon madu daging putih-hijau, rasa sangat manis (Brix tinggi).', optimal_temp_c: 27, min_elevation_m: 0, max_elevation_m: 600, sunlight_hours: 8, fungus_resistance: 'Medium' },
+    { name: 'Ivory', description: 'Melon putih mulus tanpa net, daging manis lembut.', optimal_temp_c: 27, min_elevation_m: 0, max_elevation_m: 500, sunlight_hours: 7, fungus_resistance: 'Medium' },
+    { name: 'Merlin (Red Melon)', description: 'Daging merah-oranye tebal, tekstur renyah manis.', optimal_temp_c: 28, min_elevation_m: 0, max_elevation_m: 500, sunlight_hours: 8, fungus_resistance: 'High' },
+    { name: 'Amanda', description: 'Melon hibrida genjah, kulit kuning gading, manis segar.', optimal_temp_c: 27, min_elevation_m: 0, max_elevation_m: 600, sunlight_hours: 8, fungus_resistance: 'Medium' },
+    // Kurang direkomendasikan
+    { name: 'Cantaloupe Impor', description: 'Varietas luar iklim sedang, rentan jamur daun di kelembaban tropis tinggi.', optimal_temp_c: 22, min_elevation_m: 600, max_elevation_m: 1400, sunlight_hours: 8, fungus_resistance: 'Low' },
+    { name: 'Yubari King', description: 'Melon premium Jepang, butuh greenhouse dingin terkontrol ekstrem. Sulit di lahan terbuka tropis.', optimal_temp_c: 20, min_elevation_m: 800, max_elevation_m: 1600, sunlight_hours: 7, fungus_resistance: 'Low' },
   ],
   // NANAS
   'Nanas': [

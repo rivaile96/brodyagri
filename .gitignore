@@ -36,3 +36,6 @@ apps/**/data/*.db
 # Uploads
 apps/tanam/public/uploads/*
 !apps/tanam/public/uploads/.gitkeep
+twa/
+*.db-shm
+*.db-wal

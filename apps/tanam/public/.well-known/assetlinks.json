@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "id.my.brody.tanam",
+        "sha256_cert_fingerprints": ["E5:78:4D:63:04:39:A6:57:CB:4A:1A:75:41:1A:D8:97:F7:69:28:A3:1F:DC:9E:76:72:3A:53:D0:30:BE:52:6D"]
+      }
+    }]

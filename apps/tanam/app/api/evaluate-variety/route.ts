@@ -121,6 +121,7 @@ function inferVarietyMeta(name: string, commodity: string, category: string) {
     'Pepaya':     { optimal_temp_c: 28, min_elevation_m: 0,   max_elevation_m: 700,  sunlight_hours: 8, fungus_resistance: 'Medium' },
     'Pisang':     { optimal_temp_c: 27, min_elevation_m: 0,   max_elevation_m: 800,  sunlight_hours: 7, fungus_resistance: 'Medium' },
     'Semangka':   { optimal_temp_c: 29, min_elevation_m: 0,   max_elevation_m: 500,  sunlight_hours: 8, fungus_resistance: 'Medium' },
+    'Melon':      { optimal_temp_c: 28, min_elevation_m: 0,   max_elevation_m: 600,  sunlight_hours: 8, fungus_resistance: 'Medium' },
     'Nanas':      { optimal_temp_c: 28, min_elevation_m: 0,   max_elevation_m: 600,  sunlight_hours: 8, fungus_resistance: 'High'   },
     'Sirsak':     { optimal_temp_c: 28, min_elevation_m: 0,   max_elevation_m: 700,  sunlight_hours: 7, fungus_resistance: 'High'   },
     'Rambutan':   { optimal_temp_c: 27, min_elevation_m: 0,   max_elevation_m: 500,  sunlight_hours: 7, fungus_resistance: 'Medium' },
